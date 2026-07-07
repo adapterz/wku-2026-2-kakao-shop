@@ -1,5 +1,8 @@
 const express = require('express');
 const path = require('path');
+
+const productsRouter = require('./routes/products');
+
 const app = express();
 const PORT = 3000;
 
@@ -13,6 +16,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
+
+app.use('/api/products', productsRouter);
 
 // 3. 3000번 포트로 서버 실행
 app.listen(PORT, () => {
