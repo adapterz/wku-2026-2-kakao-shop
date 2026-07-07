@@ -73,57 +73,57 @@ document.addEventListener('DOMContentLoaded', () => {
   const FALLBACK_PRODUCTS = [
     {
       "id": 1,
-      "brand": "렉슨",
-      "name": "[단독컬러 출시] \"쇼핑백\" [단독] 렉슨 미나 미니 조명",
-      "price": 23000,
-      "discountRate": 11,
-      "image": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300&auto=format&fit=crop&q=80",
-      "wishCount": 1535
+      "brand": "익산역 커피",
+      "name": "아이스 아메리카노 교환권",
+      "price": 4500,
+      "discountRate": 0,
+      "image": "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=300&auto=format&fit=crop&q=80",
+      "wishCount": 150
     },
     {
       "id": 2,
-      "brand": "다송무지개정원",
-      "name": "수제 고구마빵 & 감자빵 세트 (매장 정보: 익산역 인근 / 유효기간 90일)",
-      "price": 18000,
-      "discountRate": 10,
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsRcSEg6GqiziEbZaP5JVjLCEkIflt7FzhibLI4LRI2g&s=100",
-      "wishCount": 350
+      "brand": "익산역 커피",
+      "name": "아이스 바닐라 라떼 교환권",
+      "price": 5200,
+      "discountRate": 0,
+      "image": "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=300&auto=format&fit=crop&q=80",
+      "wishCount": 230
     },
     {
       "id": 3,
-      "brand": "고려당",
-      "name": "백종원 추천 꿀빵 세트 (오프라인 매장 제시용 / 유효기간 180일)",
+      "brand": "익산역 디저트",
+      "name": "마카롱 6구 세트",
       "price": 15000,
-      "discountRate": 15,
-      "image": "https://image2.lotteimall.com/goods/25/94/68/2857689425_1.jpg/dims/resizemc/550x550/optimize",
-      "wishCount": 280
+      "discountRate": 0,
+      "image": "https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=300&auto=format&fit=crop&q=80",
+      "wishCount": 180
     },
     {
       "id": 4,
-      "brand": "서동한과",
-      "name": "서동마 수제 한과 세트 (익산역 제휴점 교환 / 유효기간 1년)",
-      "price": 35000,
-      "discountRate": 0,
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfXFY_bwbxWrgRZBLVwzdU7LvWsARdnnAwxu7IAvovVnYGpcyy7I1KK4Gz&s=10",
-      "wishCount": 190
+      "brand": "익산역 디저트",
+      "name": "소금빵 4종 세트",
+      "price": 12900,
+      "discountRate": 10,
+      "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&auto=format&fit=crop&q=80",
+      "wishCount": 95
     },
     {
       "id": 5,
-      "brand": "익산다원",
-      "name": "익산 국화 축제 국화차 기프티콘 (매장 제시용 / 유효기간 180일)",
-      "price": 12000,
+      "brand": "익산역마켓",
+      "name": "10,000원 금액권",
+      "price": 10000,
       "discountRate": 0,
-      "image": "https://godomall-storage.cdn-nhncommerce.com/e7177a9f589bd522020861014825812f/goods/3/image/detail/3_detail_146.jpg",
-      "wishCount": 110
+      "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=300&auto=format&fit=crop&q=80",
+      "wishCount": 140
     },
     {
       "id": 6,
-      "brand": "솜리치킨",
-      "name": "가마솥 반반 깨통닭 모바일 쿠폰 (솜리치킨 본점 교환 / 90일)",
-      "price": 20000,
-      "discountRate": 5,
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7qbqLRnq86tt4UGONYevNcZATKG8lBT2gboHO7UGNbw&s",
-      "wishCount": 612
+      "brand": "익산역마켓",
+      "name": "30,000원 금액권",
+      "price": 30000,
+      "discountRate": 0,
+      "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=300&auto=format&fit=crop&q=80",
+      "wishCount": 310
     }
   ];
 
