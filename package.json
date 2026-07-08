@@ -8,7 +8,9 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "mysql2": "^3.22.6"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
