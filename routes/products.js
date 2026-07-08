@@ -6,7 +6,7 @@ const pool = require('../db');
 router.get('/', async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT * FROM products');
-    
+
     res.status(200).json({
       status: 200,
       code: "PRODUCT_LIST_SUCCESS",
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     res.status(500).json({
       status: 500,
       code: "INTERNAL_SERVER_ERROR",
-      message: "서버 내부 오류가 발생했습니다.",
+      message: null,
       data: null
     });
   }
