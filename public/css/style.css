@@ -91,6 +91,28 @@ button {
   font-size: 18px;
   font-weight: 700;
   color: #191919;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-logo-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  border: 1px solid #EAEAEA;
+  overflow: hidden;
+}
+
+.header-logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
 }
 
 /* Nav Bar Styles (Horizontal Scrollable) */
@@ -115,7 +137,7 @@ button {
 
 .nav-item {
   display: inline-block;
-  padding: 12px 14px;
+  padding: 12px 12px;
   font-weight: 700;
   font-size: 15px;
   color: var(--text-main);
@@ -205,7 +227,7 @@ button {
 .banner-item {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #FFE885 0%, #FEE500 100%);
+  background: linear-gradient(135deg, #00FCD6 0%, #00C2A4 100%);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -241,12 +263,9 @@ button {
 
 .banner-image {
   position: absolute;
-  right: -10px;
-  /* 오른쪽으로 조금 빼기 */
-  bottom: -5px;
-  /* 아래로 조금 빼기 */
-  width: 170px;
-  /* 크게 조절 */
+  right: 10px;
+  bottom: 0px;
+  width: 160px;
   height: auto;
   object-fit: contain;
 }
