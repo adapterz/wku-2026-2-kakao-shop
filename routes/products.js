@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     res.status(500).json({
       status: 500,
       code: "INTERNAL_SERVER_ERROR",
-      message: "서버 내부 오류가 발생했습니다.",
+      message: null,
       data: null
     });
   }
