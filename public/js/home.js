@@ -4,18 +4,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = document.createElement('article');
     card.className = 'product-card';
 
-    const formattedPrice = Number(product.price || 0).toLocaleString() + '원';
-    const discountHtml = product.discountRate ? `<span class="discount-rate">${product.discountRate}%</span>` : '';
+    const price = Number(product.price || 0);
+    const discountRate = product.discountRate !== undefined ? product.discountRate : product.discount_rate;
+    const wishCount = product.wishCount !== undefined ? product.wishCount : product.wish_count;
+    const thumbnailUrl = product.thumbnailUrl || product.thumbnail_url || product.image || product.imageUrl || '';
+    const name = product.name || product.title || '';
+    const brand = product.brand || product.brandName || product.brand_name || '';
+
+    const formattedPrice = price.toLocaleString() + '원';
+    const discountHtml = discountRate ? `<span class="discount-rate">${discountRate}%</span>` : '';
     const rankHtml = options.showRank && options.rankIndex ? `<span class="rank-badge">${options.rankIndex}</span>` : '';
 
     card.innerHTML = `
       <div class="card-img-wrapper">
         ${rankHtml}
-        <img class="product-img" src="${product.thumbnailUrl || product.image || product.imageUrl || ''}" alt="${product.name || product.title || ''}">
+        <img class="product-img" src="${thumbnailUrl}" alt="${name}">
       </div>
       <div class="card-body">
-        <span class="brand-name">${product.brand || product.brandName || ''}</span>
-        <h4 class="product-title">${product.name || product.title || ''}</h4>
+        <span class="brand-name">${brand}</span>
+        <h4 class="product-title">${name}</h4>
         <div class="price-info">
           ${discountHtml}
           <span class="price">${formattedPrice}</span>
@@ -26,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </button>
           <div class="btn-action-wish-row">
             <i class="fa-regular fa-heart"></i>
-            <span class="wish-count">${Number(product.wishCount || 0).toLocaleString()}</span>
+            <span class="wish-count">${Number(wishCount || 0).toLocaleString()}</span>
           </div>
         </div>
       </div>
@@ -142,10 +149,22 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadProducts() {
     try {
       const response = await fetch('/api/products');
-      if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const result = await response.json();
-      const products = result.data || [];
-      renderProductsData(products);
+      
+      if (!result || typeof result !== 'object') {
+        throw new Error('Invalid JSON response format');
+      }
+      if (!('data' in result)) {
+        throw new Error('Response payload is missing "data" property');
+      }
+      if (!Array.isArray(result.data)) {
+        throw new Error('Response "data" property is not an array');
+      }
+      
+      renderProductsData(result.data);
     } catch (error) {
       console.error('Failed to fetch products from API:', error);
       showErrorState();
