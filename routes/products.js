@@ -1,32 +1,27 @@
 const express = require('express');
 const router = express.Router();
-
-// API 명세서에 맞춘 더미 데이터
-const dummyProducts = [
-  {
-    id: 1,
-    name: "익산역 아메리카노 교환권",
-    brand: "익산역점",
-    price: 4500,
-    thumbnailUrl: "https://via.placeholder.com/150"
-  },
-  {
-    id: 2,
-    name: "카카오 프렌즈 머그컵",
-    brand: "카카오프렌즈",
-    price: 15000,
-    thumbnailUrl: "https://via.placeholder.com/150"
-  }
-];
+const pool = require('../db');
 
 // 상품 목록 조회
-router.get('/', (req, res) => {
-  res.status(200).json({
-    status: 200,
-    code: "PRODUCT_LIST_SUCCESS",
-    message: null,
-    data: dummyProducts
-  });
+router.get('/', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM products');
+    
+    res.status(200).json({
+      status: 200,
+      code: "PRODUCT_LIST_SUCCESS",
+      message: null,
+      data: rows
+    });
+  } catch (error) {
+    console.error('Database query error (GET /api/products):', error);
+    res.status(500).json({
+      status: 500,
+      code: "INTERNAL_SERVER_ERROR",
+      message: "서버 내부 오류가 발생했습니다.",
+      data: null
+    });
+  }
 });
 
 module.exports = router;
