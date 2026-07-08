@@ -5,33 +5,15 @@ const pool = require('../db');
 // 상품 목록 조회
 router.get('/', async (req, res) => {
   try {
-    let query = 'SELECT * FROM products';
-    const params = [];
-
-    const limit = parseInt(req.query.limit, 10);
-    const offset = parseInt(req.query.offset, 10);
-
-    if (!isNaN(limit) && !isNaN(offset)) {
-      query += ' LIMIT ? OFFSET ?';
-      params.push(limit, offset);
-    } else if (!isNaN(limit)) {
-      query += ' LIMIT ?';
-      params.push(limit);
-    } else if (!isNaN(offset)) {
-      query += ' LIMIT 1000000 OFFSET ?';
-      params.push(offset);
-    }
-
-    const [rows] = await pool.query(query, params);
+    const query = 'SELECT * FROM products';
+    const [rows] = await pool.query(query);
     
     const products = rows.map(row => ({
       id: row.id,
       name: row.name,
       brand: row.brand,
       price: row.price,
-      thumbnailUrl: row.thumbnail_url || row.thumbnailUrl,
-      discountRate: row.discount_rate || row.discountRate,
-      wishCount: row.wish_count || row.wishCount
+      thumbnailUrl: row.thumbnail_url || row.thumbnailUrl
     }));
 
     res.status(200).json({
