@@ -6,11 +6,8 @@ const pool = require('../db');
 router.get('/', async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT * FROM products');
-    
+
     res.status(200).json({
-      status: 200,
-      code: "PRODUCT_LIST_SUCCESS",
-      message: null,
       data: rows
     });
   } catch (error) {
