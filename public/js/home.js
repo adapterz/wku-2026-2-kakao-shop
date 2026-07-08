@@ -4,18 +4,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = document.createElement('article');
     card.className = 'product-card';
 
-    const formattedPrice = Number(product.price || 0).toLocaleString() + '원';
-    const discountHtml = product.discountRate ? `<span class="discount-rate">${product.discountRate}%</span>` : '';
+    const price = Number(product.price || 0);
+    const discountRate = product.discountRate || 0;
+    const wishCount = product.wishCount || 0;
+    const thumbnailUrl = product.thumbnailUrl || '';
+    const name = product.name || '';
+    const brand = product.brand || '';
+
+    const formattedPrice = price.toLocaleString() + '원';
+    const discountHtml = discountRate ? `<span class="discount-rate">${discountRate}%</span>` : '';
     const rankHtml = options.showRank && options.rankIndex ? `<span class="rank-badge">${options.rankIndex}</span>` : '';
 
     card.innerHTML = `
       <div class="card-img-wrapper">
         ${rankHtml}
-        <img class="product-img" src="${product.thumbnailUrl || product.image || product.imageUrl || ''}" alt="${product.name || product.title || ''}">
+        <img class="product-img" src="${thumbnailUrl}" alt="${name}">
       </div>
       <div class="card-body">
-        <span class="brand-name">${product.brand || product.brandName || ''}</span>
-        <h4 class="product-title">${product.name || product.title || ''}</h4>
+        <span class="brand-name">${brand}</span>
+        <h4 class="product-title">${name}</h4>
         <div class="price-info">
           ${discountHtml}
           <span class="price">${formattedPrice}</span>
@@ -26,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </button>
           <div class="btn-action-wish-row">
             <i class="fa-regular fa-heart"></i>
-            <span class="wish-count">${Number(product.wishCount || 0).toLocaleString()}</span>
+            <span class="wish-count">${Number(wishCount || 0).toLocaleString()}</span>
           </div>
         </div>
       </div>
@@ -128,11 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Render ranking products (horizontal list, first 3 items)
+    // Render ranking products (horizontal list, first 6 items)
     const rankingRow = document.querySelector('.ranking-cards-row');
     if (rankingRow) {
       rankingRow.innerHTML = '';
-      products.slice(0, 3).forEach((product, idx) => {
+      products.slice(0, 6).forEach((product, idx) => {
         rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: idx + 1 }));
       });
     }
@@ -142,10 +149,22 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadProducts() {
     try {
       const response = await fetch('/api/products');
-      if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const result = await response.json();
-      const products = result.data || [];
-      renderProductsData(products);
+      
+      if (!result || typeof result !== 'object') {
+        throw new Error('Invalid JSON response format');
+      }
+      if (!('data' in result)) {
+        throw new Error('Response payload is missing "data" property');
+      }
+      if (!Array.isArray(result.data)) {
+        throw new Error('Response "data" property is not an array');
+      }
+      
+      renderProductsData(result.data);
     } catch (error) {
       console.error('Failed to fetch products from API:', error);
       showErrorState();
@@ -225,5 +244,59 @@ document.addEventListener('DOMContentLoaded', () => {
         navBar.scrollLeft += e.deltaY;
       }
     }, { passive: false });
+  }
+
+  // Sub Tab Segmented Control (선물 테마, 카테고리, 추천 브랜드) Click Logic
+  const pillBtns = document.querySelectorAll('.pill-btn');
+  const pillSelector = document.querySelector('.pill-selector');
+  if (pillBtns.length > 0 && pillSelector) {
+    pillBtns.forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        pillBtns.forEach(el => el.classList.remove('active'));
+        btn.classList.add('active');
+        pillSelector.style.setProperty('--active-index', idx);
+      });
+    });
+  }
+
+  // Real-time Ranking "더보기" (Show More) Click Logic
+  const btnRankingMore = document.getElementById('btn-ranking-more');
+  let loadedMoreRankings = false;
+
+  if (btnRankingMore) {
+    btnRankingMore.addEventListener('click', async () => {
+      if (loadedMoreRankings) return;
+      btnRankingMore.disabled = true;
+      btnRankingMore.innerHTML = '불러오는 중... <i class="fa-solid fa-spinner fa-spin"></i>';
+
+      try {
+        // Fetch 15 additional products starting from offset 6
+        const response = await fetch('/api/products?offset=6&limit=15');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        
+        if (result && result.data && Array.isArray(result.data)) {
+          const rankingRow = document.querySelector('.ranking-cards-row');
+          if (rankingRow && result.data.length > 0) {
+            result.data.forEach((product, idx) => {
+              // Append to ranking row starting from rank 7
+              rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: idx + 7 }));
+            });
+          }
+          loadedMoreRankings = true;
+          // Hide more button since we fetched the requested 15 items
+          btnRankingMore.style.display = 'none';
+        } else {
+          throw new Error('Invalid data format received');
+        }
+      } catch (error) {
+        console.error('Failed to load more ranking products:', error);
+        btnRankingMore.disabled = false;
+        btnRankingMore.innerHTML = '더보기 <i class="fa-solid fa-chevron-down"></i>';
+        alert('상품 정보를 불러오는 데 실패했습니다.');
+      }
+    });
   }
 });
