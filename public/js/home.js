@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     card.className = 'product-card';
 
     const price = Number(product.price || 0);
-    const discountRate = product.discountRate !== undefined ? product.discountRate : product.discount_rate;
-    const wishCount = product.wishCount !== undefined ? product.wishCount : product.wish_count;
-    const thumbnailUrl = product.thumbnailUrl || product.thumbnail_url || product.image || product.imageUrl || '';
-    const name = product.name || product.title || '';
-    const brand = product.brand || product.brandName || product.brand_name || '';
+    const discountRate = product.discountRate || 0;
+    const wishCount = product.wishCount || 0;
+    const thumbnailUrl = product.thumbnailUrl || '';
+    const name = product.name || '';
+    const brand = product.brand || '';
 
     const formattedPrice = price.toLocaleString() + '원';
     const discountHtml = discountRate ? `<span class="discount-rate">${discountRate}%</span>` : '';
