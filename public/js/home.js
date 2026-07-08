@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     card.innerHTML = `
       <div class="card-img-wrapper">
         ${rankHtml}
-        <img class="product-img" src="${product.image || product.imageUrl || ''}" alt="${product.name || product.title || ''}">
+        <img class="product-img" src="${product.thumbnailUrl || product.image || product.imageUrl || ''}" alt="${product.name || product.title || ''}">
       </div>
       <div class="card-body">
         <span class="brand-name">${product.brand || product.brandName || ''}</span>
@@ -70,65 +70,55 @@ document.addEventListener('DOMContentLoaded', () => {
     return card;
   }
 
-  const FALLBACK_PRODUCTS = [
-    {
-      "id": 1,
-      "brand": "익산역 커피",
-      "name": "아이스 아메리카노 교환권",
-      "price": 4500,
-      "discountRate": 0,
-      "image": "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=300&auto=format&fit=crop&q=80",
-      "wishCount": 150
-    },
-    {
-      "id": 2,
-      "brand": "익산역 커피",
-      "name": "아이스 바닐라 라떼 교환권",
-      "price": 5200,
-      "discountRate": 0,
-      "image": "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=300&auto=format&fit=crop&q=80",
-      "wishCount": 230
-    },
-    {
-      "id": 3,
-      "brand": "익산역 디저트",
-      "name": "마카롱 6구 세트",
-      "price": 15000,
-      "discountRate": 0,
-      "image": "https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=300&auto=format&fit=crop&q=80",
-      "wishCount": 180
-    },
-    {
-      "id": 4,
-      "brand": "익산역 디저트",
-      "name": "소금빵 4종 세트",
-      "price": 12900,
-      "discountRate": 10,
-      "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&auto=format&fit=crop&q=80",
-      "wishCount": 95
-    },
-    {
-      "id": 5,
-      "brand": "익산역마켓",
-      "name": "10,000원 금액권",
-      "price": 10000,
-      "discountRate": 0,
-      "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=300&auto=format&fit=crop&q=80",
-      "wishCount": 140
-    },
-    {
-      "id": 6,
-      "brand": "익산역마켓",
-      "name": "30,000원 금액권",
-      "price": 30000,
-      "discountRate": 0,
-      "image": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=300&auto=format&fit=crop&q=80",
-      "wishCount": 310
+  // Helper to show empty state when no products are found
+  function showEmptyState() {
+    const productGrid = document.querySelector('.product-grid');
+    if (productGrid) {
+      productGrid.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-box-open"></i>
+          <p>등록된 상품이 없습니다.</p>
+        </div>
+      `;
     }
-  ];
+    const rankingRow = document.querySelector('.ranking-cards-row');
+    if (rankingRow) {
+      rankingRow.innerHTML = `
+        <div class="empty-state">
+          <p>등록된 상품이 없습니다.</p>
+        </div>
+      `;
+    }
+  }
+
+  // Helper to show error state when API request fails
+  function showErrorState() {
+    const productGrid = document.querySelector('.product-grid');
+    if (productGrid) {
+      productGrid.innerHTML = `
+        <div class="error-state">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <p>상품 정보를 불러오는 데 실패했습니다.<br>잠시 후 다시 시도해 주세요.</p>
+        </div>
+      `;
+    }
+    const rankingRow = document.querySelector('.ranking-cards-row');
+    if (rankingRow) {
+      rankingRow.innerHTML = `
+        <div class="error-state">
+          <p>상품 정보를 불러오는 데 실패했습니다.</p>
+        </div>
+      `;
+    }
+  }
 
   // Helper to render products into layout elements
   function renderProductsData(products) {
+    if (!products || products.length === 0) {
+      showEmptyState();
+      return;
+    }
+
     // Render recommended products (3-column grid)
     const productGrid = document.querySelector('.product-grid');
     if (productGrid) {
@@ -140,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render ranking products (horizontal list, first 3 items)
     const rankingRow = document.querySelector('.ranking-cards-row');
-    if (rankingRow && products.length > 0) {
+    if (rankingRow) {
       rankingRow.innerHTML = '';
       products.slice(0, 3).forEach((product, idx) => {
         rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: idx + 1 }));
@@ -153,11 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await fetch('/api/products');
       if (!response.ok) throw new Error('Network response was not ok');
-      const products = await response.json();
+      const result = await response.json();
+      const products = result.data || [];
       renderProductsData(products);
     } catch (error) {
-      console.warn('Failed to fetch products from API, rendering fallback Iksan local partners data instead:', error);
-      renderProductsData(FALLBACK_PRODUCTS);
+      console.error('Failed to fetch products from API:', error);
+      showErrorState();
     }
   }
 

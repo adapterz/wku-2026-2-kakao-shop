@@ -843,3 +843,24 @@ button {
 .keyword-badge:active {
   background-color: #EAEAEA;
 }
+
+/* Empty & Error State UI */
+.empty-state, .error-state {
+  grid-column: 1 / -1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+  gap: 8px;
+}
+
+.empty-state i, .error-state i {
+  font-size: 32px;
+  color: #D3D3D3;
+  margin-bottom: 8px;
+}
