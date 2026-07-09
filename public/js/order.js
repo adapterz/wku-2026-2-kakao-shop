@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 1. 로그인 여부 확인
   try {
-    const authResponse = await fetch('/api/auth/me');
+    const authResponse = await fetch('/api/auth/me', { credentials: 'include' });
     if (!authResponse.ok) {
       alert("로그인이 필요한 서비스입니다.");
       location.href = "login.html";
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 3. 주문서 조회 API (상품 상세 정보 조회 API 활용)를 사용하여 상품 정보 조회
   try {
-    const productResponse = await fetch(`/api/products/${productId}`);
+    const productResponse = await fetch(`/api/products/${productId}`, { credentials: 'include' });
     if (!productResponse.ok) {
       throw new Error(`HTTP error! status: ${productResponse.status}`);
     }
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       try {
-        const userSearchResponse = await fetch(`/api/users/search?nickname=${encodeURIComponent(nickname)}`);
+        const userSearchResponse = await fetch(`/api/users/search?nickname=${encodeURIComponent(nickname)}`, { credentials: 'include' });
         if (!userSearchResponse.ok) {
           searchResultDiv.style.color = "red";
           searchResultDiv.textContent = "사용자를 찾을 수 없습니다.";
@@ -142,7 +142,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
+        credentials: 'include'
       });
 
       const orderResult = await orderResponse.json();

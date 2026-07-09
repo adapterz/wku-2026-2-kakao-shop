@@ -20,7 +20,7 @@ function renderProduct(product) {
 // API로부터 상품 상세 데이터 가져오기
 async function loadProductDetail(id) {
   try {
-    const response = await fetch(`/api/products/${id}`);
+    const response = await fetch(`/api/products/${id}`, { credentials: 'include' });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
