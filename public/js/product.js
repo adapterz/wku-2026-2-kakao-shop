@@ -107,8 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Bottom Sheet open/close and drag/swipe logic
   const bottomSheetOverlay = document.getElementById('bottom-sheet-overlay');
-  const bottomSheet = document.getElementById('bottom-sheet');
-  const bottomSheetHeader = document.getElementById('bottom-sheet-header');
+  const bottomSheet = document.getElementById('bottom-sheet-content');
+  const bottomSheetHeader = document.getElementById('bottom-sheet-handle-container');
 
   const openBottomSheet = () => {
     if (!bottomSheetOverlay || !bottomSheet) return;
@@ -131,6 +131,79 @@ document.addEventListener("DOMContentLoaded", () => {
   if (buyBtn) {
     buyBtn.addEventListener('click', () => {
       openBottomSheet();
+    });
+  }
+
+  // Quantity Control Logic
+  const btnMinus = document.querySelector('.btn-minus');
+  const btnPlus = document.querySelector('.btn-plus');
+  const quantityNum = document.querySelector('.quantity-number');
+  let quantity = 1;
+
+  const updateQuantity = (value) => {
+    if (!quantityNum || !btnMinus || !btnPlus) return;
+    quantity = Math.max(1, Math.min(99, value));
+    quantityNum.textContent = quantity;
+    
+    // Update button disabled state
+    btnMinus.disabled = (quantity === 1);
+    btnPlus.disabled = (quantity === 99);
+  };
+
+  if (btnMinus) {
+    btnMinus.addEventListener('click', () => {
+      updateQuantity(quantity - 1);
+    });
+  }
+
+  if (btnPlus) {
+    btnPlus.addEventListener('click', () => {
+      updateQuantity(quantity + 1);
+    });
+  }
+
+  if (quantityNum) {
+    quantityNum.addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'quantity-input';
+      input.value = quantity;
+      
+      quantityNum.replaceWith(input);
+      input.focus();
+      input.select();
+
+      const finishEditing = () => {
+        let val = input.value.trim();
+        // Remove non-numeric characters
+        val = val.replace(/[^0-9]/g, '');
+        
+        let numVal = parseInt(val, 10);
+        if (isNaN(numVal) || val === '') {
+          numVal = 1;
+        } else if (numVal <= 0) {
+          numVal = 1;
+        } else if (numVal > 99) {
+          numVal = 99;
+        }
+        
+        updateQuantity(numVal);
+        input.replaceWith(quantityNum);
+      };
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          finishEditing();
+        }
+      });
+
+      input.addEventListener('blur', () => {
+        finishEditing();
+      });
+
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/[^0-9]/g, '');
+      });
     });
   }
 
@@ -167,7 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const endDrag = () => {
       if (!isDragging) return;
       isDragging = false;
-      bottomSheet.style.transition = 'transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1)';
+      bottomSheet.style.transition = 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
       
       const deltaY = currentY - startY;
       const elapsedTime = Date.now() - startTime;
