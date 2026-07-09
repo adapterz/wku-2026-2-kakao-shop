@@ -39,11 +39,14 @@ async function loadProductDetail(id) {
   }
 }
 
-async function goToOrder(productId, type) {
+async function goToOrder(productId, type, quantity = 1, totalPrice = null) {
   try {
     const response = await fetch('/api/auth/me', { credentials: 'include' });
     if (response.ok) {
-      window.location.href = `order.html?productId=${productId}&type=${type}`;
+      let url = `order.html?productId=${productId}&type=${type}`;
+      if (quantity) url += `&quantity=${quantity}`;
+      if (totalPrice) url += `&totalPrice=${totalPrice}`;
+      window.location.href = url;
     } else {
       const redirectTarget = encodeURIComponent(window.location.href);
       window.location.href = `login.html?redirect=${redirectTarget}`;
@@ -298,6 +301,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener('touchend', () => {
       if (isDragging) endDrag();
+    });
+  }
+
+  const sheetBuyBtn = document.querySelector('.btn-sheet-buy');
+  if (sheetBuyBtn) {
+    sheetBuyBtn.addEventListener('click', () => {
+      const price = window.productPrice || 0;
+      const total = price * quantity;
+      goToOrder(productId, 'self', quantity, total);
     });
   }
 
