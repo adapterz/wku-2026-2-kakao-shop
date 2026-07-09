@@ -15,11 +15,14 @@
 
     <!-- Main Header -->
     <header class="main-header">
-        <div class="header-container" style="position: relative;">
-            <button onclick="history.back()" class="header-icon" title="뒤로가기" style="position: absolute; left: 0;">
+        <div class="header-container">
+            <button onclick="history.back()" class="header-icon" title="뒤로가기">
                 <i class="fa-solid fa-chevron-left"></i>
             </button>
-            <span class="header-title" style="position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap;">
+            <span class="header-title">
+                <span class="header-logo-container">
+                    <img src="images/iksan_logo.png" class="header-logo" alt="익산시 로고">
+                </span>
                 선물하기
             </span>
             <div style="width: 24px;"></div>
@@ -29,6 +32,18 @@
     <!-- Main Content Area -->
     <main class="main-content">
         <div class="order-container">
+            <!-- Celebration Card Section -->
+            <div class="celebration-card-container">
+                <div class="celebration-card">
+                    <div class="card-message">
+                        <div class="card-text-primary">나는 내가 챙긴다!</div>
+                        <div class="card-text-secondary">소중한 나에게 주는 선물</div>
+                    </div>
+                    <button class="btn-edit-message" type="button">
+                        T 메시지 편집
+                    </button>
+                </div>
+            </div>
             <!-- Product Info Summary -->
             <div class="order-product-card">
                 <img id="order-product-img" src="" alt="상품 이미지" class="order-product-img">
@@ -76,6 +91,30 @@
             </div>
         </div>
     </main>
+
+    <!-- Message Edit Overlay UI -->
+    <div id="message-edit-overlay" class="message-edit-overlay">
+        <div class="overlay-header">
+            <button id="btn-edit-cancel" class="btn-overlay-nav" type="button">취소</button>
+            <span class="overlay-title">메시지 카드 작성</span>
+            <button id="btn-edit-save" class="btn-overlay-nav" type="button">완료</button>
+        </div>
+        <div class="overlay-body">
+            <!-- Card Preview -->
+            <div class="preview-card-container">
+                <div class="celebration-card preview-card">
+                    <div class="card-message">
+                        <div class="card-text-primary" id="preview-text-primary">나는 내가 챙긴다!</div>
+                        <div class="card-text-secondary" id="preview-text-secondary">소중한 나에게 주는 선물</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Message Input Area -->
+            <div class="message-input-container">
+                <textarea id="edit-message-input" placeholder="메시지를 입력해 주세요."></textarea>
+            </div>
+        </div>
+    </div>
 
     <!-- Script for Interactions -->
     <script src="js/order.js" defer></script>

@@ -1674,4 +1674,148 @@ button {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+/* Celebration Card Section */
+.celebration-card-container {
+  padding: 16px;
+  background-color: #FAFAFA;
+  display: flex;
+  justify-content: center;
+  border-bottom: 8px solid #F5F5F5;
+}
+
+.celebration-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #FFF2D6; /* Warm cream yellow */
+  border-radius: 16px;
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.card-message {
+  text-align: center;
+}
+
+.card-text-primary {
+  font-size: 22px;
+  font-weight: 800;
+  color: #3C1E1E; /* Dark brown style font color */
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.card-text-secondary {
+  font-size: 18px;
+  font-weight: 800;
+  color: #555555;
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+.btn-edit-message {
+  background-color: #FFFFFF;
+  border: 1px solid #E2E2E2;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #555555;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transition: background-color 0.2s;
+}
+
+.btn-edit-message:active {
+  background-color: #FAFAFA;
+}
+
+/* Message Edit Overlay */
+.message-edit-overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  height: 100%;
+  background-color: #FFFFFF;
+  z-index: 2000;
+  display: none;
+  flex-direction: column;
+}
+
+.message-edit-overlay.open {
+  display: flex;
+}
+
+.overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: #FFFFFF;
+}
+
+.btn-overlay-nav {
+  font-size: 15px;
+  font-weight: 500;
+  color: #191919;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.overlay-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #191919;
+}
+
+.overlay-body {
+  padding: 20px 16px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #FAFAFA;
+  gap: 20px;
+}
+
+.preview-card-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.preview-card {
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.message-input-container {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message-input-container textarea {
+  width: 100%;
+  height: 120px;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 14px;
+  color: #191919;
+  font-family: inherit;
+  line-height: 1.5;
 }

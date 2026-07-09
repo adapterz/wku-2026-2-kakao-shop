@@ -172,4 +172,61 @@ document.addEventListener("DOMContentLoaded", async () => {
       submitOrderBtn.textContent = "결제하기";
     }
   });
+
+  // 6. 메시지 편집 오버레이 제어 로직
+  const btnEditMessage = document.querySelector('.btn-edit-message');
+  const messageEditOverlay = document.getElementById('message-edit-overlay');
+  const btnEditCancel = document.getElementById('btn-edit-cancel');
+  const btnEditSave = document.getElementById('btn-edit-save');
+  const editMessageInput = document.getElementById('edit-message-input');
+  const previewTextPrimary = document.getElementById('preview-text-primary');
+  const previewTextSecondary = document.getElementById('preview-text-secondary');
+
+  const updatePreview = (text) => {
+    if (!previewTextPrimary || !previewTextSecondary) return;
+    const lines = text.split('\n');
+    previewTextPrimary.textContent = lines[0] || '';
+    previewTextSecondary.textContent = lines.slice(1).join('\n') || '';
+  };
+
+  if (btnEditMessage && messageEditOverlay && editMessageInput) {
+    btnEditMessage.addEventListener('click', () => {
+      // Prefill with current celebration card text
+      const mainPrimary = document.querySelector('.celebration-card .card-text-primary');
+      const mainSecondary = document.querySelector('.celebration-card .card-text-secondary');
+      
+      const currentText = (mainPrimary ? mainPrimary.textContent : '') + 
+                          (mainSecondary && mainSecondary.textContent ? '\n' + mainSecondary.textContent : '');
+      
+      editMessageInput.value = currentText;
+      updatePreview(currentText);
+
+      messageEditOverlay.classList.add('open');
+
+      // Autofocus and place cursor at the end
+      setTimeout(() => {
+        editMessageInput.focus();
+        const length = editMessageInput.value.length;
+        editMessageInput.setSelectionRange(length, length);
+      }, 50);
+    });
+  }
+
+  if (editMessageInput) {
+    editMessageInput.addEventListener('input', (e) => {
+      updatePreview(e.target.value);
+    });
+  }
+
+  if (btnEditCancel && messageEditOverlay) {
+    btnEditCancel.addEventListener('click', () => {
+      messageEditOverlay.classList.remove('open');
+    });
+  }
+
+  if (btnEditSave && messageEditOverlay) {
+    btnEditSave.addEventListener('click', () => {
+      messageEditOverlay.classList.remove('open');
+    });
+  }
 });
