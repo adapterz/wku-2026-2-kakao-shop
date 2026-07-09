@@ -57,7 +57,21 @@ const run = async () => {
     const cookieB = resB_login.cookie;
     const userB_Id = resB_login.body.data.userId;
 
-    // 1. isSelfGift: false 케이스의 GET /api/orders/:id 응답에서 receiver가 어떤 값으로 나왔는지
+    // 0. isSelfGift: true 케이스
+    console.log("\n[Test 0] Create Order with isSelfGift: true (User A -> User A)");
+    const resOrderSelf = await request('POST', '/api/orders', {
+      productId: 76,
+      message: "For me!",
+      isSelfGift: true
+    }, cookieA);
+    console.log("Create Order (Self) Status & Body:", resOrderSelf.status, JSON.stringify(resOrderSelf.body, null, 2));
+
+    const orderIdSelf = resOrderSelf.body.data.orderId;
+    console.log("\n[Test 0.1] Get Details of Order with isSelfGift: true");
+    const resOrderSelfDetail = await request('GET', `/api/orders/${orderIdSelf}`, null, cookieA);
+    console.log("Order Detail (Self) Status & Body:", resOrderSelfDetail.status, JSON.stringify(resOrderSelfDetail.body, null, 2));
+
+    // 1. isSelfGift: false 케이스
     console.log("\n[Test 1] Create Order with isSelfGift: false (User A -> User B)");
     const resOrderGift = await request('POST', '/api/orders', {
       productId: 76,
@@ -72,7 +86,7 @@ const run = async () => {
     const resOrderGiftDetail = await request('GET', `/api/orders/${orderIdGift}`, null, cookieA);
     console.log("Order Detail Status & Body:", resOrderGiftDetail.status, JSON.stringify(resOrderGiftDetail.body, null, 2));
 
-    // 2. 존재하지 않는 productId로 요청했을 때 실제 status/code
+    // 2. 존재하지 않는 productId로 요청
     console.log("\n[Test 2] Create Order with non-existent productId");
     const resInvalidProduct = await request('POST', '/api/orders', {
       productId: 9999,
@@ -81,7 +95,7 @@ const run = async () => {
     }, cookieA);
     console.log("Create Order (Invalid Product) Status & Body:", resInvalidProduct.status, JSON.stringify(resInvalidProduct.body, null, 2));
 
-    // 3. 존재하지 않는 receiverId로 요청했을 때 실제 status/code
+    // 3. 존재하지 않는 receiverId로 요청
     console.log("\n[Test 3] Create Order with non-existent receiverId");
     const resInvalidReceiver = await request('POST', '/api/orders', {
       productId: 76,
@@ -91,7 +105,7 @@ const run = async () => {
     }, cookieA);
     console.log("Create Order (Invalid Receiver) Status & Body:", resInvalidReceiver.status, JSON.stringify(resInvalidReceiver.body, null, 2));
 
-    // 4. 타인 주문 조회 시 실제 status/code
+    // 4. 타인 주문 조회 시도
     console.log("\n[Test 4] Get Order Details created by another user (User B trying to access User A's order)");
     const resAccessForbidden = await request('GET', `/api/orders/${orderIdGift}`, null, cookieB);
     console.log("Access Order Detail (Forbidden) Status & Body:", resAccessForbidden.status, JSON.stringify(resAccessForbidden.body, null, 2));

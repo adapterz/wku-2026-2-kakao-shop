@@ -23,8 +23,14 @@ const getOrderById = async (orderId) => {
   return rows.length > 0 ? rows[0] : null;
 };
 
+const getGiftByOrderId = async (orderId) => {
+  const [rows] = await pool.query('SELECT * FROM gifts WHERE order_id = ?', [orderId]);
+  return rows.length > 0 ? rows[0] : null;
+};
+
 module.exports = {
   createOrder,
   createGift,
-  getOrderById
+  getOrderById,
+  getGiftByOrderId
 };

@@ -71,6 +71,7 @@ router.get('/:id', requireLogin, async (req, res) => {
 
     const receiver = await userModel.getUserById(order.receiver_id);
     const product = await productModel.getProductById(order.product_id);
+    const gift = await orderModel.getGiftByOrderId(order.id);
     
     return res.status(200).json({
       status: 200,
@@ -82,16 +83,18 @@ router.get('/:id', requireLogin, async (req, res) => {
           id: product.id,
           name: product.name,
           brand: product.brand,
-          price: product.price,
           thumbnailUrl: product.thumbnail_url
         } : null,
+        totalPrice: order.total_price,
+        message: order.message,
         isSelfGift: !!order.is_self_gift,
         receiver: receiver ? {
           userId: receiver.id,
           nickname: receiver.nickname
         } : null,
-        message: order.message,
-        paymentStatus: order.payment_status
+        paymentStatus: order.payment_status,
+        giftId: gift ? gift.id : null,
+        createdAt: order.created_at
       }
     });
 
