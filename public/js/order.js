@@ -182,11 +182,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const previewTextPrimary = document.getElementById('preview-text-primary');
   const previewTextSecondary = document.getElementById('preview-text-secondary');
 
+  const currentCharCount = document.getElementById('current-char-count');
+
   const updatePreview = (text) => {
     if (!previewTextPrimary || !previewTextSecondary) return;
     const lines = text.split('\n');
     previewTextPrimary.textContent = lines[0] || '';
     previewTextSecondary.textContent = lines.slice(1).join('\n') || '';
+
+    if (currentCharCount) {
+      currentCharCount.textContent = text.length;
+    }
   };
 
   if (btnEditMessage && messageEditOverlay && editMessageInput) {
@@ -214,7 +220,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (editMessageInput) {
     editMessageInput.addEventListener('input', (e) => {
-      updatePreview(e.target.value);
+      let val = e.target.value;
+      if (val.length > 100) {
+        val = val.slice(0, 100);
+        e.target.value = val;
+      }
+      updatePreview(val);
     });
   }
 
@@ -224,8 +235,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  const btnClearMessage = document.getElementById('btn-clear-message');
+  if (btnClearMessage && editMessageInput) {
+    btnClearMessage.addEventListener('click', () => {
+      editMessageInput.value = '';
+      updatePreview('');
+      editMessageInput.focus();
+    });
+  }
+
   if (btnEditSave && messageEditOverlay) {
     btnEditSave.addEventListener('click', () => {
+      const mainPrimary = document.querySelector('.celebration-card .card-text-primary');
+      const mainSecondary = document.querySelector('.celebration-card .card-text-secondary');
+      
+      const lines = editMessageInput.value.split('\n');
+      if (mainPrimary) mainPrimary.textContent = lines[0] || '';
+      if (mainSecondary) mainSecondary.textContent = lines.slice(1).join('\n') || '';
+
       messageEditOverlay.classList.remove('open');
     });
   }

@@ -1695,10 +1695,14 @@ button {
   flex-direction: column;
   align-items: center;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
 }
 
 .card-message {
   text-align: center;
+  width: 100%;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .card-text-primary {

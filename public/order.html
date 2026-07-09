@@ -111,7 +111,13 @@
             </div>
             <!-- Message Input Area -->
             <div class="message-input-container">
-                <textarea id="edit-message-input" placeholder="메시지를 입력해 주세요."></textarea>
+                <textarea id="edit-message-input" placeholder="메시지를 입력해 주세요." maxlength="100"></textarea>
+                <div class="message-input-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                    <button id="btn-clear-message" class="btn-clear-message" type="button" style="font-size: 13px; color: var(--text-sub); border: none; background: none; cursor: pointer; padding: 0;">삭제</button>
+                    <div class="char-counter" style="font-size: 13px; color: var(--text-muted);">
+                        <span id="current-char-count">0</span>/100
+                    </div>
+                </div>
             </div>
         </div>
     </div>
