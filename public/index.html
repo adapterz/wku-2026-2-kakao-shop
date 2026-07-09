@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카카오톡 선물하기 클론</title>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="giftbox.html" class="header-icon" title="선물함">
+                <i class="fa-solid fa-bag-shopping"></i>
+            </a>
+            <span class="header-title">
+                <span class="header-logo-container">
+                    <img src="images/iksan_logo.png" class="header-logo" alt="익산시 로고">
+                </span>
+                선물하기
+            </span>
+            <a href="#" id="btn-search-open" class="header-icon" title="검색">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Navigation Bar (Horizontal Scrollable) -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="#" class="nav-item">for you</a>
+            <a href="index.html" class="nav-item active">홈</a>
+            <a href="#" class="nav-item">인기상권</a>
+            <a href="#" class="nav-item">실시간 랭킹</a>
+            <a href="#" class="nav-item">익산역 맛집거리</a>
+            <a href="#" class="nav-item">익산역 쇼핑거리</a>
+            <a href="#" class="nav-item">익산역 선물거리</a>
+            <a href="#" class="nav-item">청년상점거리</a>
+            <a href="#" class="nav-item">역세권 금액권</a>
+        </div>
+    </nav>
+
+    <!-- Sub Tab Segmented Control -->
+    <div class="sub-tabs-container">
+        <div class="pill-selector">
+            <div class="pill-indicator"></div>
+            <button class="pill-btn active">선물 테마</button>
+            <button class="pill-btn">카테고리</button>
+            <button class="pill-btn">추천 제휴 매장</button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+        <!-- Category Grid (5 Columns Circular Layout) -->
+        <section class="category-section">
+            <div class="category-grid">
+                <!-- Row 1 -->
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRddtd9TEIWK75Nbxj7qbfyrNtnsmKnDhWBUFpw5CybsQ&s=10"
+                            alt="카페">
+                    </div>
+                    <span class="category-name">카페</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU1cI9AEA1YXyWYucCHtRVx1-gJEZS4x36mnhhY9vUhA&s=10"
+                            alt="맛집">
+                    </div>
+                    <span class="category-name">맛집</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEaOlFiddCofZA1jZ2lMcapTc3DaO_qacQu3hTFAuQzA&s=10"
+                            alt="디저트">
+                    </div>
+                    <span class="category-name">디저트</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRENGpVEfy2b8LrhZrQFI3UBGxXzriX4jyYnCHKWNgcQ&s=10"
+                            alt="금액권">
+                    </div>
+                    <span class="category-name">금액권</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh1W20wIRqvOy5Toe6EeYlE9a1dj3_q9TkLf3AyaFMJw&s=10"
+                            alt="인기매장">
+                    </div>
+                    <span class="category-name">인기매장</span>
+                </a>
+
+                <!-- Row 2 -->
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSH9Iu5w--FBt09QML4aCpvub5-vk32ipWbKujDfeqQg&s=10"
+                            alt="특산품">
+                    </div>
+                    <span class="category-name">특산품</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSIYA4bBmSREb95tbcuh7DhjIy0z426P61PDaYt9czmQ&s=10"
+                            alt="로컬푸드">
+                    </div>
+                    <span class="category-name">로컬푸드</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSci75y4eaKB1iegZ5qQLhWQc2fz_IKQwua8fJ03kYTPQ&s=10"
+                            alt="기념품">
+                    </div>
+                    <span class="category-name">기념품</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWc8fNdnmllbswjc1SxnwyINOL5tqXC0puXzY1LjKeOg&s=10"
+                            alt="관광">
+                    </div>
+                    <span class="category-name">관광</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvSr1OlvLMazBoaYJomfW9V37PdD_j4DA_ak235_YkgA&s=10"
+                            alt="전통시장">
+                    </div>
+                    <span class="category-name">전통시장</span>
+                </a>
+
+                <!-- Row 3 -->
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWfSvu9dgdo7V5nYd65OeNe3NZ22LnHzGtrxyOFgTGWw&s=10"
+                            alt="체험">
+                    </div>
+                    <span class="category-name">체험</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC1XON0U_b4bv4sJfZ3Z7HDQoju2vmxrmMWWg9YnLAQg&s=10"
+                            alt="축제·행사">
+                    </div>
+                    <span class="category-name">축제·행사</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiyVlh0en0xkU5hnAnJTBeEmONaIDD4Jr6lAMfWrG-vw&s=10"
+                            alt="숙박">
+                    </div>
+                    <span class="category-name">숙박</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBB7hSs4nKjtXzpKgzmRBkUfjjbPKmBW7k4EZSIH1lZg&s=10"
+                            alt="익산 투어">
+                    </div>
+                    <span class="category-name">익산 투어</span>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon-wrapper">
+                        <img class="category-img"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXWbN1NfP3FRHrmVV9CuTQAMOnlV-iX2zTIC66mfT43Q&s=10"
+                            alt="문화생활">
+                    </div>
+                    <span class="category-name">문화생활</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Hero Banner Slider -->
+        <section class="banner-section">
+            <div class="banner-item">
+                <div class="banner-text">
+                    <span class="banner-tag">상권 활성화</span>
+                    <h2 class="banner-title">익산역 주변 제휴 매장에서<br>즐기는 특별한 혜택</h2>
+                    <p class="banner-subtitle">역 앞 맛집부터 이색 디저트 카페까지</p>
+                </div>
+                <img class="banner-image" src="./images/banner.png" alt="Dessert Banner">
+            </div>
+        </section>
+
+        <!-- Real-time Rising Gift Ranking Section -->
+        <section class="ranking-section">
+            <div class="ranking-title-container">
+                <h3 class="ranking-title">실시간 급상승 익산 인기 랭킹</h3>
+                <button class="ranking-info-btn" aria-label="랭킹 정보">
+                    <i class="fa-solid fa-circle-info"></i>
+                </button>
+            </div>
+
+            <!-- Segment Filter -->
+            <div class="segment-filter-row">
+                <div class="segment-item active">
+                    <div class="segment-circle all">ALL</div>
+                    <span class="segment-label">모두가</span>
+                </div>
+
+                <div class="segment-item">
+                    <div class="segment-circle">
+                        <img src="./images/icon_woman.png" alt="여성">
+                    </div>
+                    <span class="segment-label">여성이</span>
+                </div>
+
+                <div class="segment-item">
+                    <div class="segment-circle">
+                        <img src="./images/icon_man.png" alt="남성">
+                    </div>
+                    <span class="segment-label">남성이</span>
+                </div>
+
+                <div class="segment-item">
+                    <div class="segment-circle">
+                        <img src="./images/icon_youth.png" alt="청소년">
+                    </div>
+                    <span class="segment-label">청소년이</span>
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="rank-filter-tabs">
+                <button class="rank-filter-tab">받고 싶어한</button>
+                <button class="rank-filter-tab active">많이 선물한</button>
+                <button class="rank-filter-tab">위시로 받은</button>
+            </div>
+
+            <!-- Price Filter Pills -->
+            <div class="price-pills-container">
+                <button class="price-pill">1만원 미만</button>
+                <button class="price-pill">1만원대</button>
+                <button class="price-pill active">2만원대</button>
+                <button class="price-pill">3만원대</button>
+                <button class="price-pill">4만원대</button>
+            </div>
+
+            <!-- Ranking Cards Row -->
+            <div class="ranking-cards-row">
+                <!-- Dynamically loaded via API -->
+            </div>
+
+            <!-- More Button Container -->
+            <div class="ranking-more-container">
+                <button id="btn-ranking-more" class="btn-ranking-more">
+                    더보기 <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Product Grid Section (Iksan Theme) -->
+        <section class="products-section">
+            <h3 class="section-title">익산역 주변 소상공인 제휴 기프티콘</h3>
+            <div class="product-grid">
+                <!-- Dynamically loaded via API -->
+            </div>
+
+            <!-- More Button Container -->
+            <div class="products-more-container">
+                <button id="btn-products-more" class="btn-products-more">
+                    더보기 <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#">이용약관</a>
+                <a href="#">개인정보처리방침</a>
+                <a href="#">고객센터</a>
+            </div>
+            <div class="footer-info">
+                (주)카카오 클래스 코퍼레이션 | 대표: 홍길동<br>
+                제주특별자치도 제주시 첨단로 242<br>
+                고객센터: 1544-0000 | 평일 09:00 ~ 18:00
+            </div>
+            <div class="footer-bottom">
+                <span class="copyright">© Kakao Gift Class Corp.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fixed Bottom Navigation Bar -->
+    <nav class="bottom-nav-bar">
+        <a href="index.html" class="bottom-nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>홈</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <i class="fa-solid fa-bars"></i>
+            <span>카테고리</span>
+        </a>
+        <a href="giftbox.html" class="bottom-nav-item">
+            <i class="fa-regular fa-user"></i>
+            <span>선물함</span>
+        </a>
+    </nav>
+
+    <!-- Fullscreen Search Overlay UI -->
+    <div id="search-overlay" class="search-overlay">
+        <div class="search-overlay-header">
+            <button id="btn-search-close" class="btn-search-back" aria-label="뒤로가기">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-overlay-input-icon"></i>
+                <input type="text" class="search-overlay-input" placeholder="원하는 선물을 검색해보세요" autofocus>
+            </div>
+        </div>
+        <div class="search-overlay-body">
+            <h4 class="recent-searches-title">최근 검색어</h4>
+            <div class="recent-keywords-list"></div>
+        </div>
+    </div>
+
+    <!-- Script for Interactions -->
+    <script src="js/home.js" defer></script>
+
+</body>
+
+</html>

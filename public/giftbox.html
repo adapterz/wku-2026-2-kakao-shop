@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선물함 - 카카오톡 선물하기 클론</title>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="giftbox.html" class="header-icon" title="선물함">
+                <i class="fa-solid fa-bag-shopping"></i>
+            </a>
+            <span class="header-title">
+                <span class="header-logo-container">
+                    <img src="images/iksan_logo.png" class="header-logo" alt="익산시 로고">
+                </span>
+                선물하기
+            </span>
+            <a href="#" id="btn-search-open" class="header-icon" title="검색">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div style="padding: 32px 16px; text-align: center; display: flex; flex-direction: column; gap: 20px; align-items: center;">
+            <div style="background: #F5F5F5; width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #999999;">
+                <i class="fa-solid fa-gift"></i>
+            </div>
+            <div>
+                <h2 style="font-size: 20px; font-weight: 700; color: #191919; margin-bottom: 8px;">익산역 제휴 선물 보관함</h2>
+                <p style="font-size: 14px; color: #767676; line-height: 1.6;">
+                    소상공인 활성화를 위한 익산역 상권 기프티콘 보관소입니다.<br>
+                    익산역 주변 제휴 상점에서 기프티콘 바코드를 제시하여 즉시 사용해 보세요.
+                </p>
+            </div>
+            
+            <div style="width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 16px;">
+                <button style="width: 100%; padding: 14px; background-color: #FEE500; color: #3C1E1E; font-weight: 700; border-radius: 8px; font-size: 15px;" onclick="location.href='giftuse.html'">
+                    기프티콘 사용처 안내 & 바코드 보기
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Fixed Bottom Navigation Bar -->
+    <nav class="bottom-nav-bar">
+        <a href="index.html" class="bottom-nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>홈</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <i class="fa-solid fa-bars"></i>
+            <span>카테고리</span>
+        </a>
+        <a href="giftbox.html" class="bottom-nav-item active">
+            <i class="fa-regular fa-user"></i>
+            <span>선물함</span>
+        </a>
+    </nav>
+
+    <!-- Fullscreen Search Overlay UI -->
+    <div id="search-overlay" class="search-overlay">
+        <div class="search-overlay-header">
+            <button id="btn-search-close" class="btn-search-back" aria-label="뒤로가기">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-overlay-input-icon"></i>
+                <input type="text" class="search-overlay-input" placeholder="원하는 선물을 검색해보세요" autofocus>
+            </div>
+        </div>
+        <div class="search-overlay-body">
+            <h4 class="recent-searches-title">최근 검색어</h4>
+            <div class="recent-keywords-list">
+                <a href="#" class="keyword-badge">익산역</a>
+                <a href="#" class="keyword-badge">아메리카노</a>
+                <a href="#" class="keyword-badge">익산</a>
+                <a href="#" class="keyword-badge">익산역마켓</a>
+                <a href="#" class="keyword-badge">소금빵</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script for Interactions -->
+    <script src="js/giftbox.js" defer></script>
+
+</body>
+
+</html>
