@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Wishlist click handler
     const wishBtn = card.querySelector('.btn-action-wish-row');
     if (wishBtn) {
-      wishBtn.addEventListener('click', () => {
+      wishBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const icon = wishBtn.querySelector('i');
         const countSpan = wishBtn.querySelector('.wish-count');
         wishBtn.classList.toggle('active');
@@ -69,10 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Shopping Bag click handler
     const bagBtn = card.querySelector('.btn-action-bag-only');
     if (bagBtn) {
-      bagBtn.addEventListener('click', () => {
+      bagBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         alert('선물상자에 상품이 추가되었습니다!');
       });
     }
+
+    // Card click handler to navigate to product.html?id=ID
+    card.addEventListener('click', () => {
+      window.location.href = `product.html?id=${product.id}`;
+    });
 
     return card;
   }
