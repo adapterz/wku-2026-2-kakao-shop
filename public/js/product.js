@@ -104,9 +104,107 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 나에게 선물하기 및 선물하기 버튼 클릭 시 로그인 상태를 먼저 확인하고 주문 페이지로 이동
   const buyBtn = document.querySelector('.btn-bottom-buy');
+  
+  // Bottom Sheet open/close and drag/swipe logic
+  const bottomSheetOverlay = document.getElementById('bottom-sheet-overlay');
+  const bottomSheet = document.getElementById('bottom-sheet');
+  const bottomSheetHeader = document.getElementById('bottom-sheet-header');
+
+  const openBottomSheet = () => {
+    if (!bottomSheetOverlay || !bottomSheet) return;
+    bottomSheetOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      bottomSheet.style.transform = 'translateY(0)';
+    }, 10);
+  };
+
+  const closeBottomSheet = () => {
+    if (!bottomSheetOverlay || !bottomSheet) return;
+    bottomSheet.style.transform = 'translateY(100%)';
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      bottomSheetOverlay.classList.remove('active');
+    }, 250);
+  };
+
   if (buyBtn) {
     buyBtn.addEventListener('click', () => {
-      goToOrder(productId, 'self');
+      openBottomSheet();
+    });
+  }
+
+  if (bottomSheetOverlay && bottomSheet) {
+    // dim area click
+    bottomSheetOverlay.addEventListener('click', (e) => {
+      if (e.target === bottomSheetOverlay) {
+        closeBottomSheet();
+      }
+    });
+
+    let startY = 0;
+    let currentY = 0;
+    let isDragging = false;
+    let startTime = 0;
+
+    const startDrag = (y) => {
+      startY = y;
+      currentY = y;
+      isDragging = true;
+      startTime = Date.now();
+      bottomSheet.style.transition = 'none';
+    };
+
+    const drag = (y) => {
+      if (!isDragging) return;
+      currentY = y;
+      const deltaY = currentY - startY;
+      if (deltaY > 0) {
+        bottomSheet.style.transform = `translateY(${deltaY}px)`;
+      }
+    };
+
+    const endDrag = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      bottomSheet.style.transition = 'transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1)';
+      
+      const deltaY = currentY - startY;
+      const elapsedTime = Date.now() - startTime;
+      const velocity = deltaY / elapsedTime;
+
+      // Close if dragged down more than 100px OR swiped fast (velocity > 0.4)
+      if (deltaY > 100 || velocity > 0.4) {
+        closeBottomSheet();
+      } else {
+        bottomSheet.style.transform = 'translateY(0)';
+      }
+    };
+
+    // Drag events for header
+    if (bottomSheetHeader) {
+      bottomSheetHeader.addEventListener('mousedown', (e) => startDrag(e.clientY));
+      bottomSheetHeader.addEventListener('touchstart', (e) => {
+        startDrag(e.touches[0].clientY);
+      }, { passive: true });
+    }
+
+    // Move and End events on window to handle release outside the header
+    window.addEventListener('mousemove', (e) => {
+      if (isDragging) drag(e.clientY);
+    });
+    window.addEventListener('mouseup', () => {
+      if (isDragging) endDrag();
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (isDragging) {
+        drag(e.touches[0].clientY);
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchend', () => {
+      if (isDragging) endDrag();
     });
   }
 
