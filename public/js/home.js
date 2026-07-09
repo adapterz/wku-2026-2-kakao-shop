@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const result = await response.json();
-      
+
       if (!result || typeof result !== 'object') {
         throw new Error('Invalid JSON response format');
       }
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!Array.isArray(result.data)) {
         throw new Error('Response "data" property is not an array');
       }
-      
+
       cachedProducts = result.data;
       renderProductsData(result.data);
     } catch (error) {
