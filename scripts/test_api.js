@@ -1,4 +1,5 @@
 const http = require('http');
+const pool = require('../db/pool');
 
 const request = (method, path, body, cookie = null) => {
   return new Promise((resolve, reject) => {
@@ -44,71 +45,52 @@ const run = async () => {
   try {
     const timestamp = Date.now();
     // User A Signup & Login
-    const userAInfo = { email: `usera_${timestamp}@test.com`, password: 'password123', nickname: `userA_${timestamp}` };
+    const userAInfo = { email: `sender_${timestamp}@test.com`, password: 'password123', nickname: `SenderA_${timestamp}` };
     const resA_signup = await request('POST', '/api/auth/signup', userAInfo);
     const resA_login = await request('POST', '/api/auth/login', { email: userAInfo.email, password: userAInfo.password });
     const cookieA = resA_login.cookie;
     const userA_Id = resA_login.body.data.userId;
 
     // User B Signup & Login
-    const userBInfo = { email: `userb_${timestamp}@test.com`, password: 'password123', nickname: `userB_${timestamp}` };
+    const userBInfo = { email: `receiver_${timestamp}@test.com`, password: 'password123', nickname: `ReceiverB_${timestamp}` };
     const resB_signup = await request('POST', '/api/auth/signup', userBInfo);
     const resB_login = await request('POST', '/api/auth/login', { email: userBInfo.email, password: userBInfo.password });
     const cookieB = resB_login.cookie;
     const userB_Id = resB_login.body.data.userId;
 
-    // 0. isSelfGift: true 케이스
-    console.log("\n[Test 0] Create Order with isSelfGift: true (User A -> User A)");
+    // Create a self gift for User B
     const resOrderSelf = await request('POST', '/api/orders', {
       productId: 76,
-      message: "For me!",
+      message: "Self gift message",
       isSelfGift: true
-    }, cookieA);
-    console.log("Create Order (Self) Status & Body:", resOrderSelf.status, JSON.stringify(resOrderSelf.body, null, 2));
-
+    }, cookieB);
     const orderIdSelf = resOrderSelf.body.data.orderId;
-    console.log("\n[Test 0.1] Get Details of Order with isSelfGift: true");
-    const resOrderSelfDetail = await request('GET', `/api/orders/${orderIdSelf}`, null, cookieA);
-    console.log("Order Detail (Self) Status & Body:", resOrderSelfDetail.status, JSON.stringify(resOrderSelfDetail.body, null, 2));
-
-    // 1. isSelfGift: false 케이스
-    console.log("\n[Test 1] Create Order with isSelfGift: false (User A -> User B)");
+    
+    // Create a gift from User A to User B
     const resOrderGift = await request('POST', '/api/orders', {
       productId: 76,
       message: "Here is a gift for you!",
       isSelfGift: false,
       receiverId: userB_Id
     }, cookieA);
-    console.log("Create Order Status & Body:", resOrderGift.status, JSON.stringify(resOrderGift.body, null, 2));
-
     const orderIdGift = resOrderGift.body.data.orderId;
-    console.log("\n[Test 1.1] Get Details of Order with isSelfGift: false");
-    const resOrderGiftDetail = await request('GET', `/api/orders/${orderIdGift}`, null, cookieA);
-    console.log("Order Detail Status & Body:", resOrderGiftDetail.status, JSON.stringify(resOrderGiftDetail.body, null, 2));
 
-    // 2. 존재하지 않는 productId로 요청
-    console.log("\n[Test 2] Create Order with non-existent productId");
-    const resInvalidProduct = await request('POST', '/api/orders', {
-      productId: 9999,
-      message: "Hello",
-      isSelfGift: true
-    }, cookieA);
-    console.log("Create Order (Invalid Product) Status & Body:", resInvalidProduct.status, JSON.stringify(resInvalidProduct.body, null, 2));
+    // 수동으로 DB 변경: Self gift를 'used' 상태로 변경
+    await pool.query('UPDATE gifts SET status = "used" WHERE order_id = ?', [orderIdSelf]);
+    console.log(`\n[DB Update] Set gift status to 'used' for orderId: ${orderIdSelf} (Self gift)`);
 
-    // 3. 존재하지 않는 receiverId로 요청
-    console.log("\n[Test 3] Create Order with non-existent receiverId");
-    const resInvalidReceiver = await request('POST', '/api/orders', {
-      productId: 76,
-      message: "Gift for ghosts",
-      isSelfGift: false,
-      receiverId: 9999
-    }, cookieA);
-    console.log("Create Order (Invalid Receiver) Status & Body:", resInvalidReceiver.status, JSON.stringify(resInvalidReceiver.body, null, 2));
+    // 1. 로그인 상태에서 GET /api/gifts?status=unused -> unused 상태 필터링
+    console.log("\n[Test 1] Get Unused Gifts (User B)");
+    const resGiftsUnused = await request('GET', '/api/gifts?status=unused', null, cookieB);
+    console.log("Unused Gifts Status & Body:", resGiftsUnused.status, JSON.stringify(resGiftsUnused.body, null, 2));
 
-    // 4. 타인 주문 조회 시도
-    console.log("\n[Test 4] Get Order Details created by another user (User B trying to access User A's order)");
-    const resAccessForbidden = await request('GET', `/api/orders/${orderIdGift}`, null, cookieB);
-    console.log("Access Order Detail (Forbidden) Status & Body:", resAccessForbidden.status, JSON.stringify(resAccessForbidden.body, null, 2));
+    // 2. 로그인 상태에서 GET /api/gifts?status=used -> used 상태 필터링
+    console.log("\n[Test 2] Get Used Gifts (User B)");
+    const resGiftsUsed = await request('GET', '/api/gifts?status=used', null, cookieB);
+    console.log("Used Gifts Status & Body:", resGiftsUsed.status, JSON.stringify(resGiftsUsed.body, null, 2));
+
+    // Cleanup pool connection so script exits
+    await pool.end();
 
   } catch(e) {
     console.error(e);
