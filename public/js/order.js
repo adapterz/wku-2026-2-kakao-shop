@@ -54,6 +54,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       
       const quantity = Number(urlParams.get('quantity')) || 1;
       const totalPrice = Number(urlParams.get('totalPrice')) || (selectedProduct.price * quantity);
+      
+      document.getElementById("order-unit-price").textContent = `${selectedProduct.price.toLocaleString()}원`;
+      document.getElementById("order-qty").textContent = quantity;
       document.getElementById("order-price").textContent = `${totalPrice.toLocaleString()}원`;
     } else {
       alert("상품 정보를 찾을 수 없습니다.");
