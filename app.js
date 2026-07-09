@@ -7,6 +7,7 @@ const productsRouter = require('./routes/products');
 const authRouter = require('./routes/auth'); // 추가
 const usersRouter = require('./routes/users');
 const ordersRouter = require('./routes/orders');
+const giftsRouter = require('./routes/gifts');
 
 const app = express();
 const PORT = 3000;
@@ -37,6 +38,7 @@ app.use('/api/products', productsRouter);
 app.use('/api/auth', authRouter); // 추가
 app.use('/api/users', usersRouter);
 app.use('/api/orders', ordersRouter);
+app.use('/api/gifts', giftsRouter);
 
 // 3. 3000번 포트로 서버 실행
 app.listen(PORT, () => {
