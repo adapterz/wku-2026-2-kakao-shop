@@ -662,22 +662,16 @@ button {
   font-weight: 600;
 }
 
-/* Horizontal Scrolling Ranking Cards */
+/* 3-Column Grid Layout for Ranking Cards */
 .ranking-cards-row {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 12px;
   padding-bottom: 8px;
 }
 
-.ranking-cards-row::-webkit-scrollbar {
-  display: none;
-}
-
 .ranking-cards-row .product-card {
-  min-width: 120px;
-  max-width: 120px;
+  width: 100%;
 }
 
 .ranking-cards-row .product-title {
@@ -707,13 +701,13 @@ button {
 
 
 
-.ranking-more-container {
+.ranking-more-container, .products-more-container {
   display: flex;
   justify-content: center;
   margin-top: 14px;
 }
 
-.btn-ranking-more {
+.btn-ranking-more, .btn-products-more {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -727,9 +721,10 @@ button {
   font-size: 14px;
   font-weight: 600;
   transition: var(--transition-smooth);
+  cursor: pointer;
 }
 
-.btn-ranking-more:active {
+.btn-ranking-more:active, .btn-products-more:active {
   background-color: #F5F5F5;
 }
 
