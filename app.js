@@ -5,6 +5,8 @@ require('dotenv').config();
 
 const productsRouter = require('./routes/products');
 const authRouter = require('./routes/auth'); // 추가
+const usersRouter = require('./routes/users');
+const ordersRouter = require('./routes/orders');
 
 const app = express();
 const PORT = 3000;
@@ -33,6 +35,8 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/products', productsRouter);
 app.use('/api/auth', authRouter); // 추가
+app.use('/api/users', usersRouter);
+app.use('/api/orders', ordersRouter);
 
 // 3. 3000번 포트로 서버 실행
 app.listen(PORT, () => {
