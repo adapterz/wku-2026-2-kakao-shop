@@ -86,5 +86,20 @@ document.addEventListener("DOMContentLoaded", () => {
       countSpan.textContent = currentCount;
     });
   }
+
+  // 나에게 선물하기 및 선물하기 버튼 클릭 시 주문 페이지 이동 및 정보 전달
+  const buyBtn = document.querySelector('.btn-bottom-buy');
+  if (buyBtn) {
+    buyBtn.addEventListener('click', () => {
+      location.href = `order.html?productId=${productId}&type=self`;
+    });
+  }
+
+  const giftBtn = document.querySelector('.btn-bottom-gift');
+  if (giftBtn) {
+    giftBtn.addEventListener('click', () => {
+      location.href = `order.html?productId=${productId}&type=gift`;
+    });
+  }
 });
 
