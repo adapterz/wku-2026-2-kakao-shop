@@ -20,17 +20,13 @@ function renderProduct(product) {
 // API로부터 상품 상세 데이터 가져오기
 async function loadProductDetail(id) {
   try {
-    const response = await fetch(/api/products / ${ id });
+    const response = await fetch(`/api/products/${id}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const result = await response.json();
     if (result && result.data) {
-      // id가 일치하는 상품 찾기
-      const product = result.data.find(p => p.id == id);
-      if (product) {
-        renderProduct(product);
-      }
+      renderProduct(result.data);
     }
   } catch (error) {
     console.error("상품 상세 데이터를 불러오는 데 실패했습니다:", error);

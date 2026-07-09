@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load products from /api/products
   async function loadProducts() {
     try {
-      const response = await fetch(/api/products / ${ id });
+      const response = await fetch('/api/products');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
