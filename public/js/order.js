@@ -132,8 +132,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
+    const quantity = Number(urlParams.get('quantity')) || 1;
+    const totalPrice = Number(urlParams.get('totalPrice')) || (selectedProduct ? selectedProduct.price * quantity : 0);
+
     const requestBody = {
       productId: Number(productId),
+      totalPrice: Number(totalPrice),
       message: messageInput.value.trim() || null,
       isSelfGift: isSelfGift,
       receiverId: Number(receiverId)
