@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentUser = null;
   let selectedProduct = null;
   let receiverId = null;
+  let celebrationMessage = "나는 내가 챙긴다!\n소중한 나에게 주는 선물";
 
   // 1. 로그인 여부 확인
   try {
@@ -138,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const requestBody = {
       productId: Number(productId),
       totalPrice: Number(totalPrice),
-      message: messageInput.value.trim() || null,
+      message: celebrationMessage ? celebrationMessage.trim() : null,
       isSelfGift: isSelfGift,
       receiverId: Number(receiverId)
     };
@@ -249,7 +250,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const mainPrimary = document.querySelector('.celebration-card .card-text-primary');
       const mainSecondary = document.querySelector('.celebration-card .card-text-secondary');
       
-      const lines = editMessageInput.value.split('\n');
+      celebrationMessage = editMessageInput.value;
+      const lines = celebrationMessage.split('\n');
       if (mainPrimary) mainPrimary.textContent = lines[0] || '';
       if (mainSecondary) mainSecondary.textContent = lines.slice(1).join('\n') || '';
 
