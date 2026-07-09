@@ -16,9 +16,14 @@
     <!-- Main Header -->
     <header class="main-header">
         <div class="header-container">
-            <a href="giftbox.html" class="header-icon" title="선물함">
-                <i class="fa-solid fa-bag-shopping"></i>
-            </a>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <button onclick="history.back()" class="header-icon" title="뒤로가기">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <a href="giftbox.html" class="header-icon" title="선물함">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </a>
+            </div>
             <span class="header-title">
                 <span class="header-logo-container">
                     <img src="images/iksan_logo.png" class="header-logo" alt="익산시 로고">
@@ -40,8 +45,26 @@
             <div class="product-info-container">
                 <span id="product-brand" class="product-detail-brand"></span>
                 <h2 id="product-name" class="product-detail-title"></h2>
+                <div class="product-rating-row">
+                    <span class="stars">
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                    </span>
+                    <span class="review-count">0.0 (0건의 선물후기)</span>
+                </div>
                 <div class="product-detail-price-row">
                     <span id="product-price" class="product-detail-price"></span>
+                    <div class="product-actions">
+                        <button class="action-btn" title="선물상자 담기">
+                            <i class="fa-regular fa-square-plus"></i>
+                        </button>
+                        <button class="action-btn" title="공유하기">
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
             
@@ -59,32 +82,26 @@
                 <p id="product-usage" class="section-content"></p>
             </div>
             
-            <div class="product-action-buttons">
-                <button class="btn-gift" onclick="location.href='order.html'">
-                    <i class="fa-solid fa-gift"></i> 선물하기
-                </button>
-                <button class="btn-buy" onclick="location.href='order.html'">
-                    구매하기
-                </button>
-            </div>
         </div>
     </main>
 
 
     <!-- Fixed Bottom Navigation Bar -->
-    <nav class="bottom-nav-bar">
-        <a href="index.html" class="bottom-nav-item">
-            <i class="fa-solid fa-house"></i>
-            <span>홈</span>
-        </a>
-        <a href="#" class="bottom-nav-item">
-            <i class="fa-solid fa-bars"></i>
-            <span>카테고리</span>
-        </a>
-        <a href="giftbox.html" class="bottom-nav-item">
-            <i class="fa-regular fa-user"></i>
-            <span>선물함</span>
-        </a>
+    <nav class="bottom-nav-bar product-bottom-nav">
+        <div class="bottom-nav-left-actions">
+            <button class="bottom-action-item" id="btn-wish" title="위시담기">
+                <i class="fa-regular fa-heart"></i>
+                <span class="wish-count">0</span>
+            </button>
+            <button class="bottom-action-item" id="btn-share" title="공유하기">
+                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                <span>공유</span>
+            </button>
+        </div>
+        <div class="bottom-nav-buttons">
+            <button class="btn-bottom-buy" onclick="location.href='order.html'">나에게 선물하기</button>
+            <button class="btn-bottom-gift" onclick="location.href='order.html'">선물하기</button>
+        </div>
     </nav>
 
     <!-- Fullscreen Search Overlay UI -->

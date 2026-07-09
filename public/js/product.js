@@ -18,13 +18,17 @@ function renderProduct(product) {
 // API로부터 상품 상세 데이터 가져오기
 async function loadProductDetail(id) {
   try {
-    const response = await fetch(`/api/products/${id}`);
+    const response = await fetch('/api/products');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const result = await response.json();
     if (result && result.data) {
-      renderProduct(result.data);
+      // id가 일치하는 상품 찾기
+      const product = result.data.find(p => p.id == id);
+      if (product) {
+        renderProduct(product);
+      }
     }
   } catch (error) {
     console.error("상품 상세 데이터를 불러오는 데 실패했습니다:", error);
@@ -38,5 +42,51 @@ document.addEventListener("DOMContentLoaded", () => {
   const productId = urlParams.get('id') || 1;
 
   loadProductDetail(productId);
+
+  // 검색 오버레이 열기/닫기 로직
+  const searchOpenBtn = document.getElementById('btn-search-open');
+  const searchCloseBtn = document.getElementById('btn-search-close');
+  const searchOverlay = document.getElementById('search-overlay');
+  const searchInput = searchOverlay ? searchOverlay.querySelector('.search-overlay-input') : null;
+
+  if (searchOpenBtn && searchCloseBtn && searchOverlay) {
+    searchOpenBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      searchOverlay.classList.add('open');
+      if (searchInput) {
+        setTimeout(() => searchInput.focus(), 50);
+      }
+    });
+
+    searchCloseBtn.addEventListener('click', () => {
+      searchOverlay.classList.remove('open');
+    });
+  }
+
+  // 위시리스트 토글 로직
+  const wishBtn = document.getElementById('btn-wish');
+  if (wishBtn) {
+    wishBtn.addEventListener('click', () => {
+      const icon = wishBtn.querySelector('i');
+      const countSpan = wishBtn.querySelector('.wish-count');
+      wishBtn.classList.toggle('active');
+
+      if (wishBtn.classList.contains('active')) {
+        icon.classList.remove('fa-regular');
+        icon.classList.add('fa-solid');
+      } else {
+        icon.classList.remove('fa-solid');
+        icon.classList.add('fa-regular');
+      }
+
+      let currentCount = parseInt(countSpan.textContent || '0', 10) || 0;
+      if (wishBtn.classList.contains('active')) {
+        currentCount += 1;
+      } else {
+        currentCount = Math.max(0, currentCount - 1);
+      }
+      countSpan.textContent = currentCount;
+    });
+  }
 });
 

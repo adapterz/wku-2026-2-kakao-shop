@@ -27,6 +27,7 @@
 
 html {
   background-color: #EAEAEA;
+  overflow-y: scroll;
 }
 
 body {
@@ -75,6 +76,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
 .header-icon {
@@ -94,6 +96,10 @@ button {
   display: flex;
   align-items: center;
   gap: 8px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
 .header-logo-container {
@@ -1056,4 +1062,142 @@ button {
 
 .btn-buy:active {
   background-color: var(--primary-hover);
+}
+
+/* Product Rating Row */
+.product-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
+.product-rating-row .stars {
+  color: #D3D3D3; /* Gray stars for 0.0 rating */
+  display: flex;
+  gap: 2px;
+}
+
+.product-rating-row .review-count {
+  color: var(--text-muted);
+}
+
+/* Product Actions Next to Price */
+.product-detail-price-row {
+  margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.action-btn {
+  font-size: 22px;
+  color: #191919;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: var(--transition-smooth);
+}
+
+.action-btn:active {
+  background-color: #F5F5F5;
+}
+
+/* Product Page specific bottom navigation */
+.product-bottom-nav {
+  padding: 8px 16px;
+  height: 68px; /* Slightly taller to accommodate the buttons nicely */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.bottom-nav-left-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.bottom-action-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #191919;
+  font-size: 11px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 36px;
+}
+
+.bottom-action-item i {
+  font-size: 20px;
+  margin-bottom: 2px;
+  transition: transform 0.2s ease;
+}
+
+.bottom-action-item:active i {
+  transform: scale(0.9);
+}
+
+.bottom-nav-buttons {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+.btn-bottom-buy,
+.btn-bottom-gift {
+  flex: 1;
+  height: 48px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-bottom-buy {
+  background-color: #191919;
+  color: #FFFFFF;
+}
+
+.btn-bottom-buy:active {
+  background-color: #333333;
+}
+
+.btn-bottom-gift {
+  background-color: var(--primary-color);
+  color: var(--kakao-brown);
+}
+
+.btn-bottom-gift:active {
+  background-color: var(--primary-hover);
+}
+
+/* Clear bottom space in product page */
+.product-detail-card {
+  padding-bottom: 80px;
+}
+
+.bottom-action-item#btn-wish.active i {
+  color: var(--accent-red);
 }
