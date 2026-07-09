@@ -1,20 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../db');
-const productModel = require('../db/models/productModel'); // 추가된 모델 (스텁)
+const productModel = require('../db/models/productModel');
 
 // 상품 목록 조회
 router.get('/', async (req, res) => {
   try {
-    const query = 'SELECT * FROM products';
-    const [rows] = await pool.query(query);
-    
+    const rows = await productModel.getAllProducts();
+
     const products = rows.map(row => ({
       id: row.id,
       name: row.name,
       brand: row.brand,
       price: row.price,
-      thumbnailUrl: row.thumbnail_url || row.thumbnailUrl
+      thumbnailUrl: row.thumbnail_url
     }));
 
     res.status(200).json({
@@ -38,15 +36,15 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    
-    // 실제 로직: DB 접근 계층(모듈)을 통해 데이터 조회 (현재는 스텁 함수 호출)
+
+    // 실제 로직: DB 접근 계층(모듈)을 통해 데이터 조회
     const product = await productModel.getProductById(id);
 
     if (!product) {
       return res.status(404).json({
         status: 404,
         code: "PRODUCT_NOT_FOUND",
-        message: "상품을 찾을 수 없습니다.",
+        message: null,
         data: null
       });
     }
@@ -73,7 +71,7 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({
       status: 500,
       code: "INTERNAL_SERVER_ERROR",
-      message: "서버 에러가 발생했습니다.",
+      message: null,
       data: null
     });
   }
