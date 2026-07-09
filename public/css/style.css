@@ -1058,6 +1058,8 @@ button {
   font-size: 15px;
   text-align: center;
   transition: var(--transition-smooth);
+}
+
 .btn-buy:active {
   background-color: var(--primary-hover);
 }
