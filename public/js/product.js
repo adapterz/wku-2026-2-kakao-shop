@@ -33,6 +33,21 @@ async function loadProductDetail(id) {
   }
 }
 
+async function goToOrder(productId, type) {
+  try {
+    const response = await fetch('/api/auth/me', { credentials: 'include' });
+    if (response.ok) {
+      window.location.href = `order.html?productId=${productId}&type=${type}`;
+    } else {
+      const redirectTarget = encodeURIComponent(window.location.href);
+      window.location.href = `login.html?redirect=${redirectTarget}`;
+    }
+  } catch (error) {
+    console.error('로그인 상태 확인 실패:', error);
+    window.location.href = 'login.html';
+  }
+}
+
 // DOM이 로드된 후 데이터 로드 실행
 document.addEventListener("DOMContentLoaded", () => {
   // URL 쿼리 파라미터에서 상품 ID 추출 (기본값 1)
@@ -87,19 +102,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 나에게 선물하기 및 선물하기 버튼 클릭 시 주문 페이지 이동 및 정보 전달
+  // 나에게 선물하기 및 선물하기 버튼 클릭 시 로그인 상태를 먼저 확인하고 주문 페이지로 이동
   const buyBtn = document.querySelector('.btn-bottom-buy');
   if (buyBtn) {
     buyBtn.addEventListener('click', () => {
-      location.href = `order.html?productId=${productId}&type=self`;
+      goToOrder(productId, 'self');
     });
   }
 
   const giftBtn = document.querySelector('.btn-bottom-gift');
   if (giftBtn) {
     giftBtn.addEventListener('click', () => {
-      location.href = `order.html?productId=${productId}&type=gift`;
+      goToOrder(productId, 'gift');
     });
   }
 });
-

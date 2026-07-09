@@ -1058,8 +1058,6 @@ button {
   font-size: 15px;
   text-align: center;
   transition: var(--transition-smooth);
-}
-
 .btn-buy:active {
   background-color: var(--primary-hover);
 }
@@ -1426,4 +1424,90 @@ button {
   right: 20%;
   height: 3px;
   background-color: #191919;
+}
+
+/* ===== Auth (로그인/회원가입) ===== */
+.auth-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.auth-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+.form-group input {
+  padding: 12px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.form-group input:focus {
+  border-color: var(--kakao-brown);
+}
+
+.auth-error {
+  color: var(--accent-red);
+  font-size: 13px;
+}
+
+.btn-auth-submit {
+  margin-top: 8px;
+  padding: 14px;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--kakao-brown);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-auth-submit:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-auth-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+.auth-footer a {
+  color: var(--text-main);
+  font-weight: 600;
+  text-decoration: underline;
+  margin-left: 4px;
 }
