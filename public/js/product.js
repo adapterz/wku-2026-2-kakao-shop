@@ -15,6 +15,12 @@ function renderProduct(product) {
   if (descElement) descElement.textContent = product.description;
   if (usageElement) usageElement.textContent = product.usageInfo;
   if (brandNavElement) brandNavElement.textContent = product.brand;
+
+  // Store product price globally and trigger bottom sheet price update
+  window.productPrice = product.price;
+  if (window.updateBottomSheetPrice) {
+    window.updateBottomSheetPrice();
+  }
 }
 
 // API로부터 상품 상세 데이터 가져오기
@@ -138,7 +144,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnMinus = document.querySelector('.btn-minus');
   const btnPlus = document.querySelector('.btn-plus');
   const quantityNum = document.querySelector('.quantity-number');
+  const totalPriceVal = document.querySelector('.total-price-value');
   let quantity = 1;
+
+  const updateTotalPrice = () => {
+    if (!totalPriceVal) return;
+    const price = window.productPrice || 0;
+    const total = price * quantity;
+    totalPriceVal.textContent = `${total.toLocaleString()}원`;
+  };
+
+  // Expose function globally so renderProduct can call it when the price is loaded
+  window.updateBottomSheetPrice = updateTotalPrice;
 
   const updateQuantity = (value) => {
     if (!quantityNum || !btnMinus || !btnPlus) return;
@@ -148,6 +165,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update button disabled state
     btnMinus.disabled = (quantity === 1);
     btnPlus.disabled = (quantity === 99);
+
+    // Update total price display
+    updateTotalPrice();
   };
 
   if (btnMinus) {
