@@ -18,7 +18,7 @@ function renderProduct(product) {
 // API로부터 상품 상세 데이터 가져오기
 async function loadProductDetail(id) {
   try {
-    const response = await fetch(`/api/products/${id}`);
+    const response = await fetch(`/api/products/${id}`, { credentials: 'include' });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -35,7 +35,7 @@ async function loadProductDetail(id) {
 // 아니면 로그인 페이지로 보내고 로그인 후 돌아올 주소를 함께 넘김
 async function goToOrder(productId) {
   try {
-    const response = await fetch('/api/auth/me');
+    const response = await fetch('/api/auth/me', { credentials: 'include' });
     if (response.ok) {
       window.location.href = `order.html?id=${productId}`;
     } else {
