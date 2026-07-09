@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Wishlist click handler
     const wishBtn = card.querySelector('.btn-action-wish-row');
     if (wishBtn) {
-      wishBtn.addEventListener('click', () => {
+      wishBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const icon = wishBtn.querySelector('i');
         const countSpan = wishBtn.querySelector('.wish-count');
         wishBtn.classList.toggle('active');
@@ -69,10 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Shopping Bag click handler
     const bagBtn = card.querySelector('.btn-action-bag-only');
     if (bagBtn) {
-      bagBtn.addEventListener('click', () => {
+      bagBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         alert('선물상자에 상품이 추가되었습니다!');
       });
     }
+
+    // Card click handler to navigate to product.html?id=ID
+    card.addEventListener('click', () => {
+      window.location.href = `product.html?id=${product.id}`;
+    });
 
     return card;
   }
@@ -118,6 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }
   }
+  let cachedProducts = [];
+  let rankingVisibleCount = 6;
+  let productsVisibleCount = 6;
 
   // Helper to render products into layout elements
   function renderProductsData(products) {
@@ -126,16 +136,16 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Render recommended products (3-column grid)
+    // Render recommended products (first 6 items)
     const productGrid = document.querySelector('.product-grid');
     if (productGrid) {
       productGrid.innerHTML = '';
-      products.forEach(product => {
+      products.slice(0, 6).forEach(product => {
         productGrid.appendChild(createProductCard(product));
       });
     }
 
-    // Render ranking products (horizontal list, first 6 items)
+    // Render ranking products (first 6 items)
     const rankingRow = document.querySelector('.ranking-cards-row');
     if (rankingRow) {
       rankingRow.innerHTML = '';
@@ -164,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error('Response "data" property is not an array');
       }
       
+      cachedProducts = result.data;
       renderProductsData(result.data);
     } catch (error) {
       console.error('Failed to fetch products from API:', error);
@@ -261,42 +272,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Real-time Ranking "더보기" (Show More) Click Logic
   const btnRankingMore = document.getElementById('btn-ranking-more');
-  let loadedMoreRankings = false;
 
   if (btnRankingMore) {
-    btnRankingMore.addEventListener('click', async () => {
-      if (loadedMoreRankings) return;
-      btnRankingMore.disabled = true;
-      btnRankingMore.innerHTML = '불러오는 중... <i class="fa-solid fa-spinner fa-spin"></i>';
+    btnRankingMore.addEventListener('click', () => {
+      const rankingRow = document.querySelector('.ranking-cards-row');
+      if (!rankingRow) return;
 
-      try {
-        // Fetch 15 additional products starting from offset 6
-        const response = await fetch('/api/products?offset=6&limit=15');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const result = await response.json();
-        
-        if (result && result.data && Array.isArray(result.data)) {
-          const rankingRow = document.querySelector('.ranking-cards-row');
-          if (rankingRow && result.data.length > 0) {
-            result.data.forEach((product, idx) => {
-              // Append to ranking row starting from rank 7
-              rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: idx + 7 }));
-            });
-          }
-          loadedMoreRankings = true;
-          // Hide more button since we fetched the requested 15 items
-          btnRankingMore.style.display = 'none';
-        } else {
-          throw new Error('Invalid data format received');
-        }
-      } catch (error) {
-        console.error('Failed to load more ranking products:', error);
-        btnRankingMore.disabled = false;
-        btnRankingMore.innerHTML = '더보기 <i class="fa-solid fa-chevron-down"></i>';
-        alert('상품 정보를 불러오는 데 실패했습니다.');
+      if (rankingVisibleCount >= cachedProducts.length) {
+        alert('더 이상 불러올 상품이 없습니다.');
+        return;
       }
+
+      // Get the next 9 products
+      const nextProducts = cachedProducts.slice(rankingVisibleCount, rankingVisibleCount + 9);
+      nextProducts.forEach((product, idx) => {
+        rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: rankingVisibleCount + idx + 1 }));
+      });
+      rankingVisibleCount += nextProducts.length;
+    });
+  }
+
+  // Products Section "더보기" (Show More) Click Logic
+  const btnProductsMore = document.getElementById('btn-products-more');
+
+  if (btnProductsMore) {
+    btnProductsMore.addEventListener('click', () => {
+      const productGrid = document.querySelector('.product-grid');
+      if (!productGrid) return;
+
+      if (productsVisibleCount >= cachedProducts.length) {
+        alert('더 이상 불러올 상품이 없습니다.');
+        return;
+      }
+
+      // Get the next 9 products
+      const nextProducts = cachedProducts.slice(productsVisibleCount, productsVisibleCount + 9);
+      nextProducts.forEach(product => {
+        productGrid.appendChild(createProductCard(product));
+      });
+      productsVisibleCount += nextProducts.length;
     });
   }
 });

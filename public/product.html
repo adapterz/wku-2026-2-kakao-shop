@@ -33,27 +33,43 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-        <div style="padding: 32px 16px; text-align: center; display: flex; flex-direction: column; gap: 20px; align-items: center;">
-            <div style="background: #F5F5F5; width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #999999;">
-                <i class="fa-solid fa-store"></i>
+        <div class="product-detail-card">
+            <div class="product-image-container">
+                <img id="product-img" src="" alt="상품 이미지" class="product-detail-img">
             </div>
-            <div>
-                <h2 style="font-size: 20px; font-weight: 700; color: #191919; margin-bottom: 8px;">익산역 제휴 매장 상품 상세</h2>
-                <p style="font-size: 14px; color: #767676; line-height: 1.6;">
-                    이 상품은 익산역 주변 활성화를 위해 제휴된 지역 소상공인 매장에서 즉시 사용 가능한 모바일 기프티콘입니다.
-                </p>
+            <div class="product-info-container">
+                <span id="product-brand" class="product-detail-brand"></span>
+                <h2 id="product-name" class="product-detail-title"></h2>
+                <div class="product-detail-price-row">
+                    <span id="product-price" class="product-detail-price"></span>
+                </div>
             </div>
             
-            <div style="width: 100%; display: flex; gap: 12px; margin-top: 16px;">
-                <button style="flex: 1; padding: 14px; background-color: #FEE500; color: #3C1E1E; font-weight: 700; border-radius: 8px; font-size: 15px;" onclick="location.href='order.html'">
-                    익산역 상권 돕기 (선물하기)
+            <hr class="divider">
+            
+            <div class="product-section">
+                <h3 class="section-title">선물 설명</h3>
+                <p id="product-description" class="section-content"></p>
+            </div>
+            
+            <hr class="divider">
+            
+            <div class="product-section">
+                <h3 class="section-title">유의 사항</h3>
+                <p id="product-usage" class="section-content"></p>
+            </div>
+            
+            <div class="product-action-buttons">
+                <button class="btn-gift" onclick="location.href='order.html'">
+                    <i class="fa-solid fa-gift"></i> 선물하기
                 </button>
-                <button style="flex: 1; padding: 14px; background-color: #3C1E1E; color: #FFFFFF; font-weight: 700; border-radius: 8px; font-size: 15px;" onclick="location.href='order.html'">
-                    즉시 구매하기
+                <button class="btn-buy" onclick="location.href='order.html'">
+                    구매하기
                 </button>
             </div>
         </div>
     </main>
+
 
     <!-- Fixed Bottom Navigation Bar -->
     <nav class="bottom-nav-bar">
