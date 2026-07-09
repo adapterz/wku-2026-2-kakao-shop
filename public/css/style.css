@@ -1200,4 +1200,158 @@ button {
 
 .bottom-action-item#btn-wish.active i {
   color: var(--accent-red);
+}
+
+/* Brand Navigation Row */
+.brand-nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #FFFFFF;
+  border-top: 8px solid #F5F5F5;
+  border-bottom: 8px solid #F5F5F5;
+  cursor: pointer;
+}
+
+.brand-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-nav-logo-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: #F5F5F5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #767676;
+  font-size: 18px;
+  overflow: hidden;
+  border: 1px solid #EAEAEA;
+}
+
+.brand-nav-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #191919;
+}
+
+.brand-nav-arrow {
+  color: #CCCCCC;
+  font-size: 14px;
+}
+
+/* Product Detail Sections */
+.product-detail-section {
+  padding: 20px 16px;
+  background-color: #FFFFFF;
+  border-bottom: 8px solid #F5F5F5;
+}
+
+.detail-section-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #191919;
+  margin-bottom: 16px;
+}
+
+.info-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.info-list-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-icon-blue {
+  color: #4A90E2; /* Brand Blue */
+  font-size: 18px;
+  width: 20px;
+  text-align: center;
+}
+
+.info-text {
+  font-size: 14px;
+  color: #191919;
+}
+
+.info-subtext {
+  font-size: 13px;
+  color: #999999;
+  margin-left: 4px;
+}
+
+.info-subtext i {
+  font-size: 12px;
+}
+
+/* Usage Box */
+.usage-box {
+  background-color: #FAFAFA;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid #F2F2F2;
+}
+
+.usage-icon-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: #4A90E2; /* Location blue background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 18px;
+}
+
+.usage-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555555;
+}
+
+/* Tabs UI Section */
+.product-tabs-container {
+  display: flex;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #F2F2F2;
+  position: sticky;
+  top: 52px; /* sticky under header */
+  z-index: 90;
+}
+
+.product-tab {
+  flex: 1;
+  text-align: center;
+  padding: 16px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #767676;
+  cursor: pointer;
+  position: relative;
+}
+
+.product-tab.active {
+  color: #191919;
+}
+
+.product-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 3px;
+  background-color: #191919;
 }

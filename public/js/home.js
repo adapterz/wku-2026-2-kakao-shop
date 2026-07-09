@@ -158,12 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load products from /api/products
   async function loadProducts() {
     try {
-      const response = await fetch('/api/products');
+      const response = await fetch(/api/products / ${ id });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const result = await response.json();
-      
+
       if (!result || typeof result !== 'object') {
         throw new Error('Invalid JSON response format');
       }
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!Array.isArray(result.data)) {
         throw new Error('Response "data" property is not an array');
       }
-      
+
       cachedProducts = result.data;
       renderProductsData(result.data);
     } catch (error) {

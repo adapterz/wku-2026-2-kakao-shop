@@ -6,6 +6,7 @@ function renderProduct(product) {
   const priceElement = document.getElementById("product-price");
   const descElement = document.getElementById("product-description");
   const usageElement = document.getElementById("product-usage");
+  const brandNavElement = document.getElementById("product-brand-nav");
 
   if (imgElement) imgElement.src = product.thumbnailUrl;
   if (brandElement) brandElement.textContent = product.brand;
@@ -13,12 +14,13 @@ function renderProduct(product) {
   if (priceElement) priceElement.textContent = `${product.price.toLocaleString()}원`;
   if (descElement) descElement.textContent = product.description;
   if (usageElement) usageElement.textContent = product.usageInfo;
+  if (brandNavElement) brandNavElement.textContent = product.brand;
 }
 
 // API로부터 상품 상세 데이터 가져오기
 async function loadProductDetail(id) {
   try {
-    const response = await fetch('/api/products');
+    const response = await fetch(/api/products / ${ id });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
