@@ -17,7 +17,7 @@ const getGiftsByReceiverId = async (receiverId, status) => {
     JOIN orders o ON g.order_id = o.id
     JOIN products p ON o.product_id = p.id
     JOIN users u ON o.user_id = u.id
-    WHERE o.receiver_id = ?
+    WHERE o.receiver_id = ? AND o.payment_status = 'COMPLETED'
   `;
   const params = [receiverId];
 

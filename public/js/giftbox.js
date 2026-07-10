@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
     currentStatus = status;
     updateTabStyles();
     
+    if (status === 'unused') {
+      listContainer.innerHTML = `<div class="empty-state">미사용 선물이 없습니다.</div>`;
+      return;
+    }
+    
     try {
       const response = await fetch(`/api/gifts?status=${status}`, { credentials: 'include' });
       
