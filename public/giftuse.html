@@ -17,78 +17,6 @@
             position: relative;
         }
 
-        /* Reused Header/Nav Styles from index.html */
-        .main-header {
-            background-color: #fff;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        .header-icon {
-            color: #191919;
-            font-size: 20px;
-            text-decoration: none;
-        }
-        .header-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #191919;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .header-logo {
-            height: 18px;
-        }
-        .nav-bar {
-            background-color: #fff;
-            border-bottom: 1px solid var(--border-color);
-            overflow-x: auto;
-            white-space: nowrap;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            position: sticky;
-            top: 52px;
-            z-index: 99;
-        }
-        .nav-bar::-webkit-scrollbar {
-            display: none;
-        }
-        .nav-container {
-            display: flex;
-            padding: 0 16px;
-        }
-        .nav-item {
-            padding: 12px 14px;
-            color: var(--text-sub);
-            font-size: 15px;
-            text-decoration: none;
-            position: relative;
-        }
-        .nav-item.active {
-            color: #191919;
-            font-weight: 700;
-        }
-        .nav-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 14px;
-            right: 14px;
-            height: 2px;
-            background-color: #191919;
-        }
-
         /* Gift Use Specific Styles */
         .user-profile-section {
             background-color: #fff;
@@ -142,30 +70,30 @@
             text-align: center;
         }
         .product-img {
-            width: 200px;
-            height: 200px;
-            border-radius: 12px;
+            width: 240px;
+            height: 240px;
+            border-radius: 16px;
             object-fit: cover;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             background-color: #f9f9f9;
         }
         .product-brand {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 4px;
         }
         .product-name {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
-            color: #191919;
-            margin-bottom: 24px;
+            color: #111;
+            margin-bottom: 16px;
             line-height: 1.4;
             word-break: keep-all;
         }
         .barcode-img-wrapper {
             width: 100%;
             max-width: 240px;
-            margin: 0 auto 12px;
+            margin: 0 auto 8px;
         }
         .barcode-img {
             width: 100%;
@@ -173,60 +101,87 @@
             display: block;
         }
         .barcode-text {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: #191919;
-            letter-spacing: 1px;
-            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
         }
         .btn-use {
             width: 100%;
-            padding: 14px;
+            max-width: 240px;
+            padding: 8px 0;
             background-color: #fff;
-            color: #191919;
-            font-size: 15px;
-            font-weight: 700;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+            color: #555;
+            font-size: 12px;
+            font-weight: 400;
+            border: 1px solid #e2e2e2;
+            border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.2s;
         }
         .btn-use:active {
             background-color: #f5f5f5;
         }
-        .btn-use:disabled {
-            background-color: #f5f5f5;
-            color: #ccc;
-            cursor: not-allowed;
-            border-color: #f5f5f5;
+        /* Skeleton and Error Styles */
+        .skeleton {
+            background-color: #f2f2f2;
+            color: transparent !important;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .skeleton::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: translateX(-100%);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: skeleton-loading 1.5s infinite;
+        }
+        @keyframes skeleton-loading {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        .error-message {
+            color: #ff4d4f;
+            font-size: 14px;
+            margin: 20px 0;
+            font-weight: 700;
         }
     </style>
 </head>
 
 <body>
-    <!-- Main Header (Reused from index.html but with back button) -->
+    <!-- Main Header -->
     <header class="main-header">
         <div class="header-container">
-            <a href="javascript:history.back()" class="header-icon" title="뒤로가기">
-                <i class="fa-solid fa-chevron-left"></i>
-            </a>
-            <span class="header-title">
-                <span class="header-logo-container">
-                    <i class="fa-solid fa-bag-shopping" style="font-size: 18px; margin-right: 4px;"></i>
-                </span>
-                선물하기
-            </span>
-            <a href="#" class="header-icon" title="검색">
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <a href="javascript:history.back()" class="header-icon" title="뒤로가기">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <a href="giftbox.html" class="header-icon" title="선물함">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </a>
+            </div>
+            <span class="header-title" style="position: absolute; left: 50%; transform: translateX(-50%); font-size: 18px; font-weight: 700;">선물하기</span>
+            <a href="#" id="btn-search-open" class="header-icon" title="검색">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </a>
         </div>
     </header>
 
-    <!-- Navigation Bar (Reused from index.html) -->
+    <!-- Navigation Bar -->
     <nav class="nav-bar">
         <div class="nav-container">
             <a href="#" class="nav-item">FOR ME</a>
-            <a href="index.html" class="nav-item">홈</a>
+            <a href="index.html" class="nav-item active">홈</a>
             <a href="#" class="nav-item">랭킹</a>
             <a href="#" class="nav-item">썸머세일</a>
             <a href="#" class="nav-item">와인/맥주</a>
@@ -247,19 +202,29 @@
 
         <!-- Barcode Card Section -->
         <section class="barcode-card-container">
-            <div class="barcode-card">
-                <img id="product-img" src="" alt="상품 이미지" class="product-img">
-                <div id="product-brand" class="product-brand">브랜드</div>
-                <div id="product-name" class="product-name">상품명</div>
-                
-                <div class="barcode-img-wrapper">
-                    <!-- Standard Barcode Image -->
-                    <img src="images/barcode.png" alt="바코드" class="barcode-img">
+            <div class="barcode-card" id="barcode-card">
+                <!-- Product Image Wrapper for Skeleton -->
+                <div id="product-img-wrapper" class="skeleton" style="width: 240px; height: 240px; border-radius: 16px; margin-bottom: 16px;">
+                    <img id="product-img" src="" alt="상품 이미지" class="product-img" style="display: none; width: 100%; height: 100%; object-fit: cover; margin-bottom: 0; border-radius: 16px;">
                 </div>
-                <!-- 12 digits barcode formatted as XXXX XXXX XXXX -->
-                <div id="barcode-text" class="barcode-text">0000 0000 0000</div>
                 
-                <button id="btn-use" class="btn-use">사용하기</button>
+                <div id="product-brand" class="product-brand skeleton" style="min-width: 80px; min-height: 14px; margin-bottom: 4px;">&nbsp;</div>
+                <div id="product-name" class="product-name skeleton" style="min-width: 150px; min-height: 20px; margin-bottom: 16px;">&nbsp;</div>
+                
+                <!-- Barcode Section (Hidden by default, shown when loaded) -->
+                <div id="barcode-section" style="width: 100%; display: none; flex-direction: column; align-items: center;">
+                    <div class="barcode-img-wrapper">
+                        <!-- Standard Barcode Image -->
+                        <img src="images/barcode.png" alt="바코드" class="barcode-img">
+                    </div>
+                    <!-- 12 digits barcode formatted as XXXX XXXX XXXX -->
+                    <div id="barcode-text" class="barcode-text">0000 0000 0000</div>
+                </div>
+                
+                <!-- Barcode Skeleton -->
+                <div id="barcode-skeleton" class="skeleton" style="width: 240px; height: 50px; margin-bottom: 16px;"></div>
+                
+                <button id="btn-use" class="btn-use" disabled>내 앨범에 저장</button>
             </div>
         </section>
     </main>
