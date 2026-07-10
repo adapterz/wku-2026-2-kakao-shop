@@ -17,78 +17,6 @@
             position: relative;
         }
 
-        /* Reused Header/Nav Styles from index.html */
-        .main-header {
-            background-color: #fff;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        .header-icon {
-            color: #191919;
-            font-size: 20px;
-            text-decoration: none;
-        }
-        .header-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #191919;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .header-logo {
-            height: 18px;
-        }
-        .nav-bar {
-            background-color: #fff;
-            border-bottom: 1px solid var(--border-color);
-            overflow-x: auto;
-            white-space: nowrap;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            position: sticky;
-            top: 52px;
-            z-index: 99;
-        }
-        .nav-bar::-webkit-scrollbar {
-            display: none;
-        }
-        .nav-container {
-            display: flex;
-            padding: 0 16px;
-        }
-        .nav-item {
-            padding: 12px 14px;
-            color: var(--text-sub);
-            font-size: 15px;
-            text-decoration: none;
-            position: relative;
-        }
-        .nav-item.active {
-            color: #191919;
-            font-weight: 700;
-        }
-        .nav-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 14px;
-            right: 14px;
-            height: 2px;
-            background-color: #191919;
-        }
-
         /* Gift Use Specific Styles */
         .user-profile-section {
             background-color: #fff;
@@ -204,33 +132,36 @@
 </head>
 
 <body>
-    <!-- Main Header (Reused from index.html but with back button) -->
+    <!-- Main Header -->
     <header class="main-header">
         <div class="header-container">
-            <a href="javascript:history.back()" class="header-icon" title="뒤로가기">
-                <i class="fa-solid fa-chevron-left"></i>
+            <a href="giftbox.html" class="header-icon" title="선물함">
+                <i class="fa-solid fa-bag-shopping"></i>
             </a>
             <span class="header-title">
                 <span class="header-logo-container">
-                    <i class="fa-solid fa-bag-shopping" style="font-size: 18px; margin-right: 4px;"></i>
+                    <img src="images/iksan_logo.png" class="header-logo" alt="익산시 로고">
                 </span>
                 선물하기
             </span>
-            <a href="#" class="header-icon" title="검색">
+            <a href="#" id="btn-search-open" class="header-icon" title="검색">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </a>
         </div>
     </header>
 
-    <!-- Navigation Bar (Reused from index.html) -->
+    <!-- Navigation Bar (Horizontal Scrollable) -->
     <nav class="nav-bar">
         <div class="nav-container">
-            <a href="#" class="nav-item">FOR ME</a>
+            <a href="#" class="nav-item">for you</a>
             <a href="index.html" class="nav-item">홈</a>
-            <a href="#" class="nav-item">랭킹</a>
-            <a href="#" class="nav-item">썸머세일</a>
-            <a href="#" class="nav-item">와인/맥주</a>
-            <a href="#" class="nav-item">여름과일</a>
+            <a href="#" class="nav-item">인기상권</a>
+            <a href="#" class="nav-item">실시간 랭킹</a>
+            <a href="#" class="nav-item">익산역 맛집거리</a>
+            <a href="#" class="nav-item">익산역 쇼핑거리</a>
+            <a href="#" class="nav-item">익산역 선물거리</a>
+            <a href="#" class="nav-item">청년상점거리</a>
+            <a href="#" class="nav-item">역세권 금액권</a>
         </div>
     </nav>
 
@@ -259,7 +190,7 @@
                 <!-- 12 digits barcode formatted as XXXX XXXX XXXX -->
                 <div id="barcode-text" class="barcode-text">0000 0000 0000</div>
                 
-                <button id="btn-use" class="btn-use">사용하기</button>
+                <button id="btn-use" class="btn-use">내 앨범에 저장</button>
             </div>
         </section>
     </main>
