@@ -9,15 +9,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const btnUse = document.getElementById('btn-use');
+    const barcodeCard = document.getElementById('barcode-card');
 
     try {
         // 상세 조회 API 호출
-        // 서버에 GET /api/gifts/:id 가 있다고 가정하고 호출합니다.
         const response = await fetch(`/api/gifts/${giftId}`, { credentials: 'include' });
         
         if (!response.ok) {
-            // 만약 서버에 단건 조회 API가 아직 구현되어 있지 않다면
-            // 전체 목록을 가져와서 해당 giftId를 찾는 Fallback 처리
+            // Fallback 로직: 상세 조회 실패 시 전체 목록에서 찾기
             const allGiftsResponse = await fetch('/api/gifts?status=unused', { credentials: 'include' });
             if (allGiftsResponse.ok) {
                 const result = await allGiftsResponse.json();
@@ -25,12 +24,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (gift) {
                     renderGift(gift);
                 } else {
-                    alert('선물 정보를 불러오지 못했거나 이미 사용된 선물입니다.');
-                    location.href = 'giftbox.html';
+                    showError('선물 정보를 찾을 수 없거나 이미 사용된 선물입니다.');
                 }
             } else {
-                alert('선물 정보를 불러오지 못했습니다.');
-                location.href = 'giftbox.html';
+                showError('선물 정보를 불러오는데 실패했습니다.');
             }
         } else {
             const result = await response.json();
@@ -38,8 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     } catch (err) {
         console.error(err);
-        alert("오류가 발생했습니다.");
-        location.href = 'giftbox.html';
+        showError('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
     }
 
     btnUse.addEventListener('click', async () => {
@@ -49,7 +45,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             btnUse.disabled = true;
             btnUse.textContent = "처리중...";
 
-            // 사용 처리 API 호출 (gifts.status 변경, used_at 기록)
             const useRes = await fetch(`/api/gifts/${giftId}/use`, {
                 method: 'POST',
                 headers: {
@@ -63,8 +58,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             alert("사용 처리가 완료되었습니다.");
-            
-            // 처리 완료 후 사용완료 탭으로 이동
             location.href = 'giftbox.html?tab=used';
             
         } catch (err) {
@@ -91,16 +84,54 @@ function renderGift(gift) {
         document.getElementById('self-badge').style.display = 'none';
     }
 
-    // 상품 정보
-    document.getElementById('product-img').src = gift.thumbnailUrl || '';
-    document.getElementById('product-brand').textContent = gift.brand || '';
-    document.getElementById('product-name').textContent = gift.productName || '';
+    // DOM 요소
+    const productImgWrapper = document.getElementById('product-img-wrapper');
+    const productImg = document.getElementById('product-img');
+    const productBrand = document.getElementById('product-brand');
+    const productName = document.getElementById('product-name');
+    const barcodeSection = document.getElementById('barcode-section');
+    const barcodeSkeleton = document.getElementById('barcode-skeleton');
+    const btnUse = document.getElementById('btn-use');
 
-    // 바코드 처리
-    // 실제 서버 응답에 barcode 필드가 있으면 사용하고, 없으면 더미 바코드 출력
+    // 이미지 세팅 및 노출
+    productImg.src = gift.thumbnailUrl || '';
+    productImg.style.display = 'block';
+    productImgWrapper.classList.remove('skeleton');
+
+    // 브랜드명 / 상품명 바인딩 및 스켈레톤 해제
+    productBrand.textContent = gift.brand || '';
+    productBrand.classList.remove('skeleton');
+    productBrand.style.minWidth = 'unset';
+    productBrand.style.minHeight = 'unset';
+
+    productName.textContent = gift.productName || '';
+    productName.classList.remove('skeleton');
+    productName.style.minWidth = 'unset';
+    productName.style.minHeight = 'unset';
+
+    // 바코드 노출 및 스켈레톤 해제
     const barcodeVal = gift.barcode || "2350978230953538";
-    
-    // 4자리씩 띄어쓰기 포맷팅 (예: 2350 9782 3095 3538)
     const formatted = barcodeVal.replace(/(\d{4})(?=\d)/g, '$1 ');
     document.getElementById('barcode-text').textContent = formatted;
+
+    barcodeSkeleton.style.display = 'none';
+    barcodeSection.style.display = 'flex';
+
+    // 버튼 활성화
+    btnUse.disabled = false;
+}
+
+function showError(message) {
+    const barcodeCard = document.getElementById('barcode-card');
+    
+    // 카드 내부를 에러 전용 레이아웃으로 교체
+    barcodeCard.innerHTML = `
+        <div style="font-size: 40px; color: #ff4d4f; margin-bottom: 16px;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div class="error-message">${message}</div>
+        <button onclick="location.href='giftbox.html'" class="btn-use" style="margin-top: 10px;">선물함으로 돌아가기</button>
+    `;
+    
+    document.getElementById('receiver-nickname').textContent = '오류';
 }
