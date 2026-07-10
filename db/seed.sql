@@ -1,5 +1,9 @@
-DELETE FROM products;
-ALTER TABLE products AUTO_INCREMENT = 1;
+-- [WARNING] 배포 DB(iksanshop) 실행 전 주의사항
+-- 이 스크립트는 products 테이블에 데이터를 단순 INSERT 합니다.
+-- 기존 orders/gifts 테이블의 product_id 참조가 깨지지 않도록 (중복 생성 방지),
+-- 스크립트 실행 전 아래 쿼리로 기존 데이터 존재 여부를 반드시 확인하세요:
+-- SELECT COUNT(*) FROM products;
+-- 만약 데이터가 이미 존재한다면 실행을 중단하거나 수동 판단 하에 진행하세요.
 
 INSERT INTO products
 (name, brand, price, thumbnail_url, description, usage_info)
