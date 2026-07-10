@@ -17,10 +17,12 @@ router.get('/', requireLogin, async (req, res) => {
       giftId: gift.gift_id,
       productName: gift.product_name,
       thumbnailUrl: gift.thumbnail_url,
+      brand: gift.brand,
       status: gift.status,
       senderNickname: gift.sender_nickname,
       isSelfGift: !!gift.is_self_gift,
-      createdAt: gift.created_at
+      createdAt: gift.created_at,
+      usedAt: gift.used_at
     }));
 
     return res.status(200).json({

@@ -4,58 +4,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>선물 사용 - 카카오톡 선물하기 클론</title>
+    <title>선물 사용 - Iksan Gift</title>
     <!-- FontAwesome for Premium Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background-color: #f2f2f2;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .main-content {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        /* Gift Use Specific Styles */
+        .user-profile-section {
+            background-color: #fff;
+            padding: 20px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .profile-img-wrapper {
+            position: relative;
+            width: 56px;
+            height: 56px;
+        }
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            background-color: #333; /* Dark placeholder like image */
+            object-fit: cover;
+        }
+        .profile-badge {
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            background-color: #FEE500;
+            color: #3C1E1E;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 10px;
+            border: 2px solid #fff;
+            display: none; /* Only show for self gift */
+        }
+        .user-nickname {
+            font-size: 15px;
+            font-weight: 700;
+            color: #191919;
+        }
+
+        .barcode-card-container {
+            padding: 20px 16px;
+        }
+        .barcode-card {
+            background-color: #fff;
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            text-align: center;
+            width: 100%;
+        }
+        .product-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 0px;
+            object-fit: cover;
+            background-color: #f9f9f9;
+        }
+        .product-brand {
+            font-size: 12px;
+            color: #191919;
+            margin-bottom: 4px;
+        }
+        .product-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 16px;
+            line-height: 1.4;
+            word-break: keep-all;
+        }
+        .barcode-img-wrapper {
+            width: 100%;
+            max-width: 240px;
+            margin: 0 auto 8px;
+        }
+        .barcode-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .barcode-text {
+            font-size: 15px;
+            font-weight: 700;
+            color: #191919;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+        .btn-use {
+            width: 100%;
+            max-width: 100%;
+            padding: 12px 0;
+            background-color: #fff;
+            color: #555;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid #e2e2e2;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-use:active {
+            background-color: #f5f5f5;
+        }
+        /* Skeleton and Error Styles */
+        .skeleton {
+            background-color: #f2f2f2;
+            color: transparent !important;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .skeleton::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: translateX(-100%);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: skeleton-loading 1.5s infinite;
+        }
+        @keyframes skeleton-loading {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        .error-message {
+            color: #ff4d4f;
+            font-size: 14px;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+    </style>
 </head>
 
 <body>
-
     <!-- Main Header -->
     <header class="main-header">
         <div class="header-container">
-            <a href="giftbox.html" class="header-icon" title="선물함">
-                <i class="fa-solid fa-bag-shopping"></i>
-            </a>
-            <span class="header-title">
-                <span class="header-logo-container">
-                    <img src="images/iksan_logo.png" class="header-logo" alt="익산시 로고">
-                </span>
-                선물하기
-            </span>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <a href="javascript:history.back()" class="header-icon" title="뒤로가기">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+                <a href="giftbox.html" class="header-icon" title="선물함">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </a>
+            </div>
+            <span class="header-title" style="position: absolute; left: 50%; transform: translateX(-50%); font-size: 18px; font-weight: 700;">선물하기</span>
             <a href="#" id="btn-search-open" class="header-icon" title="검색">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </a>
         </div>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
-        <div style="padding: 32px 16px; text-align: center; display: flex; flex-direction: column; gap: 24px; align-items: center;">
-            <div>
-                <h2 style="font-size: 20px; font-weight: 700; color: #191919; margin-bottom: 8px;">익산역 기프티콘 사용처 안내</h2>
-                <p style="font-size: 14px; color: #767676; line-height: 1.6;">
-                    이 상품은 익산역 주변 활성화를 위한 제휴 소상공인 매장에서만 사용이 가능합니다. 매장에서 결제 시 점원에게 기프티콘 바코드를 보여주세요.
-                </p>
-            </div>
-
-            <!-- Fake Barcode for Testing -->
-            <div style="background: #FFFFFF; padding: 16px; border: 1px solid var(--border-color); border-radius: 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; max-width: 280px;">
-                <div style="font-family: monospace; font-size: 32px; letter-spacing: 4px; color: #191919; height: 60px; display: flex; align-items: center; border-bottom: 2px dashed #D3D3D3; width: 100%; justify-content: center;">
-                    ||||||| | ||||| | |||
-                </div>
-                <span style="font-size: 12px; color: #999999; letter-spacing: 2px;">9847-5829-1048</span>
-            </div>
-
-            <div style="width: 100%; text-align: left; background: #F9F9F9; padding: 16px; border-radius: 8px; font-size: 13px; color: #555555; line-height: 1.8;">
-                <strong style="color: #191919; font-size: 14px; display: block; margin-bottom: 8px;">사용 안내 및 주의사항</strong>
-                - 익산역 소상공인 가맹점에 직접 방문하여 사용 가능합니다.<br>
-                - 본 바코드는 결제 전 점원에게 보여주시기 바랍니다.<br>
-                - 제휴 매장 위치 및 문의 사항은 고객센터를 통해 확인하세요.
-            </div>
+    <!-- Navigation Bar (Horizontal Scrollable) -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="#" class="nav-item">for you</a>
+            <a href="index.html" class="nav-item active">홈</a>
+            <a href="#" class="nav-item">인기상권</a>
+            <a href="#" class="nav-item">실시간 랭킹</a>
+            <a href="#" class="nav-item">익산역 맛집거리</a>
+            <a href="#" class="nav-item">익산역 쇼핑거리</a>
+            <a href="#" class="nav-item">익산역 선물거리</a>
+            <a href="#" class="nav-item">청년상점거리</a>
+            <a href="#" class="nav-item">역세권 금액권</a>
         </div>
+    </nav>
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: 0; padding-bottom: 40px;">
+        <!-- User Profile Section -->
+        <section class="user-profile-section">
+            <div class="profile-img-wrapper">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQceBIRP2B6FYeMIsQBNlnzHnjd6HxqMzoQWiYvOMb0hQ&s=10" alt="프로필" class="profile-img">
+                <div id="self-badge" class="profile-badge">나</div>
+            </div>
+            <div class="user-nickname" id="receiver-nickname">불러오는 중...</div>
+        </section>
+
+        <!-- Barcode Card Section -->
+        <section class="barcode-card-container">
+            <div class="barcode-card" id="barcode-card">
+                <!-- Product Image Wrapper for Skeleton -->
+                <div id="product-img-wrapper" class="skeleton" style="position: relative; width: 80%; margin: 0 auto 10px; aspect-ratio: 1 / 1; border-radius: 16px; overflow: hidden;">
+                    <img id="product-img" src="" alt="상품 이미지" class="product-img" style="display: none; width: 100%; height: 100%; object-fit: cover; margin-bottom: 0; border-radius: 0px;">
+                </div>
+                
+                <div id="product-brand" class="product-brand skeleton" style="min-width: 80px; min-height: 14px; margin-bottom: 4px;">&nbsp;</div>
+                <div id="product-name" class="product-name skeleton" style="min-width: 150px; min-height: 20px; margin-bottom: 16px;">&nbsp;</div>
+                
+                <!-- Barcode Section (Hidden by default, shown when loaded) -->
+                <div id="barcode-section" style="width: 100%; display: none; flex-direction: column; align-items: center;">
+                    <div class="barcode-img-wrapper">
+                        <!-- Standard Barcode Image -->
+                        <img src="images/barcode.png" alt="바코드" class="barcode-img">
+                    </div>
+                    <!-- 12 digits barcode formatted as XXXX XXXX XXXX -->
+                    <div id="barcode-text" class="barcode-text">0000 0000 0000</div>
+                </div>
+                
+                <!-- Barcode Skeleton -->
+                <div id="barcode-skeleton" class="skeleton" style="width: 240px; height: 50px; margin-bottom: 16px;"></div>
+                
+                <button id="btn-use" class="btn-use" disabled>선물 사용하기</button>
+            </div>
+        </section>
     </main>
 
     <!-- Fixed Bottom Navigation Bar -->
@@ -68,38 +246,14 @@
             <i class="fa-solid fa-bars"></i>
             <span>카테고리</span>
         </a>
-        <a href="giftbox.html" class="bottom-nav-item">
+        <a href="login.html" class="bottom-nav-item">
             <i class="fa-regular fa-user"></i>
-            <span>선물함</span>
+            <span>마이페이지</span>
         </a>
     </nav>
 
-    <!-- Fullscreen Search Overlay UI -->
-    <div id="search-overlay" class="search-overlay">
-        <div class="search-overlay-header">
-            <button id="btn-search-close" class="btn-search-back" aria-label="뒤로가기">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button>
-            <div class="search-input-wrapper">
-                <i class="fa-solid fa-magnifying-glass search-overlay-input-icon"></i>
-                <input type="text" class="search-overlay-input" placeholder="원하는 선물을 검색해보세요" autofocus>
-            </div>
-        </div>
-        <div class="search-overlay-body">
-            <h4 class="recent-searches-title">최근 검색어</h4>
-            <div class="recent-keywords-list">
-                <a href="#" class="keyword-badge">익산역</a>
-                <a href="#" class="keyword-badge">아메리카노</a>
-                <a href="#" class="keyword-badge">익산</a>
-                <a href="#" class="keyword-badge">익산역마켓</a>
-                <a href="#" class="keyword-badge">소금빵</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Script for Interactions -->
-    <script src="js/giftuse.js" defer></script>
-
+    <!-- Script -->
+    <script src="js/giftuse.js"></script>
 </body>
 
 </html>

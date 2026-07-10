@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주문/결제 - 카카오톡 선물하기 클론</title>
+    <title>주문/결제 - Iksan Gift</title>
     <!-- FontAwesome for Premium Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
@@ -14,20 +14,38 @@
 <body>
 
     <!-- Main Header -->
+    <!-- Main Header -->
     <header class="main-header">
         <div class="header-container">
-            <button onclick="history.back()" class="header-icon" title="뒤로가기">
-                <i class="fa-solid fa-chevron-left"></i>
-            </button>
+            <a href="giftbox.html" class="header-icon" title="선물함">
+                <i class="fa-solid fa-bag-shopping"></i>
+            </a>
             <span class="header-title">
                 <span class="header-logo-container">
                     <img src="images/iksan_logo.png" class="header-logo" alt="익산시 로고">
                 </span>
                 선물하기
             </span>
-            <div style="width: 24px;"></div>
+            <a href="#" id="btn-search-open" class="header-icon" title="검색">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
         </div>
     </header>
+
+    <!-- Navigation Bar (Horizontal Scrollable) -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="#" class="nav-item">for you</a>
+            <a href="index.html" class="nav-item active">홈</a>
+            <a href="#" class="nav-item">인기상권</a>
+            <a href="#" class="nav-item">실시간 랭킹</a>
+            <a href="#" class="nav-item">익산역 맛집거리</a>
+            <a href="#" class="nav-item">익산역 쇼핑거리</a>
+            <a href="#" class="nav-item">익산역 선물거리</a>
+            <a href="#" class="nav-item">청년상점거리</a>
+            <a href="#" class="nav-item">역세권 금액권</a>
+        </div>
+    </nav>
 
     <!-- Main Content Area -->
     <main class="main-content">
@@ -111,9 +129,6 @@
                 <button id="btn-submit-order" class="btn-submit-order" style="width: 100%; padding: 16px; background-color: #FEE500; color: #191919; font-weight: 700; font-size: 16px; border-radius: 8px; text-align: center; cursor: pointer; border: none;">
                     <span id="btn-submit-price"></span> 결제하기
                 </button>
-                <div style="text-align: center; margin-top: 12px; font-size: 13px; color: #FF4B4B;">
-                    카카오토큰 잔액 부족
-                </div>
             </div>
         </div>
     </main>
