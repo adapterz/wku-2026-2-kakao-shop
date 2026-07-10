@@ -57,7 +57,7 @@
         }
 
         .barcode-card-container {
-            padding: 20px 10px;
+            padding: 20px 16px;
         }
         .barcode-card {
             background-color: #fff;
@@ -68,13 +68,13 @@
             align-items: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             text-align: center;
-            width: 100%;
         }
         .product-img {
-            width: 100%;
-            height: 100%;
+            width: 240px;
+            height: 240px;
             border-radius: 16px;
             object-fit: cover;
+            margin-bottom: 16px;
             background-color: #f9f9f9;
         }
         .product-brand {
@@ -204,7 +204,7 @@
         <section class="barcode-card-container">
             <div class="barcode-card" id="barcode-card">
                 <!-- Product Image Wrapper for Skeleton -->
-                <div id="product-img-wrapper" class="skeleton" style="position: relative; width: calc(100% + 48px); margin-left: -24px; margin-right: -24px; aspect-ratio: 1 / 1; border-radius: 16px; margin-bottom: 16px; overflow: hidden;">
+                <div id="product-img-wrapper" class="skeleton" style="width: 240px; height: 240px; border-radius: 16px; margin-bottom: 16px;">
                     <img id="product-img" src="" alt="상품 이미지" class="product-img" style="display: none; width: 100%; height: 100%; object-fit: cover; margin-bottom: 0; border-radius: 16px;">
                 </div>
                 
