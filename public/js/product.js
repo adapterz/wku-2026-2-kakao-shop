@@ -152,6 +152,14 @@ document.addEventListener("DOMContentLoaded", () => {
   window.updateBottomSheetPrice = updateTotalPrice;
 
   if (bottomSheetOverlay && bottomSheet) {
+    // 닫기 버튼 클릭 시 closeBottomSheet 호출
+    const handleCloseBtn = document.querySelector('.bottom-sheet-handle-btn');
+    if (handleCloseBtn) {
+      handleCloseBtn.addEventListener('click', () => {
+        closeBottomSheet();
+      });
+    }
+
     // dim area click
     bottomSheetOverlay.addEventListener('click', (e) => {
       if (e.target === bottomSheetOverlay) {
