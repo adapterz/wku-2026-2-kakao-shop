@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error(err);
             alert("사용 처리에 실패했습니다. 서버 API 구현 여부를 확인해주세요.");
             btnUse.disabled = false;
-            btnUse.textContent = "내 앨범에 저장";
+            btnUse.textContent = "선물 사용하기";
         }
     });
 });
