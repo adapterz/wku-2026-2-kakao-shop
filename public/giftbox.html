@@ -14,19 +14,73 @@
             margin: 0 auto;
             position: relative;
         }
-        .giftbox-header {
+        /* Main Header & Nav */
+        .main-header {
             background-color: #fff;
             height: 52px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            position: relative;
-            border-bottom: 1px solid var(--border-color);
+            padding: 0 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .giftbox-title {
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .header-icon {
+            color: #191919;
+            font-size: 20px;
+            text-decoration: none;
+        }
+        .header-title {
             font-size: 16px;
             font-weight: 700;
             color: #191919;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-bar {
+            background-color: #fff;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            white-space: nowrap;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            position: sticky;
+            top: 52px;
+            z-index: 99;
+        }
+        .nav-bar::-webkit-scrollbar {
+            display: none;
+        }
+        .nav-container {
+            display: flex;
+            padding: 0 16px;
+        }
+        .nav-item {
+            padding: 12px 14px;
+            color: var(--text-sub);
+            font-size: 15px;
+            text-decoration: none;
+            position: relative;
+        }
+        .nav-item.active {
+            color: #191919;
+            font-weight: 700;
+        }
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 14px;
+            right: 14px;
+            height: 2px;
+            background-color: #191919;
         }
         .tabs-container {
             display: flex;
@@ -143,10 +197,35 @@
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="giftbox-header">
-        <h1 class="giftbox-title">선물함</h1>
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="giftbox.html" class="header-icon" title="선물함">
+                <i class="fa-solid fa-bag-shopping"></i>
+            </a>
+            <span class="header-title">
+                <span class="header-logo-container">
+                    <img src="images/iksan_logo.png" class="header-logo" style="height: 18px;" alt="로고">
+                </span>
+                선물하기
+            </span>
+            <a href="#" class="header-icon" title="검색">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
+        </div>
     </header>
+
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="#" class="nav-item">FOR ME</a>
+            <a href="index.html" class="nav-item">홈</a>
+            <a href="#" class="nav-item">랭킹</a>
+            <a href="#" class="nav-item">썸머세일</a>
+            <a href="#" class="nav-item">와인/맥주</a>
+            <a href="#" class="nav-item">여름과일</a>
+        </div>
+    </nav>
 
     <!-- Main Content Area -->
     <main class="main-content" style="padding-bottom: 70px; padding-top: 0;">

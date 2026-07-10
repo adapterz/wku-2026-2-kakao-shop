@@ -3,17 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const tabUsed = document.getElementById("tab-used");
   const listContainer = document.getElementById("gift-list-container");
 
-  let currentStatus = 'unused';
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialTab = urlParams.get('tab') === 'used' ? 'used' : 'unused';
+  let currentStatus = initialTab;
 
   // Load gifts
   const loadGifts = async (status) => {
     currentStatus = status;
     updateTabStyles();
-    
-    if (status === 'unused') {
-      listContainer.innerHTML = `<div class="empty-state">미사용 선물이 없습니다.</div>`;
-      return;
-    }
     
     try {
       const response = await fetch(`/api/gifts?status=${status}`, { credentials: 'include' });
@@ -97,5 +94,5 @@ document.addEventListener("DOMContentLoaded", () => {
   tabUsed.addEventListener('click', () => loadGifts('used'));
 
   // Init
-  loadGifts('unused');
+  loadGifts(currentStatus);
 });
