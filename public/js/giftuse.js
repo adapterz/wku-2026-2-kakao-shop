@@ -12,30 +12,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         // 상세 조회 API 호출
-        // 서버에 GET /api/gifts/:id 가 있다고 가정하고 호출합니다.
+        // 서버에 GET /api/gifts/:id 가 있고 정상 동작함이 확인되었으므로 바로 조회합니다.
         const response = await fetch(`/api/gifts/${giftId}`, { credentials: 'include' });
         
         if (!response.ok) {
-            // 만약 서버에 단건 조회 API가 아직 구현되어 있지 않다면
-            // 전체 목록을 가져와서 해당 giftId를 찾는 Fallback 처리
-            const allGiftsResponse = await fetch('/api/gifts?status=unused', { credentials: 'include' });
-            if (allGiftsResponse.ok) {
-                const result = await allGiftsResponse.json();
-                const gift = result.data.find(g => String(g.giftId) === String(giftId));
-                if (gift) {
-                    renderGift(gift);
-                } else {
-                    alert('선물 정보를 불러오지 못했거나 이미 사용된 선물입니다.');
-                    location.href = 'giftbox.html';
-                }
-            } else {
-                alert('선물 정보를 불러오지 못했습니다.');
-                location.href = 'giftbox.html';
-            }
-        } else {
-            const result = await response.json();
-            renderGift(result.data);
+            alert('선물 정보를 불러오지 못했습니다.');
+            location.href = 'giftbox.html';
+            return;
         }
+
+        const result = await response.json();
+        renderGift(result.data);
     } catch (err) {
         console.error(err);
         alert("오류가 발생했습니다.");
@@ -49,9 +36,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             btnUse.disabled = true;
             btnUse.textContent = "처리중...";
 
-            // 사용 처리 API 호출 (gifts.status 변경, used_at 기록)
+            // 사용 처리 API 호출 (gifts.status 변경, used_at 기록) - PATCH 사용
             const useRes = await fetch(`/api/gifts/${giftId}/use`, {
-                method: 'POST',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -77,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function renderGift(gift) {
-    if (gift.status === 'USED') {
+    if (gift.status === 'used') {
         alert("이미 사용 완료된 선물입니다.");
         location.href = 'giftbox.html?tab=used';
         return;
