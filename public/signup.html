@@ -19,7 +19,12 @@
             <a href="giftbox.html" class="header-icon" title="선물함">
                 <i class="fa-solid fa-bag-shopping"></i>
             </a>
-            <span class="header-title">선물하기</span>
+            <span class="header-title">
+                <span class="header-logo-container">
+                    <img src="images/iksan_logo.png" class="header-logo" alt="익산시 로고">
+                </span>
+                선물하기
+            </span>
             <a href="#" id="btn-search-open" class="header-icon" title="검색">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </a>
@@ -28,10 +33,28 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-        <!-- Content will be populated in subsequent tasks -->
-        <div style="padding: 20px; text-align: center;">
-            <h2>회원가입</h2>
-            <p>회원가입 페이지 컨텐츠가 여기에 들어갑니다.</p>
+        <div class="auth-container">
+            <h2 class="auth-title">회원가입</h2>
+            <form id="signup-form" class="auth-form" novalidate>
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" autocomplete="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" autocomplete="new-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="nickname">닉네임</label>
+                    <input type="text" id="nickname" name="nickname" placeholder="닉네임을 입력하세요" autocomplete="nickname" required>
+                </div>
+                <p id="signup-error" class="auth-error" hidden></p>
+                <button type="submit" class="btn-auth-submit">회원가입</button>
+            </form>
+            <div class="auth-footer">
+                <span>이미 계정이 있으신가요?</span>
+                <a href="login.html">로그인</a>
+            </div>
         </div>
     </main>
 

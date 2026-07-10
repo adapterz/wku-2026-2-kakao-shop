@@ -42,4 +42,3 @@ INSERT INTO users
 VALUES
 ('test@example.com', '$2b$12$cW1e26NahtBdojprc7/CW.0I1LsMGp7Jk7.IxusI39JJZFKVDoGj6', '테스트유저'),
 ('admin@example.com', '$2b$12$.zT/cEpmxOlibWfJXk6soe8SLuDuSPSAmLmdQhJYgHnVcwUJLDAeG', '관리자');
-
