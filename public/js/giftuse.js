@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             btnUse.textContent = "처리중...";
 
             const useRes = await fetch(`/api/gifts/${giftId}/use`, {
-                method: 'POST',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function renderGift(gift) {
-    if (gift.status === 'USED') {
+    if (gift.status === 'used') {
         alert("이미 사용 완료된 선물입니다.");
         location.href = 'giftbox.html?tab=used';
         return;
