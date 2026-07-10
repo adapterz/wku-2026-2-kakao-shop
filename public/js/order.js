@@ -54,9 +54,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("order-name").textContent = selectedProduct.name;
       
       const totalPrice = selectedProduct.price;
+      const priceStr = `${totalPrice.toLocaleString()}원`;
       
-      document.getElementById("order-unit-price").textContent = `${selectedProduct.price.toLocaleString()}원`;
-      document.getElementById("order-price").textContent = `${totalPrice.toLocaleString()}원`;
+      document.getElementById("order-unit-price").textContent = priceStr;
+      
+      const elTotalPrice = document.getElementById("order-total-price");
+      const elFinalPrice = document.getElementById("order-final-price");
+      const elSubmitPrice = document.getElementById("btn-submit-price");
+      
+      if (elTotalPrice) elTotalPrice.textContent = priceStr;
+      if (elFinalPrice) elFinalPrice.textContent = priceStr;
+      if (elSubmitPrice) elSubmitPrice.textContent = priceStr;
     } else {
       alert("상품 정보를 찾을 수 없습니다.");
       location.href = "index.html";

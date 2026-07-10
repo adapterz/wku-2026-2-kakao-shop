@@ -73,21 +73,47 @@
                 </div>
             </div>
 
-            <!-- Message Card Section -->
-            <div class="order-section">
-                <h4 class="order-section-title">메시지 카드</h4>
-                <textarea id="message-input" placeholder="선물과 함께 보낼 따뜻한 메시지를 적어보세요 (선택)" maxlength="100" style="width: 100%; height: 100px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; resize: none; font-family: inherit;"></textarea>
+            <!-- Payment Info Section -->
+            <div class="order-section" style="padding-top: 20px; border-top: 8px solid #F5F5F5; margin-top: 20px; padding-bottom: 20px;">
+                <h4 class="order-section-title" style="margin-bottom: 20px;">결제 정보</h4>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 12px; color: #191919;">
+                    <span>총 상품금액 (1개)</span>
+                    <span id="order-total-price"></span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 12px; color: #191919;">
+                    <span>할인금액</span>
+                    <span>0원</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 20px; color: #191919;">
+                    <span>쇼핑포인트 사용</span>
+                    <span>0원</span>
+                </div>
+                
+                <div style="border-top: 1px solid #E5E5E5; padding-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 16px; font-weight: 700; color: #191919;">최종 결제금액</span>
+                    <span id="order-final-price" style="font-size: 22px; font-weight: 700; color: #191919;"></span>
+                </div>
             </div>
 
-            <!-- Price Summary & Submit -->
-            <div class="order-summary-section">
-                <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:700; margin-bottom: 20px;">
-                    <span>최종 결제 금액</span>
-                    <span id="order-price" style="color:var(--kakao-brown);"></span>
+            <!-- Terms and Conditions Section -->
+            <div style="border-top: 8px solid #F5F5F5; padding: 20px 0 0 0;">
+                <div style="font-size: 13px; color: #888; margin-bottom: 20px; padding: 0 20px;">
+                    <span style="text-decoration: underline; font-weight: 700; color: #666;">주문내용 및 결제조건을 확인했으며</span>, 결제진행에 동의합니다.
                 </div>
-                <button id="btn-submit-order" class="btn-submit-order" style="width: 100%; padding: 16px; background-color: #FEE500; color: #3C1E1E; font-weight: 700; font-size: 16px; border-radius: 12px; text-align: center; cursor: pointer;">
-                    결제하기
+                
+                <div style="border-top: 8px solid #F5F5F5; padding: 20px; font-size: 12px; color: #999; line-height: 1.5;">
+                    (주)카카오에서 판매하는 상품 중에는 개별 판매자가 판매하는 상품이 포함되어 있습니다. 개별 판매자가 판매하는 상품에 대해 (주)카카오는 통신중개판매업자로서 통신판매의 당사자가 아니며 상품의 주문, 배송 및 환불 등과 관련한 의무와 책임은 각 판매자에게 있습니다.
+                </div>
+            </div>
+
+            <div style="padding: 0 20px 20px;">
+                <button id="btn-submit-order" class="btn-submit-order" style="width: 100%; padding: 16px; background-color: #FEE500; color: #191919; font-weight: 700; font-size: 16px; border-radius: 8px; text-align: center; cursor: pointer; border: none;">
+                    <span id="btn-submit-price"></span> 결제하기
                 </button>
+                <div style="text-align: center; margin-top: 12px; font-size: 13px; color: #FF4B4B;">
+                    카카오토큰 잔액 부족
+                </div>
             </div>
         </div>
     </main>
