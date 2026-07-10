@@ -1,3 +1,6 @@
+DELETE FROM products;
+ALTER TABLE products AUTO_INCREMENT = 1;
+
 INSERT INTO products
 (name, brand, price, thumbnail_url, description, usage_info)
 VALUES
@@ -37,7 +40,7 @@ VALUES
 
 ('익산 로컬 와인 선물세트', '익산와이너리', 40000, 'https://placehold.co/300x300', '익산 지역에서 생산된 농산물을 활용한 로컬 와인 세트입니다.', '직사광선을 피해 서늘한 곳에 보관해주세요.');
 
-INSERT INTO users
+INSERT IGNORE INTO users
 (email, password, nickname)
 VALUES
 ('test@example.com', '$2b$12$cW1e26NahtBdojprc7/CW.0I1LsMGp7Jk7.IxusI39JJZFKVDoGj6', '테스트유저'),
