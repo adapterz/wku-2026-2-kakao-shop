@@ -103,21 +103,26 @@ http://<EC2 퍼블릭 IP>:3000
 ```bash
 #!/bin/bash
 # 목적: EC2 재배포 시 반복되는 명령을 한 번에 실행
-# 왜: git pull + npm install + pm2 restart를 매번 따로 입력하는 번거로움을 줄이기 위함
-# 무엇: 어디서 실행하든 이 스크립트가 있는 프로젝트 폴더로 이동한 뒤 최신 코드 반영·재시작
+# 왜: git pull + npm install + pm2 restart를 매번 따로 입력하는 번거로움을 줄이기 위함, 실제 배포는 main 브랜치만 사용하기로 함
+# 무엇: 어디서 실행하든 이 스크립트가 있는 프로젝트 폴더로 이동해 main으로 전환·최신화 후 재시작
 # 사용법: ./deploy.sh
 
 set -e   # 중간에 어느 명령이든 실패하면 즉시 중단 (예: git pull이 conflict로 실패했는데 옛 코드로 pm2가 재시작되는 것 방지)
 
 cd "$(dirname "$0")"
-git pull origin develop
+git switch main
+git pull origin main
 npm install
 pm2 restart ecosystem.config.js
 ```
 
-`set -e`가 있어서, `git pull`이나 `npm install`이 실패하면 그 즉시 스크립트가 멈추고
+`set -e`가 있어서, `git switch`나 `git pull`, `npm install`이 실패하면 그 즉시 스크립트가 멈추고
 다음 줄(특히 `pm2 restart`)은 실행되지 않습니다. 실패했는데도 옛 코드로 재시작해버려서
 "배포된 줄 착각하는" 상황을 방지합니다.
+
+`git switch main`이 있어서, EC2가 이전에 어떤 브랜치를 체크아웃하고 있었든 항상 `main`으로
+전환한 뒤 최신화됩니다. **실제 배포는 `main` 브랜치 기준으로만 진행**하며, `develop`은 기능
+통합·검증용으로만 사용합니다.
 
 어느 위치에서 실행하든 스크립트가 있는 프로젝트 폴더로 자동 이동한 뒤 실행되도록
 `cd "$(dirname "$0")"`가 들어있습니다. 최초 1회만 실행 권한을 부여합니다.
