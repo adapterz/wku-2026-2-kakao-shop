@@ -53,11 +53,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("order-brand").textContent = selectedProduct.brand;
       document.getElementById("order-name").textContent = selectedProduct.name;
       
-      const quantity = Number(urlParams.get('quantity')) || 1;
-      const totalPrice = Number(urlParams.get('totalPrice')) || (selectedProduct.price * quantity);
+      const totalPrice = selectedProduct.price;
       
       document.getElementById("order-unit-price").textContent = `${selectedProduct.price.toLocaleString()}원`;
-      document.getElementById("order-qty").textContent = quantity;
       document.getElementById("order-price").textContent = `${totalPrice.toLocaleString()}원`;
     } else {
       alert("상품 정보를 찾을 수 없습니다.");
@@ -133,12 +131,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const quantity = Number(urlParams.get('quantity')) || 1;
-    const totalPrice = Number(urlParams.get('totalPrice')) || (selectedProduct ? selectedProduct.price * quantity : 0);
-
     const requestBody = {
       productId: Number(productId),
-      totalPrice: Number(totalPrice),
       message: celebrationMessage ? celebrationMessage.trim() : null,
       isSelfGift: isSelfGift,
       receiverId: Number(receiverId)

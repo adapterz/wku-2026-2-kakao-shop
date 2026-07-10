@@ -39,13 +39,11 @@ async function loadProductDetail(id) {
   }
 }
 
-async function goToOrder(productId, type, quantity = 1, totalPrice = null) {
+async function goToOrder(productId, type) {
   try {
     const response = await fetch('/api/auth/me', { credentials: 'include' });
     if (response.ok) {
       let url = `order.html?productId=${productId}&type=${type}`;
-      if (quantity) url += `&quantity=${quantity}`;
-      if (totalPrice) url += `&totalPrice=${totalPrice}`;
       window.location.href = url;
     } else {
       const redirectTarget = encodeURIComponent(window.location.href);
@@ -143,92 +141,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Quantity Control Logic
-  const btnMinus = document.querySelector('.btn-minus');
-  const btnPlus = document.querySelector('.btn-plus');
-  const quantityNum = document.querySelector('.quantity-number');
-  const totalPriceVal = document.querySelector('.total-price-value');
-  let quantity = 1;
-
   const updateTotalPrice = () => {
+    const totalPriceVal = document.querySelector('.total-price-value');
     if (!totalPriceVal) return;
     const price = window.productPrice || 0;
-    const total = price * quantity;
-    totalPriceVal.textContent = `${total.toLocaleString()}원`;
+    totalPriceVal.textContent = `${price.toLocaleString()}원`;
   };
 
   // Expose function globally so renderProduct can call it when the price is loaded
   window.updateBottomSheetPrice = updateTotalPrice;
-
-  const updateQuantity = (value) => {
-    if (!quantityNum || !btnMinus || !btnPlus) return;
-    quantity = Math.max(1, Math.min(99, value));
-    quantityNum.textContent = quantity;
-    
-    // Update button disabled state
-    btnMinus.disabled = (quantity === 1);
-    btnPlus.disabled = (quantity === 99);
-
-    // Update total price display
-    updateTotalPrice();
-  };
-
-  if (btnMinus) {
-    btnMinus.addEventListener('click', () => {
-      updateQuantity(quantity - 1);
-    });
-  }
-
-  if (btnPlus) {
-    btnPlus.addEventListener('click', () => {
-      updateQuantity(quantity + 1);
-    });
-  }
-
-  if (quantityNum) {
-    quantityNum.addEventListener('click', () => {
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.className = 'quantity-input';
-      input.value = quantity;
-      
-      quantityNum.replaceWith(input);
-      input.focus();
-      input.select();
-
-      const finishEditing = () => {
-        let val = input.value.trim();
-        // Remove non-numeric characters
-        val = val.replace(/[^0-9]/g, '');
-        
-        let numVal = parseInt(val, 10);
-        if (isNaN(numVal) || val === '') {
-          numVal = 1;
-        } else if (numVal <= 0) {
-          numVal = 1;
-        } else if (numVal > 99) {
-          numVal = 99;
-        }
-        
-        updateQuantity(numVal);
-        input.replaceWith(quantityNum);
-      };
-
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          finishEditing();
-        }
-      });
-
-      input.addEventListener('blur', () => {
-        finishEditing();
-      });
-
-      input.addEventListener('input', () => {
-        input.value = input.value.replace(/[^0-9]/g, '');
-      });
-    });
-  }
 
   if (bottomSheetOverlay && bottomSheet) {
     // dim area click
@@ -307,9 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sheetBuyBtn = document.querySelector('.btn-sheet-buy');
   if (sheetBuyBtn) {
     sheetBuyBtn.addEventListener('click', () => {
-      const price = window.productPrice || 0;
-      const total = price * quantity;
-      goToOrder(productId, 'self', quantity, total);
+      goToOrder(productId, 'self');
     });
   }
 

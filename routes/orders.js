@@ -8,7 +8,7 @@ const userModel = require('../db/models/userModel');
 // API 명세서 기준: 결제 Mock/금액 검증 로직 없음 (Issue #141 확정)
 router.post('/', requireLogin, async (req, res) => {
   try {
-    const { productId, message, isSelfGift, receiverId, totalPrice } = req.body;
+    const { productId, message, isSelfGift, receiverId } = req.body;
     const userId = req.session.userId;
 
     if (!productId) {
@@ -39,7 +39,7 @@ router.post('/', requireLogin, async (req, res) => {
       barcode += Math.floor(Math.random() * 10).toString();
     }
 
-    const finalTotalPrice = totalPrice !== undefined ? Number(totalPrice) : product.price;
+    const finalTotalPrice = product.price; // 서버에서 직접 상품 가격 조회
     const orderId = await orderModel.createOrder(userId, productId, finalReceiverId, finalTotalPrice, message || null, isSelfGift);
     const giftId = await orderModel.createGift(orderId, barcode);
 
