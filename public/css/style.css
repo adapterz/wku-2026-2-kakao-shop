@@ -342,11 +342,11 @@ button {
 
 /* Adjust sizes for 3-column grid layout */
 .product-grid .brand-name {
-  font-size: 10px;
+  font-size: 13px;
 }
 
 .product-grid .product-title {
-  font-size: 11px;
+  font-size: 13px;
   height: 34px;
   margin-bottom: 6px;
   line-height: 1.3;
@@ -359,11 +359,11 @@ button {
 }
 
 .product-grid .price {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .product-grid .discount-rate {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .product-grid .btn-action-bag-only {
@@ -418,9 +418,9 @@ button {
 }
 
 .brand-name {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--text-sub);
+  color: var(--text-main);
   margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -682,7 +682,7 @@ button {
 
 .ranking-cards-row .product-title {
   height: 34px;
-  font-size: 11px;
+  font-size: 13px;
   margin-bottom: 6px;
   line-height: 1.3;
   display: -webkit-box;
@@ -694,15 +694,15 @@ button {
 }
 
 .ranking-cards-row .brand-name {
-  font-size: 10px;
+  font-size: 13px;
 }
 
 .ranking-cards-row .price {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .ranking-cards-row .discount-rate {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 
@@ -1238,7 +1238,7 @@ button {
 .order-brand-name {
   font-size: 12px;
   font-weight: 700;
-  color: var(--text-sub);
+  color: var(--text-main);
 }
 
 .order-product-title {
@@ -1822,4 +1822,4 @@ button {
   color: #191919;
   font-family: inherit;
   line-height: 1.5;
-}
+}
