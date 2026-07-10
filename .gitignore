@@ -7,3 +7,10 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+*.log
+*.txt
+!README.txt
+cookie.txt
+payload.json
+*_check.txt
