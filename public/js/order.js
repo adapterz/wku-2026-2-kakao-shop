@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const orderResult = await orderResponse.json();
 
       if (orderResponse.ok && orderResult.code === "ORDER_CREATE_SUCCESS") {
-        location.href = "complete.html";
+        location.href = `complete.html?orderId=${orderResult.data.orderId}`;
       } else {
         alert(orderResult.message || "주문에 실패했습니다. 다시 시도해 주세요.");
         submitOrderBtn.disabled = false;
