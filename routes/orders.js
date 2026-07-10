@@ -39,7 +39,8 @@ router.post('/', requireLogin, async (req, res) => {
       barcode += Math.floor(Math.random() * 10).toString();
     }
 
-    const orderId = await orderModel.createOrder(userId, productId, finalReceiverId, product.price, message || null, isSelfGift);
+    const finalTotalPrice = product.price; // 서버에서 직접 상품 가격 조회
+    const orderId = await orderModel.createOrder(userId, productId, finalReceiverId, finalTotalPrice, message || null, isSelfGift);
     const giftId = await orderModel.createGift(orderId, barcode);
 
     return res.status(201).json({

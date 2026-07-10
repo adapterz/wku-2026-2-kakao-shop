@@ -15,11 +15,14 @@
 
     <!-- Main Header -->
     <header class="main-header">
-        <div class="header-container" style="position: relative;">
-            <button onclick="history.back()" class="header-icon" title="뒤로가기" style="position: absolute; left: 0;">
+        <div class="header-container">
+            <button onclick="history.back()" class="header-icon" title="뒤로가기">
                 <i class="fa-solid fa-chevron-left"></i>
             </button>
-            <span class="header-title" style="position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap;">
+            <span class="header-title">
+                <span class="header-logo-container">
+                    <img src="images/iksan_logo.png" class="header-logo" alt="익산시 로고">
+                </span>
                 선물하기
             </span>
             <div style="width: 24px;"></div>
@@ -29,12 +32,27 @@
     <!-- Main Content Area -->
     <main class="main-content">
         <div class="order-container">
+            <!-- Celebration Card Section -->
+            <div class="celebration-card-container">
+                <div class="celebration-card">
+                    <div class="card-message">
+                        <div class="card-text-primary">나는 내가 챙긴다!</div>
+                        <div class="card-text-secondary">소중한 나에게 주는 선물</div>
+                    </div>
+                    <button class="btn-edit-message" type="button">
+                        T 메시지 편집
+                    </button>
+                </div>
+            </div>
             <!-- Product Info Summary -->
             <div class="order-product-card">
                 <img id="order-product-img" src="" alt="상품 이미지" class="order-product-img">
                 <div class="order-product-info">
                     <span id="order-brand" class="order-brand-name"></span>
                     <h3 id="order-name" class="order-product-title"></h3>
+                    <div class="order-product-qty-price" style="font-size: 13px; color: var(--text-sub); margin-top: 4px;">
+                        <span id="order-unit-price"></span>
+                    </div>
                 </div>
             </div>
 
@@ -55,24 +73,80 @@
                 </div>
             </div>
 
-            <!-- Message Card Section -->
-            <div class="order-section">
-                <h4 class="order-section-title">메시지 카드</h4>
-                <textarea id="message-input" placeholder="선물과 함께 보낼 따뜻한 메시지를 적어보세요 (선택)" maxlength="100" style="width: 100%; height: 100px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; resize: none; font-family: inherit;"></textarea>
+            <!-- Payment Info Section -->
+            <div class="order-section" style="padding-top: 20px; border-top: 8px solid #F5F5F5; margin-top: 20px; padding-bottom: 20px;">
+                <h4 class="order-section-title" style="margin-bottom: 20px;">결제 정보</h4>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 12px; color: #191919;">
+                    <span>총 상품금액 (1개)</span>
+                    <span id="order-total-price"></span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 12px; color: #191919;">
+                    <span>할인금액</span>
+                    <span>0원</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 20px; color: #191919;">
+                    <span>쇼핑포인트 사용</span>
+                    <span>0원</span>
+                </div>
+                
+                <div style="border-top: 1px solid #E5E5E5; padding-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 16px; font-weight: 700; color: #191919;">최종 결제금액</span>
+                    <span id="order-final-price" style="font-size: 22px; font-weight: 700; color: #191919;"></span>
+                </div>
             </div>
 
-            <!-- Price Summary & Submit -->
-            <div class="order-summary-section">
-                <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:700; margin-bottom: 20px;">
-                    <span>최종 결제 금액</span>
-                    <span id="order-price" style="color:var(--kakao-brown);"></span>
+            <!-- Terms and Conditions Section -->
+            <div style="border-top: 8px solid #F5F5F5; padding: 20px 0 0 0;">
+                <div style="font-size: 13px; color: #888; margin-bottom: 20px; padding: 0 20px;">
+                    <span style="text-decoration: underline; font-weight: 700; color: #666;">주문내용 및 결제조건을 확인했으며</span>, 결제진행에 동의합니다.
                 </div>
-                <button id="btn-submit-order" class="btn-submit-order" style="width: 100%; padding: 16px; background-color: #FEE500; color: #3C1E1E; font-weight: 700; font-size: 16px; border-radius: 12px; text-align: center; cursor: pointer;">
-                    결제하기
+                
+                <div style="border-top: 8px solid #F5F5F5; padding: 20px; font-size: 12px; color: #999; line-height: 1.5;">
+                    (주)카카오에서 판매하는 상품 중에는 개별 판매자가 판매하는 상품이 포함되어 있습니다. 개별 판매자가 판매하는 상품에 대해 (주)카카오는 통신중개판매업자로서 통신판매의 당사자가 아니며 상품의 주문, 배송 및 환불 등과 관련한 의무와 책임은 각 판매자에게 있습니다.
+                </div>
+            </div>
+
+            <div style="padding: 0 20px 20px;">
+                <button id="btn-submit-order" class="btn-submit-order" style="width: 100%; padding: 16px; background-color: #FEE500; color: #191919; font-weight: 700; font-size: 16px; border-radius: 8px; text-align: center; cursor: pointer; border: none;">
+                    <span id="btn-submit-price"></span> 결제하기
                 </button>
+                <div style="text-align: center; margin-top: 12px; font-size: 13px; color: #FF4B4B;">
+                    카카오토큰 잔액 부족
+                </div>
             </div>
         </div>
     </main>
+
+    <!-- Message Edit Overlay UI -->
+    <div id="message-edit-overlay" class="message-edit-overlay">
+        <div class="overlay-header">
+            <button id="btn-edit-cancel" class="btn-overlay-nav" type="button">취소</button>
+            <span class="overlay-title">메시지 카드 작성</span>
+            <button id="btn-edit-save" class="btn-overlay-nav" type="button">완료</button>
+        </div>
+        <div class="overlay-body">
+            <!-- Card Preview -->
+            <div class="preview-card-container">
+                <div class="celebration-card preview-card">
+                    <div class="card-message">
+                        <div class="card-text-primary" id="preview-text-primary">나는 내가 챙긴다!</div>
+                        <div class="card-text-secondary" id="preview-text-secondary">소중한 나에게 주는 선물</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Message Input Area -->
+            <div class="message-input-container">
+                <textarea id="edit-message-input" placeholder="메시지를 입력해 주세요." maxlength="100"></textarea>
+                <div class="message-input-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                    <button id="btn-clear-message" class="btn-clear-message" type="button" style="font-size: 13px; color: var(--text-sub); border: none; background: none; cursor: pointer; padding: 0;">삭제</button>
+                    <div class="char-counter" style="font-size: 13px; color: var(--text-muted);">
+                        <span id="current-char-count">0</span>/100
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Script for Interactions -->
     <script src="js/order.js" defer></script>
