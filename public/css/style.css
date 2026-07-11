@@ -89,6 +89,70 @@ button {
   justify-content: center;
 }
 
+.header-right-icons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.login-status-icon-wrapper {
+  position: relative;
+}
+
+.login-status-icon-wrapper.logged-in {
+  color: #0F6E56;
+}
+
+.login-status-dot {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #0F6E56;
+  border: 1.5px solid #FFFFFF;
+}
+
+.login-status-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 54px;
+  margin-top: 8px;
+  width: 160px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 12px;
+  z-index: 200;
+}
+
+.login-status-nickname {
+  font-size: 14px;
+  font-weight: 700;
+  color: #191919;
+  margin-bottom: 2px;
+}
+
+.login-status-welcome {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.login-status-divider {
+  border-top: 1px solid var(--border-color);
+  padding-top: 10px;
+}
+
+.login-status-logout {
+  font-size: 13px;
+  color: var(--accent-red);
+  width: 100%;
+  text-align: left;
+}
+
 .header-title {
   font-size: 18px;
   font-weight: 700;
