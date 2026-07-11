@@ -107,15 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Helper to show error state when API request fails
   function showErrorState() {
-    const productGrid = document.querySelector('.product-grid');
-    if (productGrid) {
-      productGrid.innerHTML = `
-        <div class="error-state">
-          <i class="fa-solid fa-circle-exclamation"></i>
-          <p>상품 정보를 불러오는 데 실패했습니다.<br>잠시 후 다시 시도해 주세요.</p>
-        </div>
-      `;
-    }
+
     const rankingRow = document.querySelector('.ranking-cards-row');
     if (rankingRow) {
       rankingRow.innerHTML = `
@@ -134,25 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderProductsData(products) {
     activeFilteredProducts = products;
     rankingVisibleCount = Math.min(6, products.length);
-    productsVisibleCount = Math.min(6, products.length);
 
-    // Render recommended products (first 6 items)
-    const productGrid = document.querySelector('.product-grid');
-    if (productGrid) {
-      productGrid.innerHTML = '';
-      if (products.length === 0) {
-        productGrid.innerHTML = `
-          <div class="empty-state">
-            <i class="fa-solid fa-box-open"></i>
-            <p>조건에 맞는 상품이 없습니다.</p>
-          </div>
-        `;
-      } else {
-        products.slice(0, productsVisibleCount).forEach(product => {
-          productGrid.appendChild(createProductCard(product));
-        });
-      }
-    }
 
     // Render ranking products (first 6 items)
     const rankingRow = document.querySelector('.ranking-cards-row');
@@ -223,42 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Segment Target Filter Click Logic (모두가, 여성이, 남성이, 청소년이)
-  const segmentItems = document.querySelectorAll('.segment-item');
-  segmentItems.forEach(item => {
-    item.addEventListener('click', () => {
-      segmentItems.forEach(el => el.classList.remove('active'));
-      item.classList.add('active');
-    });
-  });
 
-  // Rank Filter Tabs Click Logic (받고 싶어한, 많이 선물한, 위시로 받은)
-  const rankFilterTabs = document.querySelectorAll('.rank-filter-tab');
-  rankFilterTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      rankFilterTabs.forEach(el => el.classList.remove('active'));
-      tab.classList.add('active');
-    });
-  });
-
-  // Price Filter Pills Click Logic (1만원 미만, 1만원대, 2만원대...)
-  const pricePills = document.querySelectorAll('.price-pill');
-  pricePills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      pricePills.forEach(el => el.classList.remove('active'));
-      pill.classList.add('active');
-
-      const minPrice = Number(pill.getAttribute('data-min') || 0);
-      const maxPrice = Number(pill.getAttribute('data-max') || 999999999);
-
-      const filtered = cachedProducts.filter(p => {
-        const price = Number(p.price || 0);
-        return price >= minPrice && price <= maxPrice;
-      });
-
-      renderProductsData(filtered);
-    });
-  });
 
   // Top Nav Tab Bar Click Logic (FOR ME, 홈, 랭킹, 썸머세일, 와인/맥주...)
   const navItems = document.querySelectorAll('.nav-item');
@@ -282,6 +221,57 @@ document.addEventListener('DOMContentLoaded', () => {
         navBar.scrollLeft += e.deltaY;
       }
     }, { passive: false });
+  }
+
+  // Mouse wheel & drag scrolling for .category-grid
+  const categoryGrid = document.querySelector('.category-grid');
+  if (categoryGrid) {
+    // Wheel scroll
+    categoryGrid.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        categoryGrid.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+
+    // Drag to scroll
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    categoryGrid.addEventListener('mousedown', (e) => {
+      isDown = true;
+      categoryGrid.style.cursor = 'grabbing';
+      startX = e.pageX - categoryGrid.offsetLeft;
+      scrollLeft = categoryGrid.scrollLeft;
+    });
+    categoryGrid.addEventListener('mouseleave', () => {
+      isDown = false;
+      categoryGrid.style.cursor = 'pointer';
+    });
+    categoryGrid.addEventListener('mouseup', () => {
+      isDown = false;
+      categoryGrid.style.cursor = 'pointer';
+    });
+    categoryGrid.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - categoryGrid.offsetLeft;
+      const walk = (x - startX) * 2;
+      categoryGrid.scrollLeft = scrollLeft - walk;
+    });
+
+    // Disable click navigation for all category items (ui only)
+    const categoryCards = categoryGrid.querySelectorAll('.category-card');
+    categoryCards.forEach((card) => {
+      card.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent default link behavior (jumping to top)
+        // Additional functional behaviors are disabled here
+      });
+    });
+
+    // Handle '더보기' button click normally if clicked without dragging
+    // The browser natively handles link clicks if drag isn't significantly moving the mouse.
   }
 
   // Sub Tab Segmented Control (선물 테마, 카테고리, 추천 브랜드) Click Logic
@@ -319,27 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Products Section "더보기" (Show More) Click Logic
-  const btnProductsMore = document.getElementById('btn-products-more');
 
-  if (btnProductsMore) {
-    btnProductsMore.addEventListener('click', () => {
-      const productGrid = document.querySelector('.product-grid');
-      if (!productGrid) return;
-
-      if (productsVisibleCount >= activeFilteredProducts.length) {
-        alert('더 이상 불러올 상품이 없습니다.');
-        return;
-      }
-
-      // Get the next 9 products
-      const nextProducts = activeFilteredProducts.slice(productsVisibleCount, productsVisibleCount + 9);
-      nextProducts.forEach(product => {
-        productGrid.appendChild(createProductCard(product));
-      });
-      productsVisibleCount += nextProducts.length;
-    });
-  }
 
   // Header 로그인 상태 아이콘: 로그인 여부 확인 후 아이콘/드롭다운 표시
   const loginStatusBtn = document.getElementById('btn-login-status');
@@ -354,19 +324,30 @@ document.addEventListener('DOMContentLoaded', () => {
   async function checkLoginStatus() {
     try {
       const response = await fetch('/api/auth/me', { credentials: 'include' });
+      const recTitle = document.getElementById('recommendation-title');
+
       if (response.ok) {
         const result = await response.json();
         isLoggedIn = true;
         currentNickname = (result.data && result.data.nickname) || '';
+        const currentUserId = (result.data && result.data.userId) || '';
+
         if (loginStatusBtn) loginStatusBtn.classList.add('logged-in');
         if (loginStatusDot) loginStatusDot.hidden = false;
+
+        if (recTitle && currentNickname) {
+          recTitle.textContent = `${currentNickname}님을 위한 추천 상품`;
+        }
       } else {
         isLoggedIn = false;
         if (loginStatusBtn) loginStatusBtn.classList.remove('logged-in');
         if (loginStatusDot) loginStatusDot.hidden = true;
+        if (recTitle) recTitle.textContent = '회원님을 위한 추천 상품';
       }
     } catch (error) {
       console.error('로그인 상태 확인 실패:', error);
+      const recTitle = document.getElementById('recommendation-title');
+      if (recTitle) recTitle.textContent = '회원님을 위한 추천 상품';
     }
   }
 
