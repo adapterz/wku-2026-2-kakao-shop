@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Page</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header Area -->
+    <header class="mypage-header">
+        <button class="icon-btn" aria-label="설정">
+            <i class="fa-solid fa-gear"></i>
+        </button>
+        <div class="header-tabs">
+            <button class="tab-btn active">내 쇼핑</button>
+            <span class="tab-divider">|</span>
+            <button class="tab-btn">내 프로필</button>
+        </div>
+        <button class="icon-btn" aria-label="장바구니">
+            <i class="fa-solid fa-bag-shopping"></i>
+        </button>
+    </header>
+    <!-- Profile Area -->
+    <section class="profile-section">
+        <div class="profile-info-row">
+            <div class="profile-img-container">
+                <i class="fa-solid fa-circle-user profile-placeholder"></i>
+            </div>
+            <div class="profile-details">
+                <h2 class="profile-nickname">vn53yflp</h2>
+                <div class="profile-stats">
+                    <span>팔로워 <strong>0</strong></span>
+                    <span class="stat-divider">|</span>
+                    <span>팔로잉 <strong>0</strong></span>
+                </div>
+            </div>
+        </div>
+        <div class="profile-actions">
+            <button class="action-btn">프로필 관리</button>
+            <button class="action-btn">프로필 공유</button>
+        </div>
+    </section>
+    <!-- JS -->
+    <script src="js/mypage.js" defer></script>
+</body>
+</html>
