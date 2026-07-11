@@ -107,15 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Helper to show error state when API request fails
   function showErrorState() {
-    const productGrid = document.querySelector('.product-grid');
-    if (productGrid) {
-      productGrid.innerHTML = `
-        <div class="error-state">
-          <i class="fa-solid fa-circle-exclamation"></i>
-          <p>상품 정보를 불러오는 데 실패했습니다.<br>잠시 후 다시 시도해 주세요.</p>
-        </div>
-      `;
-    }
+
     const rankingRow = document.querySelector('.ranking-cards-row');
     if (rankingRow) {
       rankingRow.innerHTML = `
@@ -134,25 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderProductsData(products) {
     activeFilteredProducts = products;
     rankingVisibleCount = Math.min(6, products.length);
-    productsVisibleCount = Math.min(6, products.length);
 
-    // Render recommended products (first 6 items)
-    const productGrid = document.querySelector('.product-grid');
-    if (productGrid) {
-      productGrid.innerHTML = '';
-      if (products.length === 0) {
-        productGrid.innerHTML = `
-          <div class="empty-state">
-            <i class="fa-solid fa-box-open"></i>
-            <p>조건에 맞는 상품이 없습니다.</p>
-          </div>
-        `;
-      } else {
-        products.slice(0, productsVisibleCount).forEach(product => {
-          productGrid.appendChild(createProductCard(product));
-        });
-      }
-    }
 
     // Render ranking products (first 6 items)
     const rankingRow = document.querySelector('.ranking-cards-row');
@@ -335,27 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Products Section "더보기" (Show More) Click Logic
-  const btnProductsMore = document.getElementById('btn-products-more');
 
-  if (btnProductsMore) {
-    btnProductsMore.addEventListener('click', () => {
-      const productGrid = document.querySelector('.product-grid');
-      if (!productGrid) return;
-
-      if (productsVisibleCount >= activeFilteredProducts.length) {
-        alert('더 이상 불러올 상품이 없습니다.');
-        return;
-      }
-
-      // Get the next 9 products
-      const nextProducts = activeFilteredProducts.slice(productsVisibleCount, productsVisibleCount + 9);
-      nextProducts.forEach(product => {
-        productGrid.appendChild(createProductCard(product));
-      });
-      productsVisibleCount += nextProducts.length;
-    });
-  }
 
   // Header 로그인 상태 아이콘: 로그인 여부 확인 후 아이콘/드롭다운 표시
   const loginStatusBtn = document.getElementById('btn-login-status');
