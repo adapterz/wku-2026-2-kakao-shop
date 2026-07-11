@@ -1947,8 +1947,10 @@ button {
     overflow: hidden;
     color: #d1d1d1;
 }
-.profile-img-container .profile-placeholder {
-    font-size: 80px;
+.profile-img-container .profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 .profile-details {
     display: flex;
@@ -1989,4 +1991,157 @@ button {
     font-weight: 500;
     cursor: pointer;
     color: #333;
+}
+
+/* Thick Divider */
+.thick-divider {
+    height: 8px;
+    background-color: #f4f4f4;
+    width: 100%;
+}
+
+/* Grid Section */
+.grid-section {
+    background-color: #fff;
+    padding: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px 10px;
+}
+
+.grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.grid-icon {
+    font-size: 24px;
+    color: #333;
+}
+
+.grid-text {
+    font-size: 13px;
+    color: #333;
+}
+
+/* History Section */
+.history-section {
+    background-color: #fff;
+    padding: 20px;
+}
+
+.history-section .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.history-box {
+    display: flex;
+    justify-content: space-around;
+    background-color: #fafafa;
+    border-radius: 12px;
+    padding: 20px 10px;
+}
+
+.history-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+}
+
+.history-label {
+    font-size: 13px;
+    color: #666;
+}
+
+.history-count {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.highlight-count {
+    color: #f15746; /* Matching the red color usually used for highlight in KREAM-like apps */
+}
+
+/* Policy Grid Section */
+.policy-grid-section {
+    background-color: #fff;
+}
+
+.policy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid #EAEAEA;
+}
+
+.policy-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 10px;
+    font-size: 13px;
+    color: #333;
+    border-bottom: 1px solid #EAEAEA;
+    border-right: 1px solid #EAEAEA;
+    text-align: center;
+}
+
+.policy-item:nth-child(3n) {
+    border-right: none;
+}
+
+/* Customer Service Section */
+.cs-section {
+    background-color: #fff;
+    padding: 20px;
+}
+
+.cs-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.cs-desc {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+.cs-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.cs-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #EAEAEA;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #fff;
+    color: #333;
+}
+
+.cs-btn.black-btn {
+    background-color: #222;
+    color: #fff;
+    border: none;
 }
