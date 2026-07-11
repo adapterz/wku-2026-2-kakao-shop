@@ -284,6 +284,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: false });
   }
 
+  // Mouse wheel & drag scrolling for .category-grid
+  const categoryGrid = document.querySelector('.category-grid');
+  if (categoryGrid) {
+    // Wheel scroll
+    categoryGrid.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        categoryGrid.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+
+    // Drag to scroll
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    categoryGrid.addEventListener('mousedown', (e) => {
+      isDown = true;
+      categoryGrid.style.cursor = 'grabbing';
+      startX = e.pageX - categoryGrid.offsetLeft;
+      scrollLeft = categoryGrid.scrollLeft;
+    });
+    categoryGrid.addEventListener('mouseleave', () => {
+      isDown = false;
+      categoryGrid.style.cursor = 'pointer';
+    });
+    categoryGrid.addEventListener('mouseup', () => {
+      isDown = false;
+      categoryGrid.style.cursor = 'pointer';
+    });
+    categoryGrid.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - categoryGrid.offsetLeft;
+      const walk = (x - startX) * 2;
+      categoryGrid.scrollLeft = scrollLeft - walk;
+    });
+
+    // Disable click navigation for all category items (ui only)
+    const categoryCards = categoryGrid.querySelectorAll('.category-card');
+    categoryCards.forEach((card) => {
+      card.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent default link behavior (jumping to top)
+        // Additional functional behaviors are disabled here
+      });
+    });
+
+    // Handle '더보기' button click normally if clicked without dragging
+    // The browser natively handles link clicks if drag isn't significantly moving the mouse.
+  }
+
   // Sub Tab Segmented Control (선물 테마, 카테고리, 추천 브랜드) Click Logic
   const pillBtns = document.querySelectorAll('.pill-btn');
   const pillSelector = document.querySelector('.pill-selector');
