@@ -28,6 +28,15 @@ router.post('/', requireLogin, async (req, res) => {
       return res.status(404).json({ status: 404, code: "PRODUCT_NOT_FOUND", message: null, data: null });
     }
 
+    if (!isSelfGift && Number(receiverId) === userId) {
+      return res.status(404).json({
+        status: 404,
+        code: "RECEIVER_NOT_FOUND",
+        message: null,
+        data: null
+      });
+    }
+
     const receiver = await userModel.getUserById(finalReceiverId);
     if (!receiver) {
       return res.status(404).json({ status: 404, code: "RECEIVER_NOT_FOUND", message: null, data: null });
