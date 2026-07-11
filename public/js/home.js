@@ -126,32 +126,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   let cachedProducts = [];
+  let activeFilteredProducts = [];
   let rankingVisibleCount = 6;
   let productsVisibleCount = 6;
 
   // Helper to render products into layout elements
   function renderProductsData(products) {
-    if (!products || products.length === 0) {
-      showEmptyState();
-      return;
-    }
+    activeFilteredProducts = products;
+    rankingVisibleCount = Math.min(6, products.length);
+    productsVisibleCount = Math.min(6, products.length);
 
     // Render recommended products (first 6 items)
     const productGrid = document.querySelector('.product-grid');
     if (productGrid) {
       productGrid.innerHTML = '';
-      products.slice(0, 6).forEach(product => {
-        productGrid.appendChild(createProductCard(product));
-      });
+      if (products.length === 0) {
+        productGrid.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-box-open"></i>
+            <p>조건에 맞는 상품이 없습니다.</p>
+          </div>
+        `;
+      } else {
+        products.slice(0, productsVisibleCount).forEach(product => {
+          productGrid.appendChild(createProductCard(product));
+        });
+      }
     }
 
     // Render ranking products (first 6 items)
     const rankingRow = document.querySelector('.ranking-cards-row');
     if (rankingRow) {
       rankingRow.innerHTML = '';
-      products.slice(0, 6).forEach((product, idx) => {
-        rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: idx + 1 }));
-      });
+      if (products.length === 0) {
+        rankingRow.innerHTML = `
+          <div class="empty-state">
+            <p>조건에 맞는 상품이 없습니다.</p>
+          </div>
+        `;
+      } else {
+        products.slice(0, rankingVisibleCount).forEach((product, idx) => {
+          rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: idx + 1 }));
+        });
+      }
     }
   }
 
@@ -230,6 +247,16 @@ document.addEventListener('DOMContentLoaded', () => {
     pill.addEventListener('click', () => {
       pricePills.forEach(el => el.classList.remove('active'));
       pill.classList.add('active');
+
+      const minPrice = Number(pill.getAttribute('data-min') || 0);
+      const maxPrice = Number(pill.getAttribute('data-max') || 999999999);
+
+      const filtered = cachedProducts.filter(p => {
+        const price = Number(p.price || 0);
+        return price >= minPrice && price <= maxPrice;
+      });
+
+      renderProductsData(filtered);
     });
   });
 
@@ -278,13 +305,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const rankingRow = document.querySelector('.ranking-cards-row');
       if (!rankingRow) return;
 
-      if (rankingVisibleCount >= cachedProducts.length) {
+      if (rankingVisibleCount >= activeFilteredProducts.length) {
         alert('더 이상 불러올 상품이 없습니다.');
         return;
       }
 
       // Get the next 9 products
-      const nextProducts = cachedProducts.slice(rankingVisibleCount, rankingVisibleCount + 9);
+      const nextProducts = activeFilteredProducts.slice(rankingVisibleCount, rankingVisibleCount + 9);
       nextProducts.forEach((product, idx) => {
         rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: rankingVisibleCount + idx + 1 }));
       });
@@ -300,13 +327,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const productGrid = document.querySelector('.product-grid');
       if (!productGrid) return;
 
-      if (productsVisibleCount >= cachedProducts.length) {
+      if (productsVisibleCount >= activeFilteredProducts.length) {
         alert('더 이상 불러올 상품이 없습니다.');
         return;
       }
 
       // Get the next 9 products
-      const nextProducts = cachedProducts.slice(productsVisibleCount, productsVisibleCount + 9);
+      const nextProducts = activeFilteredProducts.slice(productsVisibleCount, productsVisibleCount + 9);
       nextProducts.forEach(product => {
         productGrid.appendChild(createProductCard(product));
       });
