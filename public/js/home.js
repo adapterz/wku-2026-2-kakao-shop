@@ -340,4 +340,66 @@ document.addEventListener('DOMContentLoaded', () => {
       productsVisibleCount += nextProducts.length;
     });
   }
+
+  // Header 로그인 상태 아이콘: 로그인 여부 확인 후 아이콘/드롭다운 표시
+  const loginStatusBtn = document.getElementById('btn-login-status');
+  const loginStatusDot = document.getElementById('login-status-dot');
+  const loginStatusDropdown = document.getElementById('login-status-dropdown');
+  const loginStatusNickname = document.getElementById('login-status-nickname');
+  const logoutBtn = document.getElementById('btn-logout');
+
+  let isLoggedIn = false;
+  let currentNickname = '';
+
+  async function checkLoginStatus() {
+    try {
+      const response = await fetch('/api/auth/me', { credentials: 'include' });
+      if (response.ok) {
+        const result = await response.json();
+        isLoggedIn = true;
+        currentNickname = (result.data && result.data.nickname) || '';
+        if (loginStatusBtn) loginStatusBtn.classList.add('logged-in');
+        if (loginStatusDot) loginStatusDot.hidden = false;
+      } else {
+        isLoggedIn = false;
+        if (loginStatusBtn) loginStatusBtn.classList.remove('logged-in');
+        if (loginStatusDot) loginStatusDot.hidden = true;
+      }
+    } catch (error) {
+      console.error('로그인 상태 확인 실패:', error);
+    }
+  }
+
+  checkLoginStatus();
+
+  if (loginStatusBtn) {
+    loginStatusBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isLoggedIn) {
+        if (loginStatusNickname) loginStatusNickname.textContent = `${currentNickname}님`;
+        if (loginStatusDropdown) loginStatusDropdown.hidden = !loginStatusDropdown.hidden;
+      } else {
+        window.location.href = `login.html?redirect=${encodeURIComponent(window.location.href)}`;
+      }
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+      } catch (error) {
+        console.error('로그아웃 요청 실패:', error);
+      }
+      window.location.reload();
+    });
+  }
+
+  // 드롭다운 바깥 클릭 시 닫기
+  document.addEventListener('click', (e) => {
+    if (!loginStatusDropdown || loginStatusDropdown.hidden) return;
+    if (loginStatusBtn && loginStatusBtn.contains(e.target)) return;
+    if (loginStatusDropdown.contains(e.target)) return;
+    loginStatusDropdown.hidden = true;
+  });
 });

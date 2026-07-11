@@ -25,9 +25,21 @@
                 </span>
                 선물하기
             </span>
-            <a href="#" id="btn-search-open" class="header-icon" title="검색">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </a>
+            <div class="header-right-icons">
+                <a href="#" id="btn-search-open" class="header-icon" title="검색">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </a>
+                <a href="#" id="btn-login-status" class="header-icon login-status-icon-wrapper" title="로그인 상태">
+                    <i id="login-status-icon" class="fa-regular fa-user"></i>
+                    <span id="login-status-dot" class="login-status-dot" hidden></span>
+                </a>
+            </div>
+            <div id="login-status-dropdown" class="login-status-dropdown" hidden>
+                <p id="login-status-nickname" class="login-status-nickname"></p>
+                <p class="login-status-welcome">환영합니다</p>
+                <div class="login-status-divider"></div>
+                <button id="btn-logout" class="login-status-logout">로그아웃</button>
+            </div>
         </div>
     </header>
 
