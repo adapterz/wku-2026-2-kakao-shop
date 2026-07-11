@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const price = Number(product.price || 0);
     const discountRate = product.discountRate || 0;
-    const wishCount = product.wishCount || 0;
     const thumbnailUrl = product.thumbnailUrl || '';
     const name = product.name || '';
     const brand = product.brand || '';
@@ -27,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
           ${discountHtml}
           <span class="price">${formattedPrice}</span>
         </div>
-        <div class="stats-row" style="font-size: 12px; color: #999999; margin-top: auto;">
-          관심 ${Number(wishCount || 0).toLocaleString()} · 리뷰 ${Number(product.reviewCount || 0).toLocaleString()}
+        <div class="stats-row">
+          관심 0 · 리뷰 0
         </div>
       </div>
     `;
@@ -82,13 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Helper to render products into layout elements
   function renderProductsData(products) {
     activeFilteredProducts = products;
-    rankingVisibleCount = 18; // Default to 18
+    rankingVisibleCount = products.length; // Default to all products
 
     // Render horizontal list 1 (today's top traded)
     const list1 = document.getElementById('horizontal-list-1');
     if (list1) {
       list1.innerHTML = '';
-      products.slice(0, 18).forEach(product => {
+      products.forEach(product => {
         list1.appendChild(createProductCard(product));
       });
     }
@@ -97,44 +96,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const list2 = document.getElementById('horizontal-list-2');
     if (list2) {
       list2.innerHTML = '';
-      [...products].reverse().slice(0, 18).forEach(product => {
+      [...products].reverse().forEach(product => {
         list2.appendChild(createProductCard(product));
       });
     }
 
-    // Render ranking products (first 18 items)
+    // Render ranking products
     const rankingRow = document.querySelector('.ranking-cards-row');
     if (rankingRow) {
       rankingRow.innerHTML = '';
-      products.slice(0, 18).forEach((product, idx) => {
+      products.forEach((product, idx) => {
         rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: idx + 1 }));
       });
     }
 
-    // Hide the '더보기' button as we are rendering all 18 by default
+    // Hide the '더보기' button as we are rendering all by default
     const btnRankingMore = document.getElementById('btn-ranking-more');
     if (btnRankingMore) {
       btnRankingMore.style.display = 'none';
     }
-  }
-
-  // Helper to generate mock products if API data is insufficient
-  function getMockProducts(count, startIndex = 0) {
-    const mocks = [];
-    for (let i = 0; i < count; i++) {
-      const idx = startIndex + i + 1;
-      mocks.push({
-        id: `mock-${idx}`,
-        name: `[테스트 상품] 카카오 인기 선물 ${idx}`,
-        brand: 'Kakao Friends',
-        price: 15000 + (idx * 1000),
-        discountRate: Math.floor(Math.random() * 50) + 10,
-        wishCount: Math.floor(Math.random() * 10000) + 100,
-        reviewCount: Math.floor(Math.random() * 500) + 50,
-        thumbnailUrl: 'https://img1.kakaocdn.net/thumb/C320x320@2x.fwebp.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20240516084656_9c7198bb62be4447a19246146c2db6d0.jpg'
-      });
-    }
-    return mocks;
   }
 
   // Load products from /api/products
@@ -152,12 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (error) {
       console.error('Failed to fetch products from API:', error);
-    }
-
-    // Ensure we have exactly 18 products by padding with mock data
-    if (apiProducts.length < 18) {
-      const missingCount = 18 - apiProducts.length;
-      apiProducts = [...apiProducts, ...getMockProducts(missingCount, apiProducts.length)];
     }
 
     cachedProducts = apiProducts;

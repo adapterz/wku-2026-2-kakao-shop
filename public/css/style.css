@@ -654,9 +654,18 @@ button {
   font-weight: 700;
 }
 
-.horizontal-product-list .stats-row {
-  font-size: 10px !important;
+/* Stats Row for Interest & Review Counts */
+.product-card .stats-row {
+  font-size: 11px;
+  color: #999999;
+  margin-top: 4px;
 }
+
+.horizontal-product-list .stats-row {
+  font-size: 10px;
+}
+
+
 
 
 
