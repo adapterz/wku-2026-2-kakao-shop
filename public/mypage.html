@@ -54,27 +54,62 @@
     <section class="grid-section">
         <div class="grid-container">
             <a href="#" class="grid-item">
-                <i class="fa-solid fa-medal grid-icon"></i>
+                <div class="icon-wrapper">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 22 8 22 16 12 22 2 16 2 8 12 2"></polygon>
+                        <text x="12" y="16.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#222" stroke="none" font-family="sans-serif">S</text>
+                    </svg>
+                </div>
                 <span class="grid-text">판매자 등급</span>
             </a>
             <a href="#" class="grid-item">
-                <i class="fa-solid fa-p grid-icon"></i>
-                <span class="grid-text">포인트</span>
+                <div class="icon-wrapper">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <text x="12" y="16.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#222" stroke="none" font-family="sans-serif">P</text>
+                    </svg>
+                </div>
+                <span class="grid-text">0P</span>
             </a>
             <a href="#" class="grid-item">
-                <i class="fa-solid fa-ticket grid-icon"></i>
-                <span class="grid-text">쿠폰</span>
+                <div class="icon-wrapper">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                        <path d="M4 6h16a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V8a2 2 0 0 1 2-2z"></path>
+                        <path d="M15 6v12"></path>
+                    </svg>
+                    <span class="red-dot"></span>
+                </div>
+                <span class="grid-text">쿠폰 29</span>
             </a>
             <a href="#" class="grid-item">
-                <i class="fa-regular fa-comment-dots grid-icon"></i>
+                <div class="icon-wrapper">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        <polygon points="12 6 13.5 9.5 17 10 14.5 12.5 15 16 12 14.5 9 16 9.5 12.5 7 10 10.5 9.5 12 6" fill="none" stroke="#222" stroke-width="1.5"></polygon>
+                    </svg>
+                </div>
                 <span class="grid-text">리뷰</span>
             </a>
             <a href="#" class="grid-item">
-                <i class="fa-solid fa-user-group grid-icon"></i>
+                <div class="icon-wrapper">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M19 8a3 3 0 0 1 0 6"></path>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                    </svg>
+                </div>
                 <span class="grid-text">친구 초대</span>
             </a>
             <a href="#" class="grid-item">
-                <i class="fa-regular fa-bell grid-icon"></i>
+                <div class="icon-wrapper">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                        <rect x="3" y="8" width="18" height="13" rx="1"></rect>
+                        <path d="M3 8l3-5h12l3 5"></path>
+                        <path d="M10 12h4"></path>
+                    </svg>
+                    <span class="red-dot"></span>
+                </div>
                 <span class="grid-text">공지사항</span>
             </a>
         </div>
@@ -137,7 +172,43 @@
         </div>
     </section>
 
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10l8-7 8 7v11H4z"></path><line x1="9" y1="17" x2="15" y2="17"></line></svg>
+            <span class="nav-text">HOME</span>
+        </a>
+        <a href="#" class="nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="4" width="16" height="16"></rect>
+                <path d="M8 9.5a2.5 2.5 0 0 1 5 0c0 3-5 5.5-5 5.5s-5-2.5-5-5.5a2.5 2.5 0 0 1 5 0z" fill="currentColor" stroke="none"></path>
+                <line x1="8" y1="16" x2="16" y2="16"></line>
+                <line x1="8" y1="18" x2="14" y2="18"></line>
+            </svg>
+            <span class="nav-text">STYLE</span>
+        </a>
+        <a href="#" class="nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="14" cy="10" r="6"></circle>
+                <line x1="18.5" y1="14.5" x2="22" y2="18"></line>
+                <line x1="2" y1="10" x2="6" y2="10"></line>
+                <line x1="4" y1="6" x2="6" y2="6"></line>
+                <line x1="4" y1="14" x2="6" y2="14"></line>
+            </svg>
+            <span class="nav-text">SHOP</span>
+        </a>
+        <a href="#" class="nav-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+            <span class="nav-text">SAVED</span>
+        </a>
+        <a href="mypage.html" class="nav-item active">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span class="nav-text">MY</span>
+        </a>
+    </nav>
+
     <!-- JS -->
     <script src="js/mypage.js" defer></script>
+    <script src="js/component.js" defer></script>
 </body>
 </html>
