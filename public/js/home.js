@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const price = Number(product.price || 0);
     const discountRate = product.discountRate || 0;
-    const wishCount = product.wishCount || 0;
     const thumbnailUrl = product.thumbnailUrl || '';
     const name = product.name || '';
     const brand = product.brand || '';
@@ -27,54 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
           ${discountHtml}
           <span class="price">${formattedPrice}</span>
         </div>
-        <div class="card-actions-row">
-          <button class="btn-action-bag-only" aria-label="선물상자에 담기">
-            <i class="fa-solid fa-bag-shopping"></i>
-          </button>
-          <div class="btn-action-wish-row">
-            <i class="fa-regular fa-heart"></i>
-            <span class="wish-count">${Number(wishCount || 0).toLocaleString()}</span>
-          </div>
+        <div class="stats-row">
+          관심 0 · 리뷰 0
         </div>
       </div>
     `;
-
-    // Wishlist click handler
-    const wishBtn = card.querySelector('.btn-action-wish-row');
-    if (wishBtn) {
-      wishBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const icon = wishBtn.querySelector('i');
-        const countSpan = wishBtn.querySelector('.wish-count');
-        wishBtn.classList.toggle('active');
-
-        if (wishBtn.classList.contains('active')) {
-          icon.classList.remove('fa-regular');
-          icon.classList.add('fa-solid');
-        } else {
-          icon.classList.remove('fa-solid');
-          icon.classList.add('fa-regular');
-        }
-
-        let countText = countSpan.textContent.replace(/,/g, '');
-        let currentCount = parseInt(countText, 10) || 0;
-        if (wishBtn.classList.contains('active')) {
-          currentCount += 1;
-        } else {
-          currentCount = Math.max(0, currentCount - 1);
-        }
-        countSpan.textContent = currentCount.toLocaleString();
-      });
-    }
-
-    // Shopping Bag click handler
-    const bagBtn = card.querySelector('.btn-action-bag-only');
-    if (bagBtn) {
-      bagBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        alert('선물상자에 상품이 추가되었습니다!');
-      });
-    }
 
     // Card click handler to navigate to product.html?id=ID
     card.addEventListener('click', () => {
@@ -125,52 +81,61 @@ document.addEventListener('DOMContentLoaded', () => {
   // Helper to render products into layout elements
   function renderProductsData(products) {
     activeFilteredProducts = products;
-    rankingVisibleCount = Math.min(6, products.length);
+    rankingVisibleCount = products.length; // Default to all products
 
+    // Render horizontal list 1 (today's top traded)
+    const list1 = document.getElementById('horizontal-list-1');
+    if (list1) {
+      list1.innerHTML = '';
+      products.forEach(product => {
+        list1.appendChild(createProductCard(product));
+      });
+    }
 
-    // Render ranking products (first 6 items)
+    // Render horizontal list 2 (most noted)
+    const list2 = document.getElementById('horizontal-list-2');
+    if (list2) {
+      list2.innerHTML = '';
+      [...products].reverse().forEach(product => {
+        list2.appendChild(createProductCard(product));
+      });
+    }
+
+    // Render ranking products
     const rankingRow = document.querySelector('.ranking-cards-row');
     if (rankingRow) {
       rankingRow.innerHTML = '';
-      if (products.length === 0) {
-        rankingRow.innerHTML = `
-          <div class="empty-state">
-            <p>조건에 맞는 상품이 없습니다.</p>
-          </div>
-        `;
-      } else {
-        products.slice(0, rankingVisibleCount).forEach((product, idx) => {
-          rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: idx + 1 }));
-        });
-      }
+      products.forEach((product, idx) => {
+        rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: idx + 1 }));
+      });
+    }
+
+    // Hide the '더보기' button as we are rendering all by default
+    const btnRankingMore = document.getElementById('btn-ranking-more');
+    if (btnRankingMore) {
+      btnRankingMore.style.display = 'none';
     }
   }
 
   // Load products from /api/products
   async function loadProducts() {
+    let apiProducts = [];
     try {
       const response = await fetch('/api/products');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (response.ok) {
+        const result = await response.json();
+        if (result && result.data && Array.isArray(result.data)) {
+          apiProducts = result.data;
+        }
+      } else {
+        console.warn(`HTTP error! status: ${response.status}`);
       }
-      const result = await response.json();
-
-      if (!result || typeof result !== 'object') {
-        throw new Error('Invalid JSON response format');
-      }
-      if (!('data' in result)) {
-        throw new Error('Response payload is missing "data" property');
-      }
-      if (!Array.isArray(result.data)) {
-        throw new Error('Response "data" property is not an array');
-      }
-
-      cachedProducts = result.data;
-      renderProductsData(result.data);
     } catch (error) {
       console.error('Failed to fetch products from API:', error);
-      showErrorState();
     }
+
+    cachedProducts = apiProducts;
+    renderProductsData(apiProducts);
   }
 
   // Call load functions
@@ -222,6 +187,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, { passive: false });
   }
+
+  // Mouse wheel horizontal scrolling for product lists
+  const horizontalLists = document.querySelectorAll('.horizontal-product-list');
+  horizontalLists.forEach(list => {
+    list.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        list.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+  });
 
   // Mouse wheel & drag scrolling for .category-grid
   const categoryGrid = document.querySelector('.category-grid');
