@@ -223,42 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Segment Target Filter Click Logic (모두가, 여성이, 남성이, 청소년이)
-  const segmentItems = document.querySelectorAll('.segment-item');
-  segmentItems.forEach(item => {
-    item.addEventListener('click', () => {
-      segmentItems.forEach(el => el.classList.remove('active'));
-      item.classList.add('active');
-    });
-  });
 
-  // Rank Filter Tabs Click Logic (받고 싶어한, 많이 선물한, 위시로 받은)
-  const rankFilterTabs = document.querySelectorAll('.rank-filter-tab');
-  rankFilterTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      rankFilterTabs.forEach(el => el.classList.remove('active'));
-      tab.classList.add('active');
-    });
-  });
-
-  // Price Filter Pills Click Logic (1만원 미만, 1만원대, 2만원대...)
-  const pricePills = document.querySelectorAll('.price-pill');
-  pricePills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      pricePills.forEach(el => el.classList.remove('active'));
-      pill.classList.add('active');
-
-      const minPrice = Number(pill.getAttribute('data-min') || 0);
-      const maxPrice = Number(pill.getAttribute('data-max') || 999999999);
-
-      const filtered = cachedProducts.filter(p => {
-        const price = Number(p.price || 0);
-        return price >= minPrice && price <= maxPrice;
-      });
-
-      renderProductsData(filtered);
-    });
-  });
 
   // Top Nav Tab Bar Click Logic (FOR ME, 홈, 랭킹, 썸머세일, 와인/맥주...)
   const navItems = document.querySelectorAll('.nav-item');
@@ -405,19 +370,30 @@ document.addEventListener('DOMContentLoaded', () => {
   async function checkLoginStatus() {
     try {
       const response = await fetch('/api/auth/me', { credentials: 'include' });
+      const recTitle = document.getElementById('recommendation-title');
+
       if (response.ok) {
         const result = await response.json();
         isLoggedIn = true;
         currentNickname = (result.data && result.data.nickname) || '';
+        const currentUserId = (result.data && result.data.userId) || '';
+
         if (loginStatusBtn) loginStatusBtn.classList.add('logged-in');
         if (loginStatusDot) loginStatusDot.hidden = false;
+
+        if (recTitle && currentNickname) {
+          recTitle.textContent = `${currentNickname}님을 위한 추천 상품`;
+        }
       } else {
         isLoggedIn = false;
         if (loginStatusBtn) loginStatusBtn.classList.remove('logged-in');
         if (loginStatusDot) loginStatusDot.hidden = true;
+        if (recTitle) recTitle.textContent = '회원님을 위한 추천 상품';
       }
     } catch (error) {
       console.error('로그인 상태 확인 실패:', error);
+      const recTitle = document.getElementById('recommendation-title');
+      if (recTitle) recTitle.textContent = '회원님을 위한 추천 상품';
     }
   }
 
