@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const price = Number(product.price || 0);
     const discountRate = product.discountRate || 0;
-    const wishCount = product.wishCount || 0;
     const thumbnailUrl = product.thumbnailUrl || '';
     const name = product.name || '';
     const brand = product.brand || '';
@@ -27,54 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
           ${discountHtml}
           <span class="price">${formattedPrice}</span>
         </div>
-        <div class="card-actions-row">
-          <button class="btn-action-bag-only" aria-label="선물상자에 담기">
-            <i class="fa-solid fa-bag-shopping"></i>
-          </button>
-          <div class="btn-action-wish-row">
-            <i class="fa-regular fa-heart"></i>
-            <span class="wish-count">${Number(wishCount || 0).toLocaleString()}</span>
-          </div>
+        <div class="stats-row">
+          관심 0 · 리뷰 0
         </div>
       </div>
     `;
-
-    // Wishlist click handler
-    const wishBtn = card.querySelector('.btn-action-wish-row');
-    if (wishBtn) {
-      wishBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const icon = wishBtn.querySelector('i');
-        const countSpan = wishBtn.querySelector('.wish-count');
-        wishBtn.classList.toggle('active');
-
-        if (wishBtn.classList.contains('active')) {
-          icon.classList.remove('fa-regular');
-          icon.classList.add('fa-solid');
-        } else {
-          icon.classList.remove('fa-solid');
-          icon.classList.add('fa-regular');
-        }
-
-        let countText = countSpan.textContent.replace(/,/g, '');
-        let currentCount = parseInt(countText, 10) || 0;
-        if (wishBtn.classList.contains('active')) {
-          currentCount += 1;
-        } else {
-          currentCount = Math.max(0, currentCount - 1);
-        }
-        countSpan.textContent = currentCount.toLocaleString();
-      });
-    }
-
-    // Shopping Bag click handler
-    const bagBtn = card.querySelector('.btn-action-bag-only');
-    if (bagBtn) {
-      bagBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        alert('선물상자에 상품이 추가되었습니다!');
-      });
-    }
 
     // Card click handler to navigate to product.html?id=ID
     card.addEventListener('click', () => {
@@ -107,15 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Helper to show error state when API request fails
   function showErrorState() {
-    const productGrid = document.querySelector('.product-grid');
-    if (productGrid) {
-      productGrid.innerHTML = `
-        <div class="error-state">
-          <i class="fa-solid fa-circle-exclamation"></i>
-          <p>상품 정보를 불러오는 데 실패했습니다.<br>잠시 후 다시 시도해 주세요.</p>
-        </div>
-      `;
-    }
+
     const rankingRow = document.querySelector('.ranking-cards-row');
     if (rankingRow) {
       rankingRow.innerHTML = `
@@ -126,60 +74,68 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   let cachedProducts = [];
+  let activeFilteredProducts = [];
   let rankingVisibleCount = 6;
   let productsVisibleCount = 6;
 
   // Helper to render products into layout elements
   function renderProductsData(products) {
-    if (!products || products.length === 0) {
-      showEmptyState();
-      return;
-    }
+    activeFilteredProducts = products;
+    rankingVisibleCount = products.length; // Default to all products
 
-    // Render recommended products (first 6 items)
-    const productGrid = document.querySelector('.product-grid');
-    if (productGrid) {
-      productGrid.innerHTML = '';
-      products.slice(0, 6).forEach(product => {
-        productGrid.appendChild(createProductCard(product));
+    // Render horizontal list 1 (today's top traded)
+    const list1 = document.getElementById('horizontal-list-1');
+    if (list1) {
+      list1.innerHTML = '';
+      products.forEach(product => {
+        list1.appendChild(createProductCard(product));
       });
     }
 
-    // Render ranking products (first 6 items)
+    // Render horizontal list 2 (most noted)
+    const list2 = document.getElementById('horizontal-list-2');
+    if (list2) {
+      list2.innerHTML = '';
+      [...products].reverse().forEach(product => {
+        list2.appendChild(createProductCard(product));
+      });
+    }
+
+    // Render ranking products
     const rankingRow = document.querySelector('.ranking-cards-row');
     if (rankingRow) {
       rankingRow.innerHTML = '';
-      products.slice(0, 6).forEach((product, idx) => {
+      products.forEach((product, idx) => {
         rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: idx + 1 }));
       });
+    }
+
+    // Hide the '더보기' button as we are rendering all by default
+    const btnRankingMore = document.getElementById('btn-ranking-more');
+    if (btnRankingMore) {
+      btnRankingMore.style.display = 'none';
     }
   }
 
   // Load products from /api/products
   async function loadProducts() {
+    let apiProducts = [];
     try {
       const response = await fetch('/api/products');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (response.ok) {
+        const result = await response.json();
+        if (result && result.data && Array.isArray(result.data)) {
+          apiProducts = result.data;
+        }
+      } else {
+        console.warn(`HTTP error! status: ${response.status}`);
       }
-      const result = await response.json();
-
-      if (!result || typeof result !== 'object') {
-        throw new Error('Invalid JSON response format');
-      }
-      if (!('data' in result)) {
-        throw new Error('Response payload is missing "data" property');
-      }
-      if (!Array.isArray(result.data)) {
-        throw new Error('Response "data" property is not an array');
-      }
-
-      cachedProducts = result.data;
-      renderProductsData(result.data);
     } catch (error) {
       console.error('Failed to fetch products from API:', error);
-      showErrorState();
     }
+
+    cachedProducts = apiProducts;
+    renderProductsData(apiProducts);
   }
 
   // Call load functions
@@ -206,32 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Segment Target Filter Click Logic (모두가, 여성이, 남성이, 청소년이)
-  const segmentItems = document.querySelectorAll('.segment-item');
-  segmentItems.forEach(item => {
-    item.addEventListener('click', () => {
-      segmentItems.forEach(el => el.classList.remove('active'));
-      item.classList.add('active');
-    });
-  });
 
-  // Rank Filter Tabs Click Logic (받고 싶어한, 많이 선물한, 위시로 받은)
-  const rankFilterTabs = document.querySelectorAll('.rank-filter-tab');
-  rankFilterTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      rankFilterTabs.forEach(el => el.classList.remove('active'));
-      tab.classList.add('active');
-    });
-  });
-
-  // Price Filter Pills Click Logic (1만원 미만, 1만원대, 2만원대...)
-  const pricePills = document.querySelectorAll('.price-pill');
-  pricePills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      pricePills.forEach(el => el.classList.remove('active'));
-      pill.classList.add('active');
-    });
-  });
 
   // Top Nav Tab Bar Click Logic (FOR ME, 홈, 랭킹, 썸머세일, 와인/맥주...)
   const navItems = document.querySelectorAll('.nav-item');
@@ -257,6 +188,68 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: false });
   }
 
+  // Mouse wheel horizontal scrolling for product lists
+  const horizontalLists = document.querySelectorAll('.horizontal-product-list');
+  horizontalLists.forEach(list => {
+    list.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        list.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+  });
+
+  // Mouse wheel & drag scrolling for .category-grid
+  const categoryGrid = document.querySelector('.category-grid');
+  if (categoryGrid) {
+    // Wheel scroll
+    categoryGrid.addEventListener('wheel', (e) => {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        categoryGrid.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+
+    // Drag to scroll
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    categoryGrid.addEventListener('mousedown', (e) => {
+      isDown = true;
+      categoryGrid.style.cursor = 'grabbing';
+      startX = e.pageX - categoryGrid.offsetLeft;
+      scrollLeft = categoryGrid.scrollLeft;
+    });
+    categoryGrid.addEventListener('mouseleave', () => {
+      isDown = false;
+      categoryGrid.style.cursor = 'pointer';
+    });
+    categoryGrid.addEventListener('mouseup', () => {
+      isDown = false;
+      categoryGrid.style.cursor = 'pointer';
+    });
+    categoryGrid.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - categoryGrid.offsetLeft;
+      const walk = (x - startX) * 2;
+      categoryGrid.scrollLeft = scrollLeft - walk;
+    });
+
+    // Disable click navigation for all category items (ui only)
+    const categoryCards = categoryGrid.querySelectorAll('.category-card');
+    categoryCards.forEach((card) => {
+      card.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent default link behavior (jumping to top)
+        // Additional functional behaviors are disabled here
+      });
+    });
+
+    // Handle '더보기' button click normally if clicked without dragging
+    // The browser natively handles link clicks if drag isn't significantly moving the mouse.
+  }
+
   // Sub Tab Segmented Control (선물 테마, 카테고리, 추천 브랜드) Click Logic
   const pillBtns = document.querySelectorAll('.pill-btn');
   const pillSelector = document.querySelector('.pill-selector');
@@ -278,13 +271,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const rankingRow = document.querySelector('.ranking-cards-row');
       if (!rankingRow) return;
 
-      if (rankingVisibleCount >= cachedProducts.length) {
+      if (rankingVisibleCount >= activeFilteredProducts.length) {
         alert('더 이상 불러올 상품이 없습니다.');
         return;
       }
 
       // Get the next 9 products
-      const nextProducts = cachedProducts.slice(rankingVisibleCount, rankingVisibleCount + 9);
+      const nextProducts = activeFilteredProducts.slice(rankingVisibleCount, rankingVisibleCount + 9);
       nextProducts.forEach((product, idx) => {
         rankingRow.appendChild(createProductCard(product, { showRank: true, rankIndex: rankingVisibleCount + idx + 1 }));
       });
@@ -292,25 +285,78 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Products Section "더보기" (Show More) Click Logic
-  const btnProductsMore = document.getElementById('btn-products-more');
 
-  if (btnProductsMore) {
-    btnProductsMore.addEventListener('click', () => {
-      const productGrid = document.querySelector('.product-grid');
-      if (!productGrid) return;
 
-      if (productsVisibleCount >= cachedProducts.length) {
-        alert('더 이상 불러올 상품이 없습니다.');
-        return;
+  // Header 로그인 상태 아이콘: 로그인 여부 확인 후 아이콘/드롭다운 표시
+  const loginStatusBtn = document.getElementById('btn-login-status');
+  const loginStatusDot = document.getElementById('login-status-dot');
+  const loginStatusDropdown = document.getElementById('login-status-dropdown');
+  const loginStatusNickname = document.getElementById('login-status-nickname');
+  const logoutBtn = document.getElementById('btn-logout');
+
+  let isLoggedIn = false;
+  let currentNickname = '';
+
+  async function checkLoginStatus() {
+    try {
+      const response = await fetch('/api/auth/me', { credentials: 'include' });
+      const recTitle = document.getElementById('recommendation-title');
+
+      if (response.ok) {
+        const result = await response.json();
+        isLoggedIn = true;
+        currentNickname = (result.data && result.data.nickname) || '';
+        const currentUserId = (result.data && result.data.userId) || '';
+
+        if (loginStatusBtn) loginStatusBtn.classList.add('logged-in');
+        if (loginStatusDot) loginStatusDot.hidden = false;
+
+        if (recTitle && currentNickname) {
+          recTitle.textContent = `${currentNickname}님을 위한 추천 상품`;
+        }
+      } else {
+        isLoggedIn = false;
+        if (loginStatusBtn) loginStatusBtn.classList.remove('logged-in');
+        if (loginStatusDot) loginStatusDot.hidden = true;
+        if (recTitle) recTitle.textContent = '회원님을 위한 추천 상품';
       }
+    } catch (error) {
+      console.error('로그인 상태 확인 실패:', error);
+      const recTitle = document.getElementById('recommendation-title');
+      if (recTitle) recTitle.textContent = '회원님을 위한 추천 상품';
+    }
+  }
 
-      // Get the next 9 products
-      const nextProducts = cachedProducts.slice(productsVisibleCount, productsVisibleCount + 9);
-      nextProducts.forEach(product => {
-        productGrid.appendChild(createProductCard(product));
-      });
-      productsVisibleCount += nextProducts.length;
+  checkLoginStatus();
+
+  if (loginStatusBtn) {
+    loginStatusBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isLoggedIn) {
+        if (loginStatusNickname) loginStatusNickname.textContent = `${currentNickname}님`;
+        if (loginStatusDropdown) loginStatusDropdown.hidden = !loginStatusDropdown.hidden;
+      } else {
+        window.location.href = `login.html?redirect=${encodeURIComponent(window.location.href)}`;
+      }
     });
   }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+      } catch (error) {
+        console.error('로그아웃 요청 실패:', error);
+      }
+      window.location.reload();
+    });
+  }
+
+  // 드롭다운 바깥 클릭 시 닫기
+  document.addEventListener('click', (e) => {
+    if (!loginStatusDropdown || loginStatusDropdown.hidden) return;
+    if (loginStatusBtn && loginStatusBtn.contains(e.target)) return;
+    if (loginStatusDropdown.contains(e.target)) return;
+    loginStatusDropdown.hidden = true;
+  });
 });
