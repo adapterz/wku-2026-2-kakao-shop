@@ -1,5 +1,4 @@
 const http = require('http');
-const pool = require('../db/pool');
 
 const request = (method, path, body, cookie = null) => {
   return new Promise((resolve, reject) => {
@@ -58,14 +57,6 @@ const run = async () => {
     const cookieB = resB_login.cookie;
     const userB_Id = resB_login.body.data.userId;
 
-    // Create a self gift for User B
-    const resOrderSelf = await request('POST', '/api/orders', {
-      productId: 76,
-      message: "Self gift message",
-      isSelfGift: true
-    }, cookieB);
-    const orderIdSelf = resOrderSelf.body.data.orderId;
-    
     // Create a gift from User A to User B
     const resOrderGift = await request('POST', '/api/orders', {
       productId: 76,
@@ -73,24 +64,53 @@ const run = async () => {
       isSelfGift: false,
       receiverId: userB_Id
     }, cookieA);
-    const orderIdGift = resOrderGift.body.data.orderId;
+    const giftId = resOrderGift.body.data.giftId;
 
-    // 수동으로 DB 변경: Self gift를 'used' 상태로 변경
-    await pool.query('UPDATE gifts SET status = "used" WHERE order_id = ?', [orderIdSelf]);
-    console.log(`\n[DB Update] Set gift status to 'used' for orderId: ${orderIdSelf} (Self gift)`);
+    // 1. 정상 흐름: 선물 상세 조회 (unused) -> 사용 -> 상세 조회 (used)
+    console.log("\n[Test 1.1] GET /api/gifts/:id - before use");
+    const resGiftDetailBefore = await request('GET', `/api/gifts/${giftId}`, null, cookieB);
+    console.log("Gift Detail (Before) Status & Body:", resGiftDetailBefore.status, JSON.stringify(resGiftDetailBefore.body, null, 2));
 
-    // 1. 로그인 상태에서 GET /api/gifts?status=unused -> unused 상태 필터링
-    console.log("\n[Test 1] Get Unused Gifts (User B)");
-    const resGiftsUnused = await request('GET', '/api/gifts?status=unused', null, cookieB);
-    console.log("Unused Gifts Status & Body:", resGiftsUnused.status, JSON.stringify(resGiftsUnused.body, null, 2));
+    console.log("\n[Test 1.2] PATCH /api/gifts/:id/use");
+    const resGiftUse = await request('PATCH', `/api/gifts/${giftId}/use`, null, cookieB);
+    console.log("Gift Use Status & Body:", resGiftUse.status, JSON.stringify(resGiftUse.body, null, 2));
 
-    // 2. 로그인 상태에서 GET /api/gifts?status=used -> used 상태 필터링
-    console.log("\n[Test 2] Get Used Gifts (User B)");
-    const resGiftsUsed = await request('GET', '/api/gifts?status=used', null, cookieB);
-    console.log("Used Gifts Status & Body:", resGiftsUsed.status, JSON.stringify(resGiftsUsed.body, null, 2));
+    console.log("\n[Test 1.3] GET /api/gifts/:id - after use");
+    const resGiftDetailAfter = await request('GET', `/api/gifts/${giftId}`, null, cookieB);
+    console.log("Gift Detail (After) Status & Body:", resGiftDetailAfter.status, JSON.stringify(resGiftDetailAfter.body, null, 2));
 
-    // Cleanup pool connection so script exits
-    await pool.end();
+    // 2. 이미 사용한 선물 다시 사용 요청 (409)
+    console.log("\n[Test 2] PATCH /api/gifts/:id/use - Already used");
+    const resGiftUseAgain = await request('PATCH', `/api/gifts/${giftId}/use`, null, cookieB);
+    console.log("Gift Use Again Status & Body:", resGiftUseAgain.status, JSON.stringify(resGiftUseAgain.body, null, 2));
+
+    // 3. 존재하지 않는 giftId
+    const invalidGiftId = 99999;
+    console.log("\n[Test 3.1] GET /api/gifts/:id - Not found");
+    const resNotFoundGet = await request('GET', `/api/gifts/${invalidGiftId}`, null, cookieB);
+    console.log("Not Found GET Status & Body:", resNotFoundGet.status, JSON.stringify(resNotFoundGet.body, null, 2));
+    
+    console.log("\n[Test 3.2] PATCH /api/gifts/:id/use - Not found");
+    const resNotFoundPatch = await request('PATCH', `/api/gifts/${invalidGiftId}/use`, null, cookieB);
+    console.log("Not Found PATCH Status & Body:", resNotFoundPatch.status, JSON.stringify(resNotFoundPatch.body, null, 2));
+
+    // 4. 다른 유저의 선물 접근 (User A trying to access User B's gift)
+    console.log("\n[Test 4.1] GET /api/gifts/:id - Forbidden (Not owner)");
+    const resForbiddenGet = await request('GET', `/api/gifts/${giftId}`, null, cookieA);
+    console.log("Forbidden GET Status & Body:", resForbiddenGet.status, JSON.stringify(resForbiddenGet.body, null, 2));
+
+    console.log("\n[Test 4.2] PATCH /api/gifts/:id/use - Forbidden (Not owner)");
+    const resForbiddenPatch = await request('PATCH', `/api/gifts/${giftId}/use`, null, cookieA);
+    console.log("Forbidden PATCH Status & Body:", resForbiddenPatch.status, JSON.stringify(resForbiddenPatch.body, null, 2));
+
+    // 5. 로그인 안 한 상태
+    console.log("\n[Test 5.1] GET /api/gifts/:id - Unauthorized (No login)");
+    const resNoLoginGet = await request('GET', `/api/gifts/${giftId}`, null, null);
+    console.log("No Login GET Status & Body:", resNoLoginGet.status, JSON.stringify(resNoLoginGet.body, null, 2));
+
+    console.log("\n[Test 5.2] PATCH /api/gifts/:id/use - Unauthorized (No login)");
+    const resNoLoginPatch = await request('PATCH', `/api/gifts/${giftId}/use`, null, null);
+    console.log("No Login PATCH Status & Body:", resNoLoginPatch.status, JSON.stringify(resNoLoginPatch.body, null, 2));
 
   } catch(e) {
     console.error(e);

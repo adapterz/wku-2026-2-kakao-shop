@@ -32,6 +32,39 @@ const getGiftsByReceiverId = async (receiverId, status) => {
   return rows;
 };
 
+const getGiftDetailById = async (giftId) => {
+  const query = `
+    SELECT 
+      g.id as gift_id,
+      p.name as product_name,
+      p.thumbnail_url as thumbnail_url,
+      g.barcode,
+      g.status,
+      g.used_at,
+      o.message,
+      o.receiver_id,
+      u.id as sender_id,
+      u.nickname as sender_nickname
+    FROM gifts g
+    JOIN orders o ON g.order_id = o.id
+    JOIN products p ON o.product_id = p.id
+    JOIN users u ON o.user_id = u.id
+    WHERE g.id = ?
+  `;
+  const [rows] = await pool.query(query, [giftId]);
+  return rows.length > 0 ? rows[0] : null;
+};
+
+const updateGiftStatusToUsed = async (giftId) => {
+  const [result] = await pool.query(
+    `UPDATE gifts SET status = 'used', used_at = CURRENT_TIMESTAMP WHERE id = ? AND status = 'unused'`,
+    [giftId]
+  );
+  return result.affectedRows;
+};
+
 module.exports = {
-  getGiftsByReceiverId
+  getGiftsByReceiverId,
+  getGiftDetailById,
+  updateGiftStatusToUsed
 };

@@ -112,6 +112,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         const userSearchResult = await userSearchResponse.json();
         if (userSearchResult && userSearchResult.data) {
           const foundUser = userSearchResult.data;
+
+          if (foundUser.userId === currentUser.userId) {
+            alert("자기 자신에게는 선물할 수 없습니다. '나에게 선물하기'를 이용해주세요.");
+            searchResultDiv.style.color = "red";
+            searchResultDiv.textContent = "자기 자신에게는 선물할 수 없습니다.";
+            receiverId = null;
+            return;
+          }
+
           searchResultDiv.style.color = "green";
           searchResultDiv.textContent = `선택된 대상: ${foundUser.nickname}`;
           receiverId = foundUser.userId;
