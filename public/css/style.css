@@ -1961,6 +1961,23 @@ button {
     font-size: 20px;
     font-weight: 600;
     margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.profile-userid {
+    font-size: 14px;
+    color: #999;
+    font-weight: 400;
+    margin-left: 5px;
+}
+
+.profile-userid:not(:empty)::before {
+    content: "(";
+}
+
+.profile-userid:not(:empty)::after {
+    content: ")";
 }
 .profile-stats {
     font-size: 14px;
