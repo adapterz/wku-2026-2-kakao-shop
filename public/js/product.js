@@ -63,6 +63,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadProductDetail(productId);
 
+  // 하단 네비게이션 바 버튼 이벤트 연동
+  const btnSelfGift = document.getElementById('btn-self-gift');
+  if (btnSelfGift) {
+    btnSelfGift.addEventListener('click', () => {
+      goToOrder(productId, 'self');
+    });
+  }
+
+  const btnGift = document.getElementById('btn-gift');
+  if (btnGift) {
+    btnGift.addEventListener('click', () => {
+      goToOrder(productId, 'gift');
+    });
+  }
+
   // 검색 오버레이 열기/닫기 로직
   const searchOpenBtn = document.getElementById('btn-search-open');
   const searchCloseBtn = document.getElementById('btn-search-close');

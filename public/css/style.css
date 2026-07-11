@@ -1017,18 +1017,14 @@ body {
     max-width: 430px;
     background-color: #fff;
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* or flex-start if preferred */
+    gap: 8px; /* 사이 간격 동일하게 설정 */
     align-items: center;
+    height: 80px; /* 홈 네비게이션바와 세로 폭 동일하게 적용 */
     padding: 10px 20px;
     padding-bottom: env(safe-area-inset-bottom, 10px);
     border-top: 1px solid #EAEAEA;
     z-index: 1000;
-}
-
-.bottom-nav-left-actions {
-  display: flex;
-  gap: 16px;
-  align-items: center;
 }
 
 .bottom-action-item {
@@ -1044,6 +1040,7 @@ body {
   cursor: pointer;
   padding: 0;
   width: 36px;
+  margin-bottom: 8px; /* 하단 여백 추가 (버튼들과 맞춤) */
 }
 
 .bottom-action-item i {
@@ -1056,16 +1053,11 @@ body {
   transform: scale(0.9);
 }
 
-.bottom-nav-buttons {
-  display: flex;
-  gap: 8px;
-  flex: 1;
-}
-
 .btn-bottom-buy,
 .btn-bottom-gift {
   flex: 1;
   height: 48px;
+  margin-bottom: 8px; /* 하단 여백 추가 */
   border-radius: 8px;
   font-weight: 700;
   font-size: 14px;
@@ -1077,21 +1069,22 @@ body {
 }
 
 .btn-bottom-buy {
-  background-color: #191919;
-  color: #FFFFFF;
+  background-color: #FFFFFF;
+  color: #191919;
+  border: 1px solid #EAEAEA;
 }
 
 .btn-bottom-buy:active {
-  background-color: #333333;
+  background-color: #F5F5F5;
 }
 
 .btn-bottom-gift {
-  background-color: var(--primary-color);
-  color: var(--kakao-brown);
+  background-color: #EF6153; /* Red/Coral from design */
+  color: #FFFFFF;
 }
 
 .btn-bottom-gift:active {
-  background-color: var(--primary-hover);
+  background-color: #EF6153;
 }
 
 /* Clear bottom space in product page */
@@ -2055,3 +2048,4 @@ body {
     font-size: 11px;
     font-weight: 500;
 }
+
