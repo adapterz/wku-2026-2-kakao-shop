@@ -16,24 +16,32 @@
     <!-- Main Header -->
     <header class="main-header">
         <div class="header-container">
-            <a href="giftbox.html" class="header-icon" title="선물함">
-                <i class="fa-solid fa-bag-shopping"></i>
-            </a>
-            <span class="header-title">
-                <span class="header-logo-container">
-                    <img src="images/iksan_logo.png" class="header-logo" alt="익산시 로고">
-                </span>
-                선물하기
-            </span>
+            <div class="header-search-box" id="btn-search-open" style="cursor: text;">
+                <span class="header-search-text">브랜드, 상품, 프로필, 태그 등</span>
+                <div class="header-search-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 8V5h3"></path>
+                        <path d="M19 8V5h-3"></path>
+                        <path d="M5 16v3h3"></path>
+                        <path d="M19 16v3h-3"></path>
+                        <circle cx="12" cy="12" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+            
             <div class="header-right-icons">
                 <a href="#" id="btn-login-status" class="header-icon login-status-icon-wrapper" title="로그인 상태">
                     <i id="login-status-icon" class="fa-regular fa-user"></i>
                     <span id="login-status-dot" class="login-status-dot" hidden></span>
                 </a>
-                <a href="#" id="btn-search-open" class="header-icon" title="검색">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                <a href="giftbox.html" class="header-icon" title="선물함">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 8h14l1 13H4L5 8z"></path>
+                        <path d="M9 11V6a3 3 0 0 1 6 0v5"></path>
+                    </svg>
                 </a>
             </div>
+
             <div id="login-status-dropdown" class="login-status-dropdown" hidden>
                 <p id="login-status-nickname" class="login-status-nickname"></p>
                 <p class="login-status-welcome">환영합니다</p>
@@ -285,10 +293,10 @@
         </a>
         <a href="#" class="nav-item">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="4" y="4" width="16" height="16"></rect>
-                <path d="M8 9.5a2.5 2.5 0 0 1 5 0c0 3-5 5.5-5 5.5s-5-2.5-5-5.5a2.5 2.5 0 0 1 5 0z" fill="currentColor" stroke="none"></path>
-                <line x1="8" y1="16" x2="16" y2="16"></line>
-                <line x1="8" y1="18" x2="14" y2="18"></line>
+                <rect class="style-rect" x="4" y="4" width="16" height="16"></rect>
+                <path class="style-heart" d="M7 8.5a1.5 1.5 0 0 1 3 0 1.5 1.5 0 0 1 3 0c0 2-3 4-3 4s-3-2-3-4z" fill="currentColor" stroke="none"></path>
+                <line class="style-line" x1="7" y1="14.5" x2="17" y2="14.5"></line>
+                <line class="style-line" x1="7" y1="17.5" x2="14" y2="17.5"></line>
             </svg>
             <span class="nav-text">STYLE</span>
         </a>

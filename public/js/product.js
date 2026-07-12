@@ -63,6 +63,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadProductDetail(productId);
 
+  // 뒤로가기 버튼 로직
+  const backBtn = document.getElementById('btn-back');
+  if (backBtn) {
+    backBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // 브라우저 히스토리가 있거나 리퍼러가 있는 경우 이전 페이지로 이동
+      if (window.history.length > 1 && document.referrer) {
+        window.history.back();
+      } else {
+        // 직접 진입 등 이전 페이지가 없는 경우 홈으로 이동
+        window.location.href = 'index.html';
+      }
+    });
+  }
+
   // 검색 오버레이 열기/닫기 로직
   const searchOpenBtn = document.getElementById('btn-search-open');
   const searchCloseBtn = document.getElementById('btn-search-close');
