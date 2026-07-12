@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #FEE500;
-  --primary-hover: #FADA0A;
+  --primary-color: #191919;
+  --primary-hover: #191919;
   --kakao-brown: #3C1E1E;
   --bg-color: #FFFFFF;
   --card-bg: #FFFFFF;
@@ -1174,12 +1174,12 @@ body {
 }
 
 .btn-bottom-gift {
-  background-color: #EF6153; /* Red/Coral from design */
+  background-color: #191919; /* Red/Coral from design */
   color: #FFFFFF;
 }
 
 .btn-bottom-gift:active {
-  background-color: #EF6153;
+  background-color: #191919;
 }
 
 /* Clear bottom space in product page */
