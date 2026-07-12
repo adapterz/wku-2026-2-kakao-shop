@@ -2162,3 +2162,54 @@ body {
 .bottom-nav .nav-item.active .home-line {
     stroke: #FFFFFF !important;
 }
+
+/* Order Back Confirmation Overlay */
+.order-back-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+.order-back-overlay.show {
+    display: flex;
+}
+.order-back-card {
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    padding: 24px 20px;
+    width: 80%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+}
+.order-back-card p {
+    font-size: 15px;
+    color: var(--text-main);
+    line-height: 1.5;
+    margin-bottom: 24px;
+    word-break: keep-all;
+}
+.order-back-buttons {
+    display: flex;
+    gap: 10px;
+}
+.order-back-btn {
+    flex: 1;
+    padding: 12px 0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+.order-back-btn-cancel {
+    background-color: #F0F0F0;
+    color: #191919;
+}
+.order-back-btn-confirm {
+    background-color: #191919;
+    color: #E0E0E0;
+}

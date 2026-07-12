@@ -1,13 +1,28 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  // 뒤로가기 버튼 로직
+  // 뒤로가기 버튼 로직 (확인 오버레이 띄우기)
   const backBtn = document.getElementById('btn-back');
-  if (backBtn) {
+  const backOverlay = document.getElementById('order-back-overlay');
+  const backCancelBtn = document.getElementById('btn-order-back-cancel');
+  const backConfirmBtn = document.getElementById('btn-order-back-confirm');
+
+  if (backBtn && backOverlay) {
     backBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      if (window.history.length > 1 && document.referrer) {
-        window.history.back();
-      } else {
-        window.location.href = 'index.html';
+      backOverlay.classList.add('show');
+    });
+
+    backCancelBtn.addEventListener('click', () => {
+      backOverlay.classList.remove('show');
+    });
+
+    backConfirmBtn.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+
+    // 배경 클릭 시 닫기
+    backOverlay.addEventListener('click', (e) => {
+      if (e.target === backOverlay) {
+        backOverlay.classList.remove('show');
       }
     });
   }
