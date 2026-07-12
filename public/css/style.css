@@ -310,7 +310,7 @@ button {
   width: 100%;
   flex-shrink: 0;
   object-fit: contain;
-  border-radius: inherit;
+  border-radius: var(--radius-md, 12px);
 }
 
 .ad-banner-btn {
