@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (error) {
         console.error('로그아웃 요청 실패:', error);
       }
-      window.location.reload();
+      window.location.href = 'login.html';
     });
   }
 

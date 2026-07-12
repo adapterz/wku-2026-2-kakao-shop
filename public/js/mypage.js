@@ -56,4 +56,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             searchOverlayElement.classList.remove('open');
         });
     }
+    // Logout Logic
+    const logoutBtn = document.querySelector('.settings-logout');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+            } catch (error) {
+                console.error('로그아웃 요청 실패:', error);
+            }
+            window.location.href = 'login.html';
+        });
+    }
 });

@@ -1421,7 +1421,7 @@ body {
 .auth-container {
   max-width: 400px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 120px 20px 40px;
 }
 
 .auth-title {
@@ -1475,7 +1475,7 @@ body {
   border-radius: var(--radius-sm);
   font-size: 16px;
   font-weight: 700;
-  color: var(--kakao-brown);
+  color: #ffffff;
   cursor: pointer;
   transition: var(--transition-smooth);
 }
