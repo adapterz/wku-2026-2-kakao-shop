@@ -22,15 +22,38 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="card-body">
         <span class="brand-name">${brand}</span>
         <h4 class="product-title">${name}</h4>
-        <div class="price-info">
-          ${discountHtml}
-          <span class="price">${formattedPrice}</span>
+        <div class="price-info" style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            ${discountHtml}
+            <span class="price">${formattedPrice}</span>
+          </div>
+          <button class="btn-save-bookmark" title="저장" style="background:none; border:none; padding:4px; cursor:pointer;">
+            <i class="fa-regular fa-bookmark" style="font-size: 20px; color: #999;"></i>
+          </button>
         </div>
         <div class="stats-row">
           관심 0 · 리뷰 0
         </div>
       </div>
     `;
+
+    // Save button click handler
+    const saveBtn = card.querySelector('.btn-save-bookmark');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // prevent card click
+        const icon = saveBtn.querySelector('i');
+        if (icon.classList.contains('fa-regular')) {
+          icon.classList.remove('fa-regular');
+          icon.classList.add('fa-solid');
+          icon.style.color = '#191919';
+        } else {
+          icon.classList.remove('fa-solid');
+          icon.classList.add('fa-regular');
+          icon.style.color = '#999';
+        }
+      });
+    }
 
     // Card click handler to navigate to product.html?id=ID
     card.addEventListener('click', () => {

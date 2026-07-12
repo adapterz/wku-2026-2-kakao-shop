@@ -261,6 +261,26 @@ document.addEventListener("DOMContentLoaded", () => {
       goToOrder(productId, 'gift');
     });
   }
+
+  // Save (bookmark) button logic
+  const saveBtns = document.querySelectorAll('button[title="선물상자 담기"], button[aria-label="저장"]');
+  saveBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const icon = btn.querySelector('i');
+      if (icon) {
+        if (icon.classList.contains('fa-regular')) {
+          icon.classList.remove('fa-regular');
+          icon.classList.add('fa-solid');
+          icon.style.color = '#191919';
+        } else {
+          icon.classList.remove('fa-solid');
+          icon.classList.add('fa-regular');
+          icon.style.color = ''; // Revert to original CSS color
+        }
+      }
+    });
+  });
 });
 
 // Top Nav Tab Bar Click Logic (FOR ME, 홈, 랭킹, 썸머세일, 와인/맥주...)

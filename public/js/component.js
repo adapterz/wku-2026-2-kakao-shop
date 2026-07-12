@@ -44,6 +44,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initNavGroup('.bottom-nav .nav-item');
     initNavGroup('.nav-bar .nav-item');
+
+    // SHOP 버튼 검색 오버레이 연결
+    const shopBtns = Array.from(document.querySelectorAll('.bottom-nav .nav-item')).filter(btn => {
+        const textSpan = btn.querySelector('.nav-text');
+        return textSpan && textSpan.textContent.trim() === 'SHOP';
+    });
+    
+    shopBtns.forEach(shopBtn => {
+        shopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const topSearchBtn = document.getElementById('btn-search-open');
+            if (topSearchBtn) {
+                topSearchBtn.click(); // 기존 로직 재사용
+            } else {
+                const searchOverlay = document.getElementById('search-overlay');
+                if (searchOverlay) {
+                    searchOverlay.classList.add('show');
+                    searchOverlay.classList.add('open');
+                }
+            }
+        });
+    });
 });
 
 // Ad Banner Slider Logic
