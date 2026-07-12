@@ -2154,3 +2154,11 @@ body {
 .bottom-nav .nav-item.active .style-line {
     stroke: #FFFFFF !important;
 }
+
+/* Custom Active State for Home Icon */
+.bottom-nav .nav-item.active .home-path {
+    fill: currentColor;
+}
+.bottom-nav .nav-item.active .home-line {
+    stroke: #FFFFFF !important;
+}
