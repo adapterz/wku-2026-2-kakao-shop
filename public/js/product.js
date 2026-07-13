@@ -63,6 +63,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadProductDetail(productId);
 
+  // 뒤로가기 버튼 로직
+  const backBtn = document.getElementById('btn-back');
+  if (backBtn) {
+    backBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // 브라우저 히스토리가 있거나 리퍼러가 있는 경우 이전 페이지로 이동
+      if (window.history.length > 1 && document.referrer) {
+        window.history.back();
+      } else {
+        // 직접 진입 등 이전 페이지가 없는 경우 홈으로 이동
+        window.location.href = 'index.html';
+      }
+    });
+  }
+
   // 검색 오버레이 열기/닫기 로직
   const searchOpenBtn = document.getElementById('btn-search-open');
   const searchCloseBtn = document.getElementById('btn-search-close');
@@ -246,6 +261,26 @@ document.addEventListener("DOMContentLoaded", () => {
       goToOrder(productId, 'gift');
     });
   }
+
+  // Save (bookmark) button logic
+  const saveBtns = document.querySelectorAll('button[title="선물상자 담기"], button[aria-label="저장"]');
+  saveBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const icon = btn.querySelector('i');
+      if (icon) {
+        if (icon.classList.contains('fa-regular')) {
+          icon.classList.remove('fa-regular');
+          icon.classList.add('fa-solid');
+          icon.style.color = '#191919';
+        } else {
+          icon.classList.remove('fa-solid');
+          icon.classList.add('fa-regular');
+          icon.style.color = ''; // Revert to original CSS color
+        }
+      }
+    });
+  });
 });
 
 // Top Nav Tab Bar Click Logic (FOR ME, 홈, 랭킹, 썸머세일, 와인/맥주...)

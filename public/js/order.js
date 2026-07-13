@@ -1,4 +1,52 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  // 뒤로가기 버튼 로직 (확인 오버레이 띄우기)
+  const backBtn = document.getElementById('btn-back');
+  const backOverlay = document.getElementById('order-back-overlay');
+  const backCancelBtn = document.getElementById('btn-order-back-cancel');
+  const backConfirmBtn = document.getElementById('btn-order-back-confirm');
+
+  if (backBtn && backOverlay) {
+    backBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      backOverlay.classList.add('show');
+    });
+
+    backCancelBtn.addEventListener('click', () => {
+      backOverlay.classList.remove('show');
+    });
+
+    backConfirmBtn.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+
+    // 배경 클릭 시 닫기
+    backOverlay.addEventListener('click', (e) => {
+      if (e.target === backOverlay) {
+        backOverlay.classList.remove('show');
+      }
+    });
+  }
+
+  // 검색 오버레이 열기/닫기 로직
+  const searchOpenBtn = document.getElementById('btn-search-open');
+  const searchCloseBtn = document.getElementById('btn-search-close');
+  const searchOverlay = document.getElementById('search-overlay');
+  const searchInput = searchOverlay ? searchOverlay.querySelector('.search-overlay-input') : null;
+
+  if (searchOpenBtn && searchCloseBtn && searchOverlay) {
+    searchOpenBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      searchOverlay.classList.add('open');
+      if (searchInput) {
+        setTimeout(() => searchInput.focus(), 50);
+      }
+    });
+
+    searchCloseBtn.addEventListener('click', () => {
+      searchOverlay.classList.remove('open');
+    });
+  }
+
   let currentUser = null;
   let selectedProduct = null;
   let receiverId = null;
@@ -87,6 +135,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     receiverId = currentUser.userId; // 나에게 선물하기는 받는 사람이 나 자신
   } else {
     receiverSection.style.display = "block";
+    
+    // 기본 메시지 변경 (선물하기의 경우)
+    celebrationMessage = "생일 축하해!\nhappy birthday";
+    const mainPrimary = document.querySelector('.celebration-card .card-text-primary');
+    const mainSecondary = document.querySelector('.celebration-card .card-text-secondary');
+    if (mainPrimary) mainPrimary.textContent = "생일 축하해!";
+    if (mainSecondary) mainSecondary.textContent = "happy birthday";
     
     // 받는 사람 검색 로직
     const searchUserBtn = document.getElementById("btn-search-user");
