@@ -289,18 +289,43 @@ document.addEventListener("DOMContentLoaded", () => {
   // Save (bookmark) button logic
   const saveBtns = document.querySelectorAll('button[title="선물상자 담기"], button[aria-label="저장"]');
   saveBtns.forEach(btn => {
+    // Initialize state
+    const icon = btn.querySelector('i');
+    if (icon) {
+      let savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
+      if (savedProducts.includes(productId.toString())) {
+        icon.classList.remove('fa-regular');
+        icon.classList.add('fa-solid');
+        icon.style.color = '#191919';
+      }
+    }
+
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const icon = btn.querySelector('i');
       if (icon) {
+        let savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
+        const productIdStr = productId.toString();
+
         if (icon.classList.contains('fa-regular')) {
+          // Save
           icon.classList.remove('fa-regular');
           icon.classList.add('fa-solid');
           icon.style.color = '#191919';
+          if (!savedProducts.includes(productIdStr)) {
+            savedProducts.push(productIdStr);
+            localStorage.setItem('saved_products', JSON.stringify(savedProducts));
+          }
         } else {
+          // Unsave
           icon.classList.remove('fa-solid');
           icon.classList.add('fa-regular');
           icon.style.color = ''; // Revert to original CSS color
+          const index = savedProducts.indexOf(productIdStr);
+          if (index > -1) {
+            savedProducts.splice(index, 1);
+            localStorage.setItem('saved_products', JSON.stringify(savedProducts));
+          }
         }
       }
     });

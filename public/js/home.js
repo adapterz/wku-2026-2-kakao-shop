@@ -37,20 +37,41 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    // Save button click handler
+    // Initialize save button state from localStorage
     const saveBtn = card.querySelector('.btn-save-bookmark');
     if (saveBtn) {
+      const icon = saveBtn.querySelector('i');
+      let savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
+      if (savedProducts.includes(product.id.toString())) {
+        icon.classList.remove('fa-regular');
+        icon.classList.add('fa-solid');
+        icon.style.color = '#191919';
+      }
+
       saveBtn.addEventListener('click', (e) => {
         e.stopPropagation(); // prevent card click
-        const icon = saveBtn.querySelector('i');
+        savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
+        const productIdStr = product.id.toString();
+
         if (icon.classList.contains('fa-regular')) {
+          // Save it
           icon.classList.remove('fa-regular');
           icon.classList.add('fa-solid');
           icon.style.color = '#191919';
+          if (!savedProducts.includes(productIdStr)) {
+            savedProducts.push(productIdStr);
+            localStorage.setItem('saved_products', JSON.stringify(savedProducts));
+          }
         } else {
+          // Unsave it
           icon.classList.remove('fa-solid');
           icon.classList.add('fa-regular');
           icon.style.color = '#999';
+          const index = savedProducts.indexOf(productIdStr);
+          if (index > -1) {
+            savedProducts.splice(index, 1);
+            localStorage.setItem('saved_products', JSON.stringify(savedProducts));
+          }
         }
       });
     }
