@@ -68,7 +68,6 @@ router.get('/:id', requireLogin, async (req, res) => {
         barcode: gift.barcode,
         status: gift.status,
         usedAt: gift.used_at,
-        senderNickname: gift.sender_nickname,
         isSelfGift: !!gift.is_self_gift,
         sender: {
           userId: gift.sender_id,
