@@ -43,6 +43,7 @@ const getGiftDetailById = async (giftId) => {
       g.used_at,
       o.message,
       o.receiver_id,
+      o.is_self_gift,
       u.id as sender_id,
       u.nickname as sender_nickname
     FROM gifts g
