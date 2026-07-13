@@ -86,4 +86,46 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.location.href = 'login.html';
         });
     }
+
+    // Unused Gifts Logic
+    const unusedGiftsCountEl = document.getElementById('unused-gifts-count');
+    const unusedGiftsListEl = document.getElementById('unused-gifts-list');
+
+    if (unusedGiftsCountEl && unusedGiftsListEl) {
+        try {
+            const giftsResponse = await fetch('/api/gifts?status=unused', { credentials: 'include' });
+            if (giftsResponse.ok) {
+                const giftsResult = await giftsResponse.json();
+                const gifts = giftsResult.data || [];
+                
+                unusedGiftsCountEl.textContent = gifts.length;
+                
+                if (gifts.length === 0) {
+                    unusedGiftsListEl.innerHTML = '<div style="padding: 20px; color: #999; font-size: 14px;">미사용 선물이 없습니다.</div>';
+                } else {
+                    unusedGiftsListEl.innerHTML = '';
+                    gifts.forEach(gift => {
+                        const senderText = gift.isSelfGift ? "나" : (gift.senderNickname || "친구");
+                        
+                        const card = document.createElement('a');
+                        card.className = 'unused-gift-card';
+                        card.href = `giftuse.html?giftId=${gift.giftId}`;
+                        
+                        card.innerHTML = `
+                            <div class="unused-gift-img-wrapper">
+                                <img src="${gift.thumbnailUrl || ''}" alt="상품 썸네일" class="unused-gift-img">
+                            </div>
+                            <div class="unused-gift-sender">${senderText}</div>
+                        `;
+                        
+                        unusedGiftsListEl.appendChild(card);
+                    });
+                }
+            } else {
+                console.error('Failed to load unused gifts');
+            }
+        } catch (error) {
+            console.error('Error fetching unused gifts:', error);
+        }
+    }
 });

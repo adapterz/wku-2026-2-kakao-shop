@@ -69,66 +69,13 @@
     <!-- Divider -->
     <div class="thick-divider"></div>
 
-    <!-- Button Grid Area -->
-    <section class="grid-section">
-        <div class="grid-container">
-            <a href="#" class="grid-item">
-                <div class="icon-wrapper">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="12 2 22 8 22 16 12 22 2 16 2 8 12 2"></polygon>
-                        <text x="12" y="16.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#222" stroke="none" font-family="sans-serif">S</text>
-                    </svg>
-                </div>
-                <span class="grid-text">판매자 등급</span>
-            </a>
-            <a href="#" class="grid-item">
-                <div class="icon-wrapper">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <text x="12" y="16.5" text-anchor="middle" font-size="12" font-weight="bold" fill="#222" stroke="none" font-family="sans-serif">P</text>
-                    </svg>
-                </div>
-                <span class="grid-text">0P</span>
-            </a>
-            <a href="#" class="grid-item">
-                <div class="icon-wrapper">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-                        <path d="M4 6h16a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V8a2 2 0 0 1 2-2z"></path>
-                        <path d="M15 6v12"></path>
-                    </svg>
-                </div>
-                <span class="grid-text">쿠폰 0</span>
-            </a>
-            <a href="#" class="grid-item">
-                <div class="icon-wrapper">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        <polygon points="12 6 13.5 9.5 17 10 14.5 12.5 15 16 12 14.5 9 16 9.5 12.5 7 10 10.5 9.5 12 6" fill="none" stroke="#222" stroke-width="1.5"></polygon>
-                    </svg>
-                </div>
-                <span class="grid-text">리뷰</span>
-            </a>
-            <a href="#" class="grid-item">
-                <div class="icon-wrapper">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M19 8a3 3 0 0 1 0 6"></path>
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                    </svg>
-                </div>
-                <span class="grid-text">친구 초대</span>
-            </a>
-            <a href="#" class="grid-item">
-                <div class="icon-wrapper">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-                        <rect x="3" y="8" width="18" height="13" rx="1"></rect>
-                        <path d="M3 8l3-5h12l3 5"></path>
-                        <path d="M10 12h4"></path>
-                    </svg>
-                </div>
-                <span class="grid-text">공지사항</span>
-            </a>
+    <!-- Unused Gifts Area -->
+    <section class="unused-gifts-section">
+        <h3 class="section-title">
+            미사용 선물 <span id="unused-gifts-count" class="highlight-count" style="color: #f15746;">0</span>
+        </h3>
+        <div class="unused-gifts-scroller" id="unused-gifts-list">
+            <!-- Cards will be populated here by JS -->
         </div>
     </section>
 
