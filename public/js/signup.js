@@ -64,6 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-
-
+  // Home Button Logic
+  const btnHome = document.getElementById('btn-home');
+  if (btnHome) {
+    btnHome.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = 'index.html';
+    });
+  }
 });
