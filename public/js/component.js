@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    function initNavGroup(selector) {
-        const navItems = document.querySelectorAll(selector);
+    function updateActiveStates() {
+        const navItems = document.querySelectorAll('.bottom-nav .nav-item, .nav-bar .nav-item');
         if (navItems.length === 0) return;
 
         let currentPath = window.location.pathname;
@@ -12,16 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         navItems.forEach(item => {
-            // Handle click for placeholder links so they feel responsive
-            item.addEventListener('click', (e) => {
-                let href = item.getAttribute('href');
-                if (!href || href === '#') {
-                    e.preventDefault();
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    item.classList.add('active');
-                }
-            });
-
             let href = item.getAttribute('href');
             if (!href || href === '#') {
                 item.classList.remove('active');
@@ -42,8 +32,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function initNavGroup(selector) {
+        const navItems = document.querySelectorAll(selector);
+        if (navItems.length === 0) return;
+
+        navItems.forEach(item => {
+            // Handle click for placeholder links so they feel responsive
+            item.addEventListener('click', (e) => {
+                let href = item.getAttribute('href');
+                if (!href || href === '#') {
+                    e.preventDefault();
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                }
+            });
+        });
+    }
+
     initNavGroup('.bottom-nav .nav-item');
     initNavGroup('.nav-bar .nav-item');
+    updateActiveStates();
 
     // SHOP 버튼 검색 오버레이 연결
     const shopBtns = Array.from(document.querySelectorAll('.bottom-nav .nav-item')).filter(btn => {
@@ -66,6 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+    });
+
+    // 검색 오버레이 닫기(뒤로가기) 시 active 상태 복구
+    const searchCloseBtn = document.getElementById('btn-search-close');
+    if (searchCloseBtn) {
+        searchCloseBtn.addEventListener('click', () => {
+            updateActiveStates();
+        });
+    }
+
+    window.addEventListener('popstate', () => {
+        updateActiveStates();
     });
 });
 
