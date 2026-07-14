@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 unusedGiftsCountEl.textContent = gifts.length;
                 
                 if (gifts.length === 0) {
-                    unusedGiftsListEl.innerHTML = '<div style="padding: 20px; color: #999; font-size: 14px;">미사용 선물이 없습니다.</div>';
+                    unusedGiftsListEl.innerHTML = '<div style="padding: 20px; color: #999; font-size: 14px; flex: 0 0 100%; text-align: center;">미사용 선물이 없습니다.</div>';
                 } else {
                     unusedGiftsListEl.innerHTML = '';
                     gifts.forEach(gift => {
@@ -127,5 +127,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (error) {
             console.error('Error fetching unused gifts:', error);
         }
+    }
+
+    // Unused gifts scroller: convert vertical wheel scroll to horizontal
+    if (unusedGiftsListEl) {
+        unusedGiftsListEl.addEventListener('wheel', (e) => {
+            // 세로 스크롤량이 있을 때만 가로로 변환
+            if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                e.preventDefault();
+                unusedGiftsListEl.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
     }
 });
