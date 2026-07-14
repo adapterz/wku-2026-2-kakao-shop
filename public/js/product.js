@@ -33,9 +33,33 @@ async function loadProductDetail(id) {
     const result = await response.json();
     if (result && result.data) {
       renderProduct(result.data);
+    } else {
+      showErrorAndRedirect();
     }
   } catch (error) {
     console.error("상품 상세 데이터를 불러오는 데 실패했습니다:", error);
+    showErrorAndRedirect();
+  }
+}
+
+// 상품 데이터가 없거나 에러 발생 시 처리
+function showErrorAndRedirect() {
+  const container = document.querySelector('.product-detail-card');
+  if (container) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 60px 20px; font-family: sans-serif;">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size: 48px; color: #ff5a5f; margin-bottom: 20px;"></i>
+        <h3 style="font-size: 18px; color: #191919; margin-bottom: 10px; font-weight: 600;">상품을 찾을 수 없습니다</h3>
+        <p style="font-size: 14px; color: #767676; margin-bottom: 24px; line-height: 1.5;">존재하지 않는 상품이거나 판매가 종료된 상품입니다.</p>
+        <button onclick="location.href='index.html'" style="background-color: #fee500; border: none; border-radius: 8px; padding: 12px 24px; font-size: 14px; font-weight: bold; cursor: pointer; color: #191919;">홈으로 이동</button>
+      </div>
+    `;
+  }
+  
+  // 하단 주문 액션 바 비활성화/숨김 처리
+  const bottomNav = document.querySelector('.product-bottom-nav');
+  if (bottomNav) {
+    bottomNav.style.display = 'none';
   }
 }
 
@@ -265,21 +289,75 @@ document.addEventListener("DOMContentLoaded", () => {
   // Save (bookmark) button logic
   const saveBtns = document.querySelectorAll('button[title="선물상자 담기"], button[aria-label="저장"]');
   saveBtns.forEach(btn => {
+    // Initialize state
+    const icon = btn.querySelector('i');
+    if (icon) {
+      let savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
+      if (savedProducts.includes(productId.toString())) {
+        icon.classList.remove('fa-regular');
+        icon.classList.add('fa-solid');
+        icon.style.color = '#191919';
+      }
+    }
+
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const icon = btn.querySelector('i');
       if (icon) {
+        let savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
+        const productIdStr = productId.toString();
+
         if (icon.classList.contains('fa-regular')) {
+          // Save
+          icon.classList.remove('fa-regular');
+          icon.classList.add('fa-solid');
+          icon.style.color = '#191919';
+          if (!savedProducts.includes(productIdStr)) {
+            savedProducts.push(productIdStr);
+            localStorage.setItem('saved_products', JSON.stringify(savedProducts));
+            window.dispatchEvent(new Event('saved-products-updated'));
+          }
+        } else {
+          // Unsave
+          icon.classList.remove('fa-solid');
+          icon.classList.add('fa-regular');
+          icon.style.color = ''; // Revert to original CSS color
+          const index = savedProducts.indexOf(productIdStr);
+          if (index > -1) {
+            savedProducts.splice(index, 1);
+            localStorage.setItem('saved_products', JSON.stringify(savedProducts));
+            window.dispatchEvent(new Event('saved-products-updated'));
+          }
+        }
+      }
+    });
+  });
+
+  // Sync logic for product.js
+  function syncProductSaveButtons() {
+    let savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
+    const isSaved = savedProducts.includes(productId.toString());
+    saveBtns.forEach(btn => {
+      const icon = btn.querySelector('i');
+      if (icon) {
+        if (isSaved) {
           icon.classList.remove('fa-regular');
           icon.classList.add('fa-solid');
           icon.style.color = '#191919';
         } else {
           icon.classList.remove('fa-solid');
           icon.classList.add('fa-regular');
-          icon.style.color = ''; // Revert to original CSS color
+          icon.style.color = '';
         }
       }
     });
+  }
+
+  window.addEventListener('saved-products-updated', syncProductSaveButtons);
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'saved_products') {
+      syncProductSaveButtons();
+    }
   });
 });
 
