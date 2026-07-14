@@ -107,6 +107,18 @@ document.addEventListener('DOMContentLoaded', () => {
     sliderSlides.appendChild(firstClone);
     sliderSlides.insertBefore(lastClone, originalSlides[0]);
 
+    // 복제된 인덱스 포함 모든 이미지에 스타일과 클릭 이벤트 추가
+    const allSlides = sliderSlides.querySelectorAll('img');
+    allSlides.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', () => {
+            const productId = img.getAttribute('data-product-id');
+            if (productId) {
+                window.location.href = `product.html?id=${productId}`;
+            }
+        });
+    });
+
     // 복제된 마지막 요소(0번 인덱스) 다음인 실제 첫 번째 요소(1번 인덱스)부터 시작
     let currentIndex = 1;
     let isTransitioning = false; // 연속 클릭 방지용 플래그
@@ -125,7 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             if (isTransitioning) return;
             isTransitioning = true;
             currentIndex++;
@@ -134,7 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             if (isTransitioning) return;
             isTransitioning = true;
             currentIndex--;
