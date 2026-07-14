@@ -89,12 +89,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            // 저장 해제 로직
             const removeBtn = card.querySelector('.btn-remove-saved');
             removeBtn.addEventListener('click', () => {
                 let savedIds = JSON.parse(localStorage.getItem('saved_products') || '[]');
                 savedIds = savedIds.filter(id => id !== product.id.toString());
                 localStorage.setItem('saved_products', JSON.stringify(savedIds));
+                window.dispatchEvent(new Event('saved-products-updated'));
                 
                 card.remove();
                 

@@ -315,6 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!savedProducts.includes(productIdStr)) {
             savedProducts.push(productIdStr);
             localStorage.setItem('saved_products', JSON.stringify(savedProducts));
+            window.dispatchEvent(new Event('saved-products-updated'));
           }
         } else {
           // Unsave
@@ -325,10 +326,38 @@ document.addEventListener("DOMContentLoaded", () => {
           if (index > -1) {
             savedProducts.splice(index, 1);
             localStorage.setItem('saved_products', JSON.stringify(savedProducts));
+            window.dispatchEvent(new Event('saved-products-updated'));
           }
         }
       }
     });
+  });
+
+  // Sync logic for product.js
+  function syncProductSaveButtons() {
+    let savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
+    const isSaved = savedProducts.includes(productId.toString());
+    saveBtns.forEach(btn => {
+      const icon = btn.querySelector('i');
+      if (icon) {
+        if (isSaved) {
+          icon.classList.remove('fa-regular');
+          icon.classList.add('fa-solid');
+          icon.style.color = '#191919';
+        } else {
+          icon.classList.remove('fa-solid');
+          icon.classList.add('fa-regular');
+          icon.style.color = '';
+        }
+      }
+    });
+  }
+
+  window.addEventListener('saved-products-updated', syncProductSaveButtons);
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'saved_products') {
+      syncProductSaveButtons();
+    }
   });
 });
 

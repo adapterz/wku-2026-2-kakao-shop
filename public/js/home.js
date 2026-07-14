@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ${discountHtml}
             <span class="price">${formattedPrice}</span>
           </div>
-          <button class="btn-save-bookmark" title="저장" style="background:none; border:none; padding:4px; cursor:pointer;">
+          <button class="btn-save-bookmark" data-product-id="${product.id}" title="저장" style="background:none; border:none; padding:4px; cursor:pointer;">
             <i class="fa-regular fa-bookmark" style="font-size: 20px; color: #999;"></i>
           </button>
         </div>
@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize save button state from localStorage
     const saveBtn = card.querySelector('.btn-save-bookmark');
     if (saveBtn) {
-      const icon = saveBtn.querySelector('i');
       let savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
+      const icon = saveBtn.querySelector('i');
       if (savedProducts.includes(product.id.toString())) {
         icon.classList.remove('fa-regular');
         icon.classList.add('fa-solid');
@@ -50,27 +50,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
       saveBtn.addEventListener('click', (e) => {
         e.stopPropagation(); // prevent card click
-        savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
+        let savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
         const productIdStr = product.id.toString();
+        const icon = saveBtn.querySelector('i');
 
         if (icon.classList.contains('fa-regular')) {
-          // Save it
-          icon.classList.remove('fa-regular');
-          icon.classList.add('fa-solid');
-          icon.style.color = '#191919';
           if (!savedProducts.includes(productIdStr)) {
             savedProducts.push(productIdStr);
             localStorage.setItem('saved_products', JSON.stringify(savedProducts));
+            window.dispatchEvent(new Event('saved-products-updated'));
           }
         } else {
-          // Unsave it
-          icon.classList.remove('fa-solid');
-          icon.classList.add('fa-regular');
-          icon.style.color = '#999';
           const index = savedProducts.indexOf(productIdStr);
           if (index > -1) {
             savedProducts.splice(index, 1);
             localStorage.setItem('saved_products', JSON.stringify(savedProducts));
+            window.dispatchEvent(new Event('saved-products-updated'));
           }
         }
       });
@@ -184,6 +179,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Call load functions
   loadProducts();
+
+  // Sync save buttons state across the page
+  function syncSaveButtons() {
+    let savedProducts = JSON.parse(localStorage.getItem('saved_products') || '[]');
+    document.querySelectorAll('.btn-save-bookmark').forEach(btn => {
+      const pid = btn.getAttribute('data-product-id');
+      if (!pid) return;
+      const icon = btn.querySelector('i');
+      if (savedProducts.includes(pid)) {
+        icon.classList.remove('fa-regular');
+        icon.classList.add('fa-solid');
+        icon.style.color = '#191919';
+      } else {
+        icon.classList.remove('fa-solid');
+        icon.classList.add('fa-regular');
+        icon.style.color = '#999';
+      }
+    });
+  }
+
+  window.addEventListener('saved-products-updated', syncSaveButtons);
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'saved_products') {
+      syncSaveButtons();
+    }
+  });
 
 
   // Search Overlay Open/Close Logic
