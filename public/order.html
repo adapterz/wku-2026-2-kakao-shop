@@ -9,34 +9,56 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <script>
+        // 안전 장치: 3초 후에도 화면이 숨겨져 있으면 강제로 노출
+        setTimeout(function () {
+            if (document.body && document.body.style.display === 'none') {
+                document.body.style.display = '';
+            }
+        }, 3000);
+    </script>
 </head>
 
-<body>
+<body style="display: none;">
 
     <!-- Main Header -->
     <header class="main-header" style="border-bottom: none;">
         <div class="header-container" style="justify-content: space-between;">
             <a href="#" id="btn-back" class="header-icon" title="뒤로가기">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="12" x2="4" y2="12"></line><polyline points="10 18 4 12 10 6"></polyline></svg>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="20" y1="12" x2="4" y2="12"></line>
+                    <polyline points="10 18 4 12 10 6"></polyline>
+                </svg>
             </a>
             <div class="header-right-icons" style="gap: 16px;">
                 <a href="#" id="btn-search-open" class="header-icon" title="검색">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="20" y1="20" x2="16" y2="16"></line></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="20" y1="20" x2="16" y2="16"></line>
+                    </svg>
                 </a>
                 <a href="index.html" class="header-icon" title="홈">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <path d="M4 10l8-7 8 7v10H4z"></path>
                         <line x1="10" y1="16" x2="14" y2="16"></line>
                     </svg>
                 </a>
                 <a href="giftbox.html" class="header-icon" title="선물함">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <path d="M5 8h14l1 13H4L5 8z"></path>
                         <path d="M9 11V6a3 3 0 0 1 6 0v5"></path>
                     </svg>
                 </a>
                 <a href="#" class="header-icon" title="더보기">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="5" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="12" cy="19" r="1.5"></circle></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                        <circle cx="12" cy="5" r="1.5"></circle>
+                        <circle cx="12" cy="12" r="1.5"></circle>
+                        <circle cx="12" cy="19" r="1.5"></circle>
+                    </svg>
                 </a>
             </div>
         </div>
@@ -63,7 +85,8 @@
                 <div class="order-product-info">
                     <span id="order-brand" class="order-brand-name"></span>
                     <h3 id="order-name" class="order-product-title"></h3>
-                    <div class="order-product-qty-price" style="font-size: 13px; color: var(--text-sub); margin-top: 4px;">
+                    <div class="order-product-qty-price"
+                        style="font-size: 13px; color: var(--text-sub); margin-top: 4px;">
                         <span id="order-unit-price"></span>
                     </div>
                 </div>
@@ -73,37 +96,45 @@
             <div class="order-section" id="receiver-section" style="display:none;">
                 <h4 class="order-section-title">받는 사람</h4>
                 <div class="search-user-wrapper" style="display: flex; gap: 8px;">
-                    <input type="text" id="receiver-nickname-input" placeholder="받는 사람의 닉네임을 검색하세요" style="flex: 1; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px;">
-                    <button id="btn-search-user" style="padding: 0 16px; background-color: #191919; color: #fff; border-radius: 8px; font-weight: 700; font-size: 14px;">검색</button>
+                    <input type="text" id="receiver-nickname-input" placeholder="받는 사람의 닉네임을 검색하세요"
+                        style="flex: 1; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px;">
+                    <button id="btn-search-user"
+                        style="padding: 0 16px; background-color: #191919; color: #fff; border-radius: 8px; font-weight: 700; font-size: 14px;">검색</button>
                 </div>
                 <div id="receiver-search-result" style="margin-top: 10px; font-size: 14px; font-weight: 700;"></div>
             </div>
 
             <div class="order-section" id="self-receiver-section" style="display:none;">
                 <h4 class="order-section-title">받는 사람</h4>
-                <div style="padding: 12px; background-color: #F9F9F9; border-radius: 8px; font-size: 14px; font-weight: 700;">
+                <div
+                    style="padding: 12px; background-color: #F9F9F9; border-radius: 8px; font-size: 14px; font-weight: 700;">
                     나에게 선물하기 (본인 배송)
                 </div>
             </div>
 
             <!-- Payment Info Section -->
-            <div class="order-section" style="padding-top: 20px; border-top: 8px solid #F5F5F5; margin-top: 20px; padding-bottom: 20px;">
+            <div class="order-section"
+                style="padding-top: 20px; border-top: 8px solid #F5F5F5; margin-top: 20px; padding-bottom: 20px;">
                 <h4 class="order-section-title" style="margin-bottom: 20px;">결제 정보</h4>
-                
-                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 12px; color: #191919;">
+
+                <div
+                    style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 12px; color: #191919;">
                     <span>총 상품금액 (1개)</span>
                     <span id="order-total-price"></span>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 12px; color: #191919;">
+                <div
+                    style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 12px; color: #191919;">
                     <span>할인금액</span>
                     <span>0원</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 20px; color: #191919;">
+                <div
+                    style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 20px; color: #191919;">
                     <span>쇼핑포인트 사용</span>
                     <span>0원</span>
                 </div>
-                
-                <div style="border-top: 1px solid #E5E5E5; padding-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+
+                <div
+                    style="border-top: 1px solid #E5E5E5; padding-top: 20px; display: flex; justify-content: space-between; align-items: center;">
                     <span style="font-size: 16px; font-weight: 700; color: #191919;">최종 결제금액</span>
                     <span id="order-final-price" style="font-size: 22px; font-weight: 700; color: #191919;"></span>
                 </div>
@@ -112,16 +143,20 @@
             <!-- Terms and Conditions Section -->
             <div style="border-top: 8px solid #F5F5F5; padding: 20px 0 0 0;">
                 <div style="font-size: 13px; color: #888; margin-bottom: 20px; padding: 0 20px;">
-                    <span style="text-decoration: underline; font-weight: 700; color: #666;">주문내용 및 결제조건을 확인했으며</span>, 결제진행에 동의합니다.
+                    <span style="text-decoration: underline; font-weight: 700; color: #666;">주문내용 및 결제조건을 확인했으며</span>,
+                    결제진행에 동의합니다.
                 </div>
-                
-                <div style="border-top: 8px solid #F5F5F5; padding: 20px; font-size: 12px; color: #999; line-height: 1.5;">
-                    (주)카카오에서 판매하는 상품 중에는 개별 판매자가 판매하는 상품이 포함되어 있습니다. 개별 판매자가 판매하는 상품에 대해 (주)카카오는 통신중개판매업자로서 통신판매의 당사자가 아니며 상품의 주문, 배송 및 환불 등과 관련한 의무와 책임은 각 판매자에게 있습니다.
+
+                <div
+                    style="border-top: 8px solid #F5F5F5; padding: 20px; font-size: 12px; color: #999; line-height: 1.5;">
+                    (주)카카오에서 판매하는 상품 중에는 개별 판매자가 판매하는 상품이 포함되어 있습니다. 개별 판매자가 판매하는 상품에 대해 (주)카카오는 통신중개판매업자로서 통신판매의 당사자가
+                    아니며 상품의 주문, 배송 및 환불 등과 관련한 의무와 책임은 각 판매자에게 있습니다.
                 </div>
             </div>
 
             <div style="padding: 0 20px 20px;">
-                <button id="btn-submit-order" class="btn-submit-order" style="width: 100%; padding: 16px; background-color: #191919; color: #FFFFFF; font-weight: 700; font-size: 16px; border-radius: 8px; text-align: center; cursor: pointer; border: none;">
+                <button id="btn-submit-order" class="btn-submit-order"
+                    style="width: 100%; padding: 16px; background-color: #191919; color: #FFFFFF; font-weight: 700; font-size: 16px; border-radius: 8px; text-align: center; cursor: pointer; border: none;">
                     <span id="btn-submit-price"></span> 결제하기
                 </button>
             </div>
@@ -148,8 +183,10 @@
             <!-- Message Input Area -->
             <div class="message-input-container">
                 <textarea id="edit-message-input" placeholder="메시지를 입력해 주세요." maxlength="100"></textarea>
-                <div class="message-input-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-                    <button id="btn-clear-message" class="btn-clear-message" type="button" style="font-size: 13px; color: var(--text-sub); border: none; background: none; cursor: pointer; padding: 0;">삭제</button>
+                <div class="message-input-footer"
+                    style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                    <button id="btn-clear-message" class="btn-clear-message" type="button"
+                        style="font-size: 13px; color: var(--text-sub); border: none; background: none; cursor: pointer; padding: 0;">삭제</button>
                     <div class="char-counter" style="font-size: 13px; color: var(--text-muted);">
                         <span id="current-char-count">0</span>/100
                     </div>
@@ -162,7 +199,11 @@
     <div id="search-overlay" class="search-overlay">
         <div class="search-overlay-header">
             <button id="btn-search-close" class="btn-search-back" aria-label="뒤로가기">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="12" x2="4" y2="12"></line><polyline points="10 18 4 12 10 6"></polyline></svg>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="20" y1="12" x2="4" y2="12"></line>
+                    <polyline points="10 18 4 12 10 6"></polyline>
+                </svg>
             </button>
             <div class="search-input-wrapper">
                 <i class="fa-solid fa-magnifying-glass search-overlay-input-icon"></i>
@@ -180,13 +221,16 @@
         <div class="order-back-card" id="order-back-card">
             <p>지금 나가시면 작성 중인 주문 내용이 사라져요. 나가시겠어요?</p>
             <div class="order-back-buttons">
-                <button type="button" id="btn-order-back-cancel" class="order-back-btn order-back-btn-cancel">취소</button>
-                <button type="button" id="btn-order-back-confirm" class="order-back-btn order-back-btn-confirm">확인</button>
+                <button type="button" id="btn-order-back-cancel"
+                    class="order-back-btn order-back-btn-cancel">취소</button>
+                <button type="button" id="btn-order-back-confirm"
+                    class="order-back-btn order-back-btn-confirm">확인</button>
             </div>
         </div>
     </div>
 
     <!-- Script for Interactions -->
+    <script src="js/skeleton.js"></script>
     <script src="js/order.js" defer></script>
 
 </body>

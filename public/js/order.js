@@ -52,10 +52,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   let receiverId = null;
   let celebrationMessage = "나는 내가 챙긴다!\n소중한 나에게 주는 선물";
 
+  const delayState = document.getElementById("order-delay-state");
+  const orderContainer = document.querySelector(".order-container");
+
+  function showOrderLoadingDelayed() {
+    if (delayState) delayState.style.display = "block";
+    if (orderContainer) orderContainer.style.display = "none";
+    document.body.style.display = "";
+  }
+
+  const settle = createSkeletonGuard(showOrderLoadingDelayed, 1500);
+
   // 1. 로그인 여부 확인
   try {
     const authResponse = await fetch('/api/auth/me', { credentials: 'include' });
     if (!authResponse.ok) {
+      settle();
       alert("로그인이 필요한 서비스입니다.");
       location.href = "login.html";
       return;
@@ -64,11 +76,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (authResult && authResult.data) {
       currentUser = authResult.data;
     } else {
+      settle();
       alert("로그인이 필요한 서비스입니다.");
       location.href = "login.html";
       return;
     }
   } catch (error) {
+    settle();
     console.error("인증 확인 실패:", error);
     alert("로그인이 필요한 서비스입니다.");
     location.href = "login.html";
@@ -81,6 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const orderType = urlParams.get('type') || 'self'; // 'self' or 'gift'
 
   if (!productId) {
+    settle();
     alert("올바르지 않은 접근입니다.");
     location.href = "index.html";
     return;
@@ -113,12 +128,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (elTotalPrice) elTotalPrice.textContent = priceStr;
       if (elFinalPrice) elFinalPrice.textContent = priceStr;
       if (elSubmitPrice) elSubmitPrice.textContent = priceStr;
+
+      settle();
+      if (delayState) delayState.style.display = "none";
+      if (orderContainer) orderContainer.style.display = "";
+      document.body.style.display = "";
     } else {
+      settle();
       alert("상품 정보를 찾을 수 없습니다.");
       location.href = "index.html";
       return;
     }
   } catch (error) {
+    settle();
     console.error("상품 정보 조회 실패:", error);
     alert("상품 정보를 불러오는 데 실패했습니다.");
     location.href = "index.html";

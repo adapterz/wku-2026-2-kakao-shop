@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <script>
+        // 비상 탈출 안전 장치 (스크립트 에러 등으로 10초 이상 응답이 전혀 없을 때만 작동)
+        setTimeout(function() {
+            if (document.body && document.body.style.display === 'none') {
+                document.body.style.display = '';
+            }
+        }, 10000);
+    </script>
     <style>
         body {
             background-color: #f2f2f2; /* Light gray background to show section dividers clearly */
@@ -98,6 +106,15 @@
             font-size: 13px;
             font-weight: 700;
         }
+        .promo-text-primary {
+            color: #191919;
+        }
+        .promo-text-secondary {
+            color: #767676;
+            font-size: 11px;
+            font-weight: 400;
+            margin-top: 2px;
+        }
         .promo-img {
             width: 24px;
             height: 24px;
@@ -106,95 +123,83 @@
             object-fit: cover;
         }
         
-        .section-container {
+        .complete-product-section {
             padding: 24px 20px;
         }
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        .section-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #191919;
-        }
-        .btn-edit-address {
-            padding: 6px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background-color: #fff;
-            font-size: 12px;
-            color: var(--text-sub);
-            cursor: pointer;
-        }
-        .address-info {
+        .complete-product-section .section-title {
             font-size: 14px;
-            line-height: 1.5;
-            color: #191919;
+            color: #767676;
+            margin-bottom: 16px;
+            font-weight: 400;
         }
-        .address-name {
-            font-weight: 700;
-        }
-        .address-phone {
-            color: var(--text-sub);
-            margin-left: 6px;
-            font-size: 13px;
-        }
-        .address-detail {
-            margin-top: 6px;
-            color: var(--text-sub);
-            font-size: 13px;
-        }
-        
-        .gift-item-card {
+        .product-info-row {
             display: flex;
             gap: 16px;
         }
-        .gift-img-wrapper {
-            width: 72px;
-            height: 72px;
-            flex-shrink: 0;
+        .product-info-row .gift-img-wrapper {
+            width: 90px;
+            height: 90px;
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid rgba(0,0,0,0.05);
         }
-        .gift-img {
+        .product-info-row .gift-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .gift-info {
+        .product-info-row .gift-info {
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-        .gift-brand {
+        .product-info-row .gift-brand {
             font-size: 12px;
-            color: var(--text-muted);
+            color: #767676;
             margin-bottom: 4px;
         }
-        .gift-name {
-            font-size: 14px;
+        .product-info-row .gift-name {
+            font-size: 15px;
             color: #191919;
-            line-height: 1.4;
-            margin-bottom: 8px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-weight: 400;
+            margin-bottom: 6px;
         }
-        .gift-qty {
+        .product-info-row .gift-qty {
+            font-size: 12px;
+            color: #767676;
+        }
+        .delivery-section {
+            padding: 24px 20px;
+            display: none; /* Only show when shipping address exists, fallback is shown via JS */
+        }
+        .delivery-section .section-title {
+            font-size: 14px;
+            color: #767676;
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+        .delivery-card {
+            border: 1px solid #EAEAEA;
+            border-radius: 8px;
+            padding: 16px;
             font-size: 13px;
-            color: var(--text-sub);
+            color: #191919;
+            line-height: 1.6;
         }
-
+        .delivery-card .delivery-header {
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .delivery-card .delivery-header span:last-child {
+            color: #999;
+            font-weight: 400;
+        }
         .bottom-actions {
             display: flex;
-            gap: 8px;
-            padding: 24px 20px;
-            background-color: transparent;
+            gap: 12px;
+            padding: 20px;
         }
         .btn-action-left {
             flex: 1;
@@ -224,7 +229,7 @@
     </style>
 </head>
 
-<body>
+<body style="display: none;">
 
     <!-- Header -->
     <!-- Main Header -->
@@ -257,6 +262,10 @@
     </header>
 
     <main class="main-content" style="padding-top: 0; background-color: transparent;">
+        <div id="complete-delay-state" class="empty-state" style="display: none; padding: 60px 20px; text-align: center; color: #767676; font-size: 14px;">
+            <i class="fa-solid fa-clock" style="font-size: 40px; margin-bottom: 16px; color: #999;"></i>
+            <p>결제 내역을 불러오는 데 시간이 걸리고 있습니다. 잠시만 기다려 주세요...</p>
+        </div>
         <div class="integrated-card">
             <!-- Message Section -->
             <section class="complete-message-section">
@@ -347,6 +356,7 @@
     </div>
 
     <!-- Script for Data Fetching -->
+    <script src="js/skeleton.js"></script>
     <script src="js/complete.js"></script>
 </body>
 
