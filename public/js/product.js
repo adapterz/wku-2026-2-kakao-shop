@@ -1,6 +1,8 @@
 // 상품 데이터를 화면에 렌더링하는 함수
 function renderProduct(product) {
+  const timeoutStateElement = document.getElementById("product-error-state");
   const imgElement = document.getElementById("product-img");
+  const imgWrapper = document.getElementById("product-img-wrapper");
   const brandElement = document.getElementById("product-brand");
   const nameElement = document.getElementById("product-name");
   const priceElement = document.getElementById("product-price");
@@ -8,7 +10,24 @@ function renderProduct(product) {
   const usageElement = document.getElementById("product-usage");
   const brandNavElement = document.getElementById("product-brand-nav");
 
-  if (imgElement) imgElement.src = product.thumbnailUrl;
+  // 타임아웃으로 임시 안내가 떠 있었다면 해제하고 실제 카드를 다시 노출
+  if (timeoutStateElement) timeoutStateElement.style.display = 'none';
+  const cardElement = document.querySelector('.product-detail-card');
+  if (cardElement) cardElement.style.display = '';
+
+  if (imgElement) {
+    imgElement.src = product.thumbnailUrl;
+    imgElement.style.display = 'block';
+  }
+  if (imgWrapper) imgWrapper.classList.remove('skeleton');
+
+  [brandElement, nameElement, priceElement].forEach(el => {
+    if (!el) return;
+    el.classList.remove('skeleton');
+    el.style.minWidth = 'unset';
+    el.style.minHeight = 'unset';
+  });
+
   if (brandElement) brandElement.textContent = product.brand;
   if (nameElement) nameElement.textContent = product.name;
   if (priceElement) priceElement.textContent = `${product.price.toLocaleString()}원`;
@@ -23,20 +42,56 @@ function renderProduct(product) {
   }
 }
 
+// 상품 데이터가 없거나 에러 발생 시 처리
+function showErrorAndRedirect() {
+  const container = document.querySelector('.product-detail-card');
+  if (container) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 60px 20px; font-family: sans-serif;">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size: 48px; color: #ff5a5f; margin-bottom: 20px;"></i>
+        <h3 style="font-size: 18px; color: #191919; margin-bottom: 10px; font-weight: 600;">상품을 찾을 수 없습니다</h3>
+        <p style="font-size: 14px; color: #767676; margin-bottom: 24px; line-height: 1.5;">존재하지 않는 상품이거나 판매가 종료된 상품입니다.</p>
+        <button onclick="location.href='index.html'" style="background-color: #fee500; border: none; border-radius: 8px; padding: 12px 24px; font-size: 14px; font-weight: bold; cursor: pointer; color: #191919;">홈으로 이동</button>
+      </div>
+    `;
+  }
+
+  // 하단 주문 액션 바 비활성화/숨김 처리
+  const bottomNav = document.querySelector('.product-bottom-nav');
+  if (bottomNav) {
+    bottomNav.style.display = 'none';
+  }
+
+  const timeoutStateElement = document.getElementById("product-error-state");
+  if (timeoutStateElement) timeoutStateElement.style.display = 'none';
+}
+
+// 최대 노출 시간 초과: 아직 응답 대기 중이므로 카드를 잠시 숨기고 지연 안내로 전환
+// (응답이 이후 도착하면 renderProduct가 카드를 되돌려 놓음)
+function showProductLoadingDelayed() {
+  const cardElement = document.querySelector('.product-detail-card');
+  const timeoutStateElement = document.getElementById("product-error-state");
+  if (cardElement) cardElement.style.display = 'none';
+  if (timeoutStateElement) timeoutStateElement.style.display = 'flex';
+}
+
 // API로부터 상품 상세 데이터 가져오기
 async function loadProductDetail(id) {
+  const settle = createSkeletonGuard(showProductLoadingDelayed, 1500);
   try {
     const response = await fetch(`/api/products/${id}`, { credentials: 'include' });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const result = await response.json();
+    settle();
     if (result && result.data) {
       renderProduct(result.data);
     } else {
       showErrorAndRedirect();
     }
   } catch (error) {
+    settle();
     console.error("상품 상세 데이터를 불러오는 데 실패했습니다:", error);
     showErrorAndRedirect();
   }

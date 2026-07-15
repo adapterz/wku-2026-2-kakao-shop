@@ -46,13 +46,17 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
+        <div id="product-error-state" class="empty-state" style="display: none;">
+            <i class="fa-solid fa-clock"></i>
+            <p>응답이 지연되고 있어요. 잠시만 기다려 주세요.</p>
+        </div>
         <div class="product-detail-card">
-            <div class="product-image-container">
-                <img id="product-img" src="" alt="상품 이미지" class="product-detail-img">
+            <div class="product-image-container skeleton" id="product-img-wrapper">
+                <img id="product-img" src="" alt="상품 이미지" class="product-detail-img" style="display: none;">
             </div>
             <div class="product-info-container">
-                <span id="product-brand" class="product-detail-brand"></span>
-                <h2 id="product-name" class="product-detail-title"></h2>
+                <span id="product-brand" class="product-detail-brand skeleton" style="min-width: 60px; min-height: 14px;"></span>
+                <h2 id="product-name" class="product-detail-title skeleton" style="min-width: 220px; min-height: 24px; margin-top: 6px;"></h2>
                 <div class="product-rating-row">
                     <span class="stars">
                         <i class="fa-solid fa-star" style="color: #191919;"></i>
@@ -60,7 +64,7 @@
                     <span class="review-count"><span style="color: #191919;">0.0</span>&nbsp;&nbsp;&nbsp;&nbsp;리뷰 0</span>
                 </div>
                 <div class="product-detail-price-row">
-                    <span id="product-price" class="product-detail-price"></span>
+                    <span id="product-price" class="product-detail-price skeleton" style="min-width: 100px; min-height: 22px;"></span>
                 </div>
             </div>
             <!-- Brand Navigation Row -->
@@ -170,6 +174,7 @@
     </div>
 
     <!-- Script for Interactions -->
+    <script src="js/skeleton.js"></script>
     <script src="js/product.js" defer></script>
     <script src="js/component.js" defer></script>
 

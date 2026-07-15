@@ -927,6 +927,76 @@ body {
   margin-bottom: 8px;
 }
 
+/* Skeleton Loading (shared shimmer primitive) */
+.skeleton {
+  background-color: #f2f2f2;
+  color: transparent !important;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.skeleton::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Product Card Skeleton (home.js 상품 카드 리스트) */
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+}
+
+.skeleton-card .skeleton-card-img {
+  width: 100%;
+  padding-top: 100%;
+  border-radius: var(--radius-md);
+}
+
+.skeleton-card .skeleton-line {
+  height: 12px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+/* Unused Gift Card Skeleton (mypage.js 미사용 선물 리스트) */
+.skeleton-unused-gift {
+  display: flex;
+  flex-direction: column;
+  min-width: 110px;
+  width: 110px;
+  flex-shrink: 0;
+}
+
+.skeleton-unused-gift .skeleton-gift-img {
+  width: 100%;
+  height: 110px;
+  border-radius: 8px;
+}
+
+.skeleton-unused-gift .skeleton-line {
+  height: 12px;
+  width: 60%;
+  border-radius: 4px;
+  margin: 8px auto 0;
+}
+
 /* Product Detail Page Styles */
 .product-detail-card {
   display: flex;

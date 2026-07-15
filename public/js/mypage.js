@@ -91,41 +91,66 @@ document.addEventListener('DOMContentLoaded', async () => {
     const unusedGiftsCountEl = document.getElementById('unused-gifts-count');
     const unusedGiftsListEl = document.getElementById('unused-gifts-list');
 
+    const unusedGiftsFallbackHtml = (message) =>
+        `<div style="padding: 20px; color: #999; font-size: 14px; flex: 0 0 100%; text-align: center;">${message}</div>`;
+
+    function renderUnusedGiftsSkeleton() {
+        unusedGiftsListEl.innerHTML = '';
+        for (let i = 0; i < 4; i++) {
+            const card = document.createElement('div');
+            card.className = 'unused-gift-card skeleton-unused-gift';
+            card.innerHTML = `
+                <div class="skeleton skeleton-gift-img"></div>
+                <div class="skeleton skeleton-line"></div>
+            `;
+            unusedGiftsListEl.appendChild(card);
+        }
+    }
+
     if (unusedGiftsCountEl && unusedGiftsListEl) {
+        renderUnusedGiftsSkeleton();
+        const settle = createSkeletonGuard(() => {
+            unusedGiftsListEl.innerHTML = unusedGiftsFallbackHtml('미사용 선물을 불러오지 못했습니다.');
+        }, 1500);
+
         try {
             const giftsResponse = await fetch('/api/gifts?status=unused', { credentials: 'include' });
+            settle();
             if (giftsResponse.ok) {
                 const giftsResult = await giftsResponse.json();
                 const gifts = giftsResult.data || [];
-                
+
                 unusedGiftsCountEl.textContent = gifts.length;
-                
+
                 if (gifts.length === 0) {
-                    unusedGiftsListEl.innerHTML = '<div style="padding: 20px; color: #999; font-size: 14px; flex: 0 0 100%; text-align: center;">미사용 선물이 없습니다.</div>';
+                    unusedGiftsListEl.innerHTML = unusedGiftsFallbackHtml('미사용 선물이 없습니다.');
                 } else {
                     unusedGiftsListEl.innerHTML = '';
                     gifts.forEach(gift => {
                         const senderText = gift.isSelfGift ? "나" : (gift.senderNickname || "친구");
-                        
+
                         const card = document.createElement('a');
                         card.className = 'unused-gift-card';
                         card.href = `giftuse.html?giftId=${gift.giftId}`;
-                        
+
                         card.innerHTML = `
                             <div class="unused-gift-img-wrapper">
                                 <img src="${gift.thumbnailUrl || ''}" alt="상품 썸네일" class="unused-gift-img">
                             </div>
                             <div class="unused-gift-sender">${senderText}</div>
                         `;
-                        
+
                         unusedGiftsListEl.appendChild(card);
                     });
                 }
             } else {
                 console.error('Failed to load unused gifts');
+                unusedGiftsListEl.innerHTML = unusedGiftsFallbackHtml('미사용 선물을 불러오지 못했습니다.');
             }
         } catch (error) {
+            settle();
             console.error('Error fetching unused gifts:', error);
+            unusedGiftsListEl.innerHTML = unusedGiftsFallbackHtml('미사용 선물을 불러오지 못했습니다.');
         }
     }
 
