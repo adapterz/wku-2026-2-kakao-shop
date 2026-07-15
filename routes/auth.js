@@ -4,6 +4,15 @@ const userModel = require('../db/models/userModel');
 const bcrypt = require('bcrypt');
 const requireLogin = require('../middlewares/requireLogin');
 
+// 이메일 형식 검증용 정규식 (예: user@example.com 형태인지 확인)
+const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+// 이메일 형식이 올바른지 검사하는 함수
+function isValidEmail(email) {
+  return EMAIL_REGEX.test(email);
+}
+
+
 // POST /api/auth/signup - 회원가입
 router.post('/signup', async (req, res) => {
   try {
@@ -12,6 +21,11 @@ router.post('/signup', async (req, res) => {
     if (!email) {
       return res.status(400).json({ status: 400, code: "REQUIRED_EMAIL", message: null, data: null });
     }
+
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ status: 400, code: "INVALID_EMAIL_FORMAT", message: null, data: null });
+    }
+
     if (!password) {
       return res.status(400).json({ status: 400, code: "REQUIRED_PASSWORD", message: null, data: null });
     }

@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     EMAIL_ALREADY_EXISTS: '이미 가입된 이메일입니다.',
     NICKNAME_ALREADY_EXISTS: '이미 사용 중인 닉네임입니다.',
     INTERNAL_SERVER_ERROR: '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+    INVALID_EMAIL_FORMAT: '올바른 이메일 형식이 아닙니다.', // 서버의 이메일 형식 검증 실패 시 표시
   };
 
   function showError(message) {
