@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (result && result.data) {
       const order = result.data;
       renderCompletePage(order);
+      document.body.style.display = '';
     } else {
       alert("주문 정보가 올바르지 않습니다.");
       location.href = "index.html";

@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch(`/api/gifts/${giftId}`, { credentials: 'include' });
 
         if (!response.ok) {
+            if (response.status === 401 || response.status === 403) {
+                settle();
+                alert("로그인이 필요합니다.");
+                location.href = "login.html";
+                return;
+            }
             // Fallback 로직: 상세 조회 실패 시 전체 목록에서 찾기
             const allGiftsResponse = await fetch('/api/gifts?status=unused', { credentials: 'include' });
             settle();
@@ -30,6 +36,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     showError('선물 정보를 찾을 수 없거나 이미 사용된 선물입니다.');
                 }
             } else {
+                if (allGiftsResponse.status === 401 || allGiftsResponse.status === 403) {
+                    alert("로그인이 필요합니다.");
+                    location.href = "login.html";
+                    return;
+                }
                 showError('선물 정보를 불러오는데 실패했습니다.');
             }
         } else {

@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const authResult = await authResponse.json();
     if (authResult && authResult.data) {
       currentUser = authResult.data;
+      document.body.style.display = '';
     } else {
       alert("로그인이 필요한 서비스입니다.");
       location.href = "login.html";
