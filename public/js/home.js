@@ -15,9 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const rankHtml = options.showRank && options.rankIndex ? `<span class="rank-badge">${options.rankIndex}</span>` : '';
 
     card.innerHTML = `
-      <div class="card-img-wrapper">
+      <div class="card-img-wrapper skeleton">
         ${rankHtml}
-        <img class="product-img" src="${thumbnailUrl}" alt="${name}">
+        <img class="product-img" src="${thumbnailUrl}" alt="${name}" onload="this.parentElement.classList.remove('skeleton'); this.classList.add('loaded');" onerror="this.parentElement.classList.remove('skeleton'); this.style.opacity=1;">
       </div>
       <div class="card-body">
         <span class="brand-name">${brand}</span>
@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load products from /api/products
   async function loadProducts() {
     renderSkeletonState();
-    const settle = createSkeletonGuard(showErrorState, 1500);
+    const settle = createSkeletonGuard(showErrorState, 5000);
 
     let apiProducts = [];
     let fetchFailed = false;
