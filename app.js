@@ -26,6 +26,25 @@ app.use(session({
   }
 }));
 
+// 인증이 필요한 정적 페이지 리다이렉트 미들웨어
+const protectedStaticPages = [
+  '/mypage.html', '/mypage',
+  '/giftbox.html', '/giftbox',
+  '/giftuse.html', '/giftuse',
+  '/order.html', '/order',
+  '/complete.html', '/complete'
+];
+
+app.use((req, res, next) => {
+  const cleanPath = req.path.toLowerCase().replace(/\/$/, "");
+  if (protectedStaticPages.includes(cleanPath)) {
+    if (!req.session || !req.session.userId) {
+      return res.redirect('/login.html');
+    }
+  }
+  next();
+});
+
 // 1. public/ 폴더 정적 파일 서빙 설정
 app.use(express.static(path.join(__dirname, 'public')));
 

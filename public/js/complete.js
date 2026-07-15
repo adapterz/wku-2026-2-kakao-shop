@@ -31,22 +31,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  const delayState = document.getElementById("complete-delay-state");
-  const integratedCard = document.querySelector(".integrated-card");
-
-  function showCompleteLoadingDelayed() {
-    if (delayState) delayState.style.display = "block";
-    if (integratedCard) integratedCard.style.display = "none";
-    document.body.style.display = "";
-  }
-
-  const settle = createSkeletonGuard(showCompleteLoadingDelayed, 1500);
-
   const urlParams = new URLSearchParams(window.location.search);
   const orderId = urlParams.get('orderId');
 
   if (!orderId) {
-    settle();
     alert("잘못된 접근입니다.");
     location.href = "index.html";
     return;
@@ -55,7 +43,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const response = await fetch(`/api/orders/${orderId}`, { credentials: 'include' });
     if (!response.ok) {
-      settle();
       if (response.status === 401 || response.status === 403) {
         alert("로그인이 필요하거나 접근 권한이 없습니다.");
         location.href = "login.html";
@@ -70,17 +57,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (result && result.data) {
       const order = result.data;
       renderCompletePage(order);
-      settle();
-      if (delayState) delayState.style.display = "none";
-      if (integratedCard) integratedCard.style.display = "";
-      document.body.style.display = '';
     } else {
-      settle();
       alert("주문 정보가 올바르지 않습니다.");
       location.href = "index.html";
     }
   } catch (error) {
-    settle();
     console.error("주문 정보 조회 실패:", error);
     alert("네트워크 오류가 발생했습니다.");
     location.href = "index.html";
