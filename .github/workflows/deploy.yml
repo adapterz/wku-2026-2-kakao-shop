@@ -1,0 +1,31 @@
+# 목적: main에 반영되면 자동으로 이미지 빌드 후 EC2에 재배포
+# 왜: 배포 담당이 매번 SSH 접속해서 deploy.sh를 수동 실행하지 않아도 되게 하기 위함
+# 무엇: 빌드는 GitHub 클라우드에서 처리(EC2 메모리 부담 없음), EC2는 완성된
+#      이미지를 pull해서 재시작만 하도록 deploy.sh를 원격 실행
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 이미지 빌드 및 ghcr.io 업로드
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker build -t ghcr.io/adapterz/wku-2026-2-kakao-shop:latest .
+          docker push ghcr.io/adapterz/wku-2026-2-kakao-shop:latest
+
+      - name: EC2에 SSH 접속해서 재배포
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/wku-2026-2-kakao-shop
+            ./deploy.sh
