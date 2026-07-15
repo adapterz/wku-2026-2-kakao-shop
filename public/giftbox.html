@@ -136,6 +136,29 @@
             color: var(--text-sub);
             font-size: 14px;
         }
+        .skeleton-gift-card {
+            display: flex;
+            gap: 16px;
+            padding: 16px 20px;
+            border-bottom: 1px solid #EAEAEA;
+        }
+        .skeleton-gift-card .skeleton-gift-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+        .skeleton-gift-card .skeleton-gift-lines {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+        }
+        .skeleton-gift-card .skeleton-line {
+            height: 12px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -233,6 +256,7 @@
     </div>
 
     <!-- Script -->
+    <script src="js/skeleton.js"></script>
     <script src="js/giftbox.js"></script>
     <script src="js/component.js" defer></script>
 </body>

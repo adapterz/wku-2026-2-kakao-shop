@@ -79,38 +79,66 @@ document.addEventListener('DOMContentLoaded', () => {
     return card;
   }
 
-  // Helper to show empty state when no products are found
-  function showEmptyState() {
-    const productGrid = document.querySelector('.product-grid');
-    if (productGrid) {
-      productGrid.innerHTML = `
-        <div class="empty-state">
-          <i class="fa-solid fa-box-open"></i>
-          <p>등록된 상품이 없습니다.</p>
-        </div>
-      `;
-    }
+  // Helper to build one skeleton product card matching .product-card layout
+  function createSkeletonCard() {
+    const card = document.createElement('div');
+    card.className = 'product-card skeleton-card';
+    card.innerHTML = `
+      <div class="card-img-wrapper"><div class="skeleton skeleton-card-img"></div></div>
+      <div class="card-body">
+        <div class="skeleton skeleton-line" style="width:35%;height:11px;"></div>
+        <div class="skeleton skeleton-line" style="width:90%;height:13px;"></div>
+        <div class="skeleton skeleton-line" style="width:45%;height:15px;"></div>
+      </div>
+    `;
+    return card;
+  }
+
+  // Helper to show skeleton placeholders before API data arrives
+  function renderSkeletonState() {
+    const list1 = document.getElementById('horizontal-list-1');
+    const list2 = document.getElementById('horizontal-list-2');
     const rankingRow = document.querySelector('.ranking-cards-row');
+
+    [list1, list2].forEach(list => {
+      if (!list) return;
+      list.innerHTML = '';
+      for (let i = 0; i < 4; i++) list.appendChild(createSkeletonCard());
+    });
+
     if (rankingRow) {
-      rankingRow.innerHTML = `
-        <div class="empty-state">
-          <p>등록된 상품이 없습니다.</p>
-        </div>
-      `;
+      rankingRow.innerHTML = '';
+      for (let i = 0; i < 6; i++) rankingRow.appendChild(createSkeletonCard());
     }
   }
 
-  // Helper to show error state when API request fails
-  function showErrorState() {
-
+  // Helper to show a fallback message across every product section
+  function renderFallbackState(message) {
+    const list1 = document.getElementById('horizontal-list-1');
+    const list2 = document.getElementById('horizontal-list-2');
     const rankingRow = document.querySelector('.ranking-cards-row');
-    if (rankingRow) {
-      rankingRow.innerHTML = `
-        <div class="error-state">
-          <p>상품 정보를 불러오는 데 실패했습니다.</p>
-        </div>
-      `;
+    const html = `
+      <div class="empty-state">
+        <i class="fa-solid fa-box-open"></i>
+        <p>${message}</p>
+      </div>
+    `;
+    [list1, list2, rankingRow].forEach(el => { if (el) el.innerHTML = html; });
+
+    const btnRankingMore = document.getElementById('btn-ranking-more');
+    if (btnRankingMore) {
+      btnRankingMore.style.display = 'none';
     }
+  }
+
+  // Helper to show empty state when no products are found
+  function showEmptyState() {
+    renderFallbackState('등록된 상품이 없습니다.');
+  }
+
+  // Helper to show error state when API request fails or times out
+  function showErrorState() {
+    renderFallbackState('상품 정보를 불러오는 데 실패했습니다.');
   }
   let cachedProducts = [];
   let activeFilteredProducts = [];
@@ -158,7 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load products from /api/products
   async function loadProducts() {
+    renderSkeletonState();
+    const settle = createSkeletonGuard(showErrorState, 1500);
+
     let apiProducts = [];
+    let fetchFailed = false;
     try {
       const response = await fetch('/api/products');
       if (response.ok) {
@@ -168,13 +200,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else {
         console.warn(`HTTP error! status: ${response.status}`);
+        fetchFailed = true;
       }
     } catch (error) {
       console.error('Failed to fetch products from API:', error);
+      fetchFailed = true;
     }
 
+    settle();
     cachedProducts = apiProducts;
-    renderProductsData(apiProducts);
+
+    if (fetchFailed) {
+      showErrorState();
+    } else if (apiProducts.length === 0) {
+      showEmptyState();
+    } else {
+      renderProductsData(apiProducts);
+    }
   }
 
   // Call load functions

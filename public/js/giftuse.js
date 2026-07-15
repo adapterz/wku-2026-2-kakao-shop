@@ -11,13 +11,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnUse = document.getElementById('btn-use');
     const barcodeCard = document.getElementById('barcode-card');
 
+    const settle = createSkeletonGuard(showLoadingDelayed, 1500);
+
     try {
         // 상세 조회 API 호출
         const response = await fetch(`/api/gifts/${giftId}`, { credentials: 'include' });
-        
+
         if (!response.ok) {
             // Fallback 로직: 상세 조회 실패 시 전체 목록에서 찾기
             const allGiftsResponse = await fetch('/api/gifts?status=unused', { credentials: 'include' });
+            settle();
             if (allGiftsResponse.ok) {
                 const result = await allGiftsResponse.json();
                 const gift = result.data.find(g => String(g.giftId) === String(giftId));
@@ -31,9 +34,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         } else {
             const result = await response.json();
+            settle();
             renderGift(result.data);
         }
     } catch (err) {
+        settle();
         console.error(err);
         showError('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
     }
@@ -75,6 +80,12 @@ function renderGift(gift) {
         location.href = 'giftbox.html?tab=used';
         return;
     }
+
+    // 타임아웃으로 지연 안내가 떠 있었다면 해제하고 카드를 다시 노출
+    const delayState = document.getElementById('giftuse-delay-state');
+    const barcodeCard = document.getElementById('barcode-card');
+    if (delayState) delayState.style.display = 'none';
+    if (barcodeCard) barcodeCard.style.display = '';
 
     // 닉네임 / 나 배지 처리
     document.getElementById('receiver-nickname').textContent = gift.isSelfGift ? "나" : (gift.senderNickname || "친구");
@@ -121,9 +132,21 @@ function renderGift(gift) {
     btnUse.disabled = false;
 }
 
+// 최대 노출 시간 초과: 아직 응답 대기 중이므로 카드를 잠시 숨기고 지연 안내로 전환
+// (응답이 이후 도착하면 renderGift/showError가 카드를 되돌려 놓음)
+function showLoadingDelayed() {
+    const barcodeCard = document.getElementById('barcode-card');
+    const delayState = document.getElementById('giftuse-delay-state');
+    if (barcodeCard) barcodeCard.style.display = 'none';
+    if (delayState) delayState.style.display = 'flex';
+}
+
 function showError(message) {
     const barcodeCard = document.getElementById('barcode-card');
-    
+    const delayState = document.getElementById('giftuse-delay-state');
+    if (delayState) delayState.style.display = 'none';
+    if (barcodeCard) barcodeCard.style.display = '';
+
     // 카드 내부를 에러 전용 레이아웃으로 교체
     barcodeCard.innerHTML = `
         <div style="font-size: 40px; color: #ff4d4f; margin-bottom: 16px;">
@@ -132,7 +155,7 @@ function showError(message) {
         <div class="error-message">${message}</div>
         <button onclick="location.href='giftbox.html'" class="btn-use" style="margin-top: 10px;">선물함으로 돌아가기</button>
     `;
-    
+
     document.getElementById('receiver-nickname').textContent = '오류';
 }
 
