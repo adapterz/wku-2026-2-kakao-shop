@@ -104,10 +104,8 @@ function renderGift(gift) {
     const barcodeSkeleton = document.getElementById('barcode-skeleton');
     const btnUse = document.getElementById('btn-use');
 
-    // 이미지 세팅 및 노출
+    // 이미지 세팅
     productImg.src = gift.thumbnailUrl || '';
-    productImg.style.display = 'block';
-    productImgWrapper.classList.remove('skeleton');
 
     // 브랜드명 / 상품명 바인딩 및 스켈레톤 해제
     productBrand.textContent = gift.brand || '';
