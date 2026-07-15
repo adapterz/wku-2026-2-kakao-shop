@@ -128,32 +128,7 @@
         .btn-use:active {
             background-color: #f5f5f5;
         }
-        /* Skeleton and Error Styles */
-        .skeleton {
-            background-color: #f2f2f2;
-            color: transparent !important;
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-        .skeleton::after {
-            content: '';
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transform: translateX(-100%);
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-            animation: skeleton-loading 1.5s infinite;
-        }
-        @keyframes skeleton-loading {
-            100% {
-                transform: translateX(100%);
-            }
-        }
+        /* Error Styles (skeleton shimmer is now shared in css/style.css) */
         .error-message {
             color: #ff4d4f;
             font-size: 14px;
@@ -209,6 +184,10 @@
 
         <!-- Barcode Card Section -->
         <section class="barcode-card-container">
+            <div id="giftuse-delay-state" class="empty-state" style="display: none;">
+                <i class="fa-solid fa-clock"></i>
+                <p>응답이 지연되고 있어요. 잠시만 기다려 주세요.</p>
+            </div>
             <div class="barcode-card" id="barcode-card">
                 <!-- Product Image Wrapper for Skeleton -->
                 <div id="product-img-wrapper" class="skeleton" style="position: relative; width: 80%; margin: 0 auto 10px; aspect-ratio: 1 / 1; border-radius: 16px; overflow: hidden;">
@@ -285,6 +264,7 @@
     </div>
 
     <!-- Script -->
+    <script src="js/skeleton.js"></script>
     <script src="js/giftuse.js"></script>
     <script src="js/component.js" defer></script>
 </body>

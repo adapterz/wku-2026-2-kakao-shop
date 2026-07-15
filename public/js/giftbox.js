@@ -39,26 +39,51 @@ document.addEventListener("DOMContentLoaded", () => {
   const initialTab = urlParams.get('tab') === 'used' ? 'used' : 'unused';
   let currentStatus = initialTab;
 
+  // Render skeleton placeholders that mirror .gift-card layout
+  const renderGiftSkeleton = () => {
+    listContainer.innerHTML = '';
+    for (let i = 0; i < 4; i++) {
+      const card = document.createElement('div');
+      card.className = 'skeleton-gift-card';
+      card.innerHTML = `
+        <div class="skeleton skeleton-gift-img"></div>
+        <div class="skeleton-gift-lines">
+          <div class="skeleton skeleton-line" style="width:30%;"></div>
+          <div class="skeleton skeleton-line" style="width:80%;"></div>
+          <div class="skeleton skeleton-line" style="width:50%;"></div>
+        </div>
+      `;
+      listContainer.appendChild(card);
+    }
+  };
+
   // Load gifts
   const loadGifts = async (status) => {
     currentStatus = status;
     updateTabStyles();
-    
+    renderGiftSkeleton();
+    const settle = createSkeletonGuard(() => {
+      listContainer.innerHTML = `<div class="empty-state">선물 목록을 불러오지 못했습니다.</div>`;
+    }, 1500);
+
     try {
       const response = await fetch(`/api/gifts?status=${status}`, { credentials: 'include' });
-      
+
       if (!response.ok) {
         if (response.status === 401 || response.status === 403) {
+          settle();
           alert("로그인이 필요합니다.");
           location.href = "login.html";
           return;
         }
         throw new Error("Failed to load gifts");
       }
-      
+
       const result = await response.json();
+      settle();
       renderGiftList(result.data || []);
     } catch (error) {
+      settle();
       console.error("선물함 조회 실패:", error);
       listContainer.innerHTML = `<div class="empty-state">선물 목록을 불러오지 못했습니다.</div>`;
     }
