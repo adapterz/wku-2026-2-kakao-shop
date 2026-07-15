@@ -1,11 +1,12 @@
 # 목적: app(Node)과 nginx 컨테이너를 함께 정의·실행하기 위한 설정
 # 왜: 매번 docker build/run 옵션을 따로 입력하지 않고 한 번에 관리하기 위함
-# 무엇: app은 Dockerfile로 빌드, nginx는 공식 이미지에 설정·인증서를 마운트해서 사용
+# 무엇: app은 GitHub Actions가 빌드해 ghcr.io에 올린 이미지를 pull해서 사용,
+#      nginx는 공식 이미지에 설정·인증서를 마운트해서 사용
 # DB는 컨테이너화하지 않고 EC2 네이티브를 그대로 사용 (host.docker.internal로 접근)
 
 services:
   app:
-    build: .
+    image: ghcr.io/adapterz/wku-2026-2-kakao-shop:latest
     env_file:
       - .env
     restart: unless-stopped
